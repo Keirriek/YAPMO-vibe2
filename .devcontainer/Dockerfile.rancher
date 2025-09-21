@@ -1,0 +1,59 @@
+FROM python:3.13-bookworm
+
+# Installeer system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    sudo \
+    lsof \
+    procps \
+    exiftool \
+    locales \
+    && rm -rf /var/lib/apt/lists/*
+
+# Genereer en installeer locale
+RUN locale-gen en_US.UTF-8
+
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen && \
+    update-locale LANG=en_US.UTF-8
+
+# # Stel locale environment variabelen in
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
+
+# Poetry installeren
+RUN pip install poetry
+
+# COPY pyproject.toml poetry.lock ./
+# RUN poetry env remove --all 2>/dev/null || true && \
+#     poetry update && \
+#     poetry install
+
+# Poetry environment variabelen
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
+
+# Maak vscode gebruiker en /workspaces
+RUN useradd -m -s /bin/bash -u 1000 vscode && \
+    usermod -aG sudo vscode && \
+    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    mkdir -p /workspaces && \
+    chown vscode:vscode /workspaces
+
+# Wissel naar vscode gebruiker
+USER vscode
+
+# Stel /workspaces/hostdirectory in als werkdirectory
+# TODO: wijzig naar je hostdirectory <<<<<<<<<<<<<<<<<<<<<<<<<<<
+WORKDIR /workspaces/YAPMO-vibe2
+
+# Expose poort voor NiceGUI
+EXPOSE 8080
+
+# Default command
+CMD ["/bin/bash"]
+
+

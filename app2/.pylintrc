@@ -1,0 +1,49 @@
+[MASTER]
+# Add current directory to Python path
+init-hook="import sys; sys.path.append('.'); sys.path.append('..')"
+
+# Disable import errors for NiceGUI and local modules
+disable=import-error,C0415
+
+# Exclude directories from linting
+ignore=../backup_files,../Base
+
+[MESSAGES CONTROL]
+# Disable specific import errors
+disable=C0114,C0115,C0116
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+[BASIC]
+# Regular expression which should only match function or class names
+good-names=i,j,k,ex,Run,_,id
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=10
+
+# Maximum number of locals for function / method
+max-locals=15
+
+# Maximum number of return / yield for function / method
+max-returns=6
+
+# Maximum number of statements in function / method
+max-statements=50
+
+# Maximum number of lines in a module (higher for complex UI pages)
+max-module-lines=2000
+
+# Maximum number of parents for a class
+max-parents=7
+
+# Maximum number of attributes for a class
+max-attributes=7
+
+# Minimum number of public methods for a class
+min-public-methods=0
+
+# Maximum number of public methods for a class
+max-public-methods=20 

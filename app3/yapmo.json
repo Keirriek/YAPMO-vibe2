@@ -1,0 +1,34 @@
+{
+    "queries": [
+        {
+            "name": "show Media",
+            "description": "toon alle records in de tabel dbtable_media",
+            "query": "SELECT * FROM Media",
+            "limit": true
+        },
+        {
+            "name": "show Media_New",
+            "description": "toon alle records in de tabel dbtable_media_new",
+            "query": "SELECT * FROM Media_New",
+            "limit": true
+        },
+        {
+            "name": "Fill Media_New table",
+            "description": "Copy alle data to Media_new",
+            "query": "INSERT INTO Media_New SELECT * FROM Media",
+            "limit": false
+        },
+        {
+            "name": "Delete Media_New table",
+            "description": "Delete Media_new",
+            "query": "DELETE FROM Media_New",
+            "limit": false
+        },
+        {
+            "name": "Show duplicate media with same hash in Media_new",
+            "description": "Delete Media",
+            "query": "SELECT * FROM Media_new WHERE hash IN (SELECT hash FROM Media GROUP BY hash HAVING COUNT(*) > 1)",
+            "limit": false
+        }
+    ]
+}

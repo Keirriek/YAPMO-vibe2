@@ -1,0 +1,106 @@
+{
+  "version": "YAPMO v2.0.0",
+  "general": {
+    "app_name": "YAPMO",
+    "app_version": "2.0.0",
+    "app_description": "Yet Another Photo Manager and Organizer",
+    "default_config": false
+  },
+  "logging": {
+    "log_enabled": true,
+    "log_clean": false,
+    "log_file_path": "./log/yapmo_log.log",
+    "debug_file_path": "./log/yapmo_debug.log",
+    "log_files_count_update": 1000,
+    "levels": {
+      "ERROR": [
+        "t",
+        "ui",
+        "df"
+      ],
+      "WARNING": [
+        "t",
+        "ui",
+        "df"
+      ],
+      "INFO": [
+        "ui",
+        "df"
+      ],
+      "INFO_EXTRA": [
+        "ui",
+        "df"
+      ],
+      "DEBUG": [
+        "ui",
+        "df"
+      ],
+      "TEST_AI": [
+        "ui",
+        "df"
+      ],
+      "TEST1": [],
+      "TEST2": [],
+      "TEST3": [],
+      "TEST4": []
+    },
+    "test_key": "new_test_value"
+  },
+  "processing": {
+    "max_workers": 20,
+    "use_exiftool": true,
+    "exiftool_timeout": 30000,
+    "nicegui_update_interval": 100,
+    "ui_update": 500,
+    "processing_array": null,
+    "worker_timeout": 30000
+  },
+  "processing_queues": {
+    "result_queue_depth": 32,
+    "get_result_timeout": 500,
+    "logging_queue_depth": 200,
+    "get_log_timeout": 100
+  },
+  "database": {
+    "database_clean": false,
+    "database_name": "./images_auto_field.db",
+    "database_table_media": "Media",
+    "database_table_media_new": "Media_New",
+    "database_table_dirs": "Directories",
+    "database_write_retry": 3,
+    "database_max_retry_files": 10,
+    "database_write_batch_size": 1000
+  },
+  "paths": {
+    "source_path": "/workspaces",
+    "search_path": "/Pictures-test/3-test",
+    "browse_path": "/"
+  },
+  "extensions": {
+    "image_extensions": [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".tiff",
+      ".raw",
+      ".arw"
+    ],
+    "video_extensions": [
+      ".mp4",
+      ".mov",
+      ".avi",
+      ".mkv",
+      ".wmv",
+      ".flv",
+      ".webm"
+    ],
+    "sidecar_extensions": [
+      ".aae",
+      ".xmp",
+      ".acr",
+      ".on1",
+      ".dop",
+      ".pp3"
+    ]
+  }
+}

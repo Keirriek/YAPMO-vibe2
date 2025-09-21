@@ -1,0 +1,2 @@
+Ik wil graag dat je de DEBUG en alle TEST varianten bericht NOOIT naar de log file stuurt.
+Dus alle berichten, behalve DEBUG en alle TEST varianten , gaan altijd naar de log file

@@ -1,0 +1,8 @@
+Hallo ik wil graag mijn applicatie verder afmaken met jouw hulp.
+Ik voeg enkele documenten toe waar in je kunt zien hoe ik met je wil samenwerken.
+Ook voeg ik wat documenten toe over de applicatie.
+Alle applicatie code staat in /app, dus je hoeft verder niet in de code base te kijken.
+Maar soms vraag ik je om wat ander code te bekijken en di zal ik je dan expliciet geven.
+
+
+Kunnen we zo samen werken?

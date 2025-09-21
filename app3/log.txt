@@ -1,0 +1,593 @@
+[INFO]     - 09/06/2025 - 13:16:41 - File /Pictures-test/3 test/Dir_folder/DSC00326_New Name.aae not in scope
+[ERROR]    - 09/06/2025 - 13:16:41 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[INFO]     - 09/06/2025 - 13:16:41 - Beginning to process file: /Pictures-test/3 test/Dir_folder/DSC00326_New Name.JPG
+[INFO]     - 09/06/2025 - 13:16:41 - Beginning to process file: /Pictures-test/3 test/Dir_folder/Ernst-Jan Saskia show Clip 01 245_new Name.AVI
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/Dir_folder/New folder/DSC00326_New Name.aae not in scope
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[INFO]     - 09/06/2025 - 13:16:42 - Beginning to process file: /Pictures-test/3 test/Dir_folder/Summer Thoughts-stripped.jpg
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.aae not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.acr not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - Beginning to process file: /Pictures-test/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.avi
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.weg not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.XMP not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/requirements - Copy (3).txt not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/requirements - Copy.txt not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/3 test/requirements.txt not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/digikam4.db not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/KLiekeboo.txt not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - File /Pictures-test/My_Cameras/3 test/Dir_folder/DSC00326_New Name.aae not in scope
+[INFO]     - 09/06/2025 - 13:16:42 - Beginning to process file: /Pictures-test/My_Cameras/3 test/Dir_folder/DSC00326_New Name.JPG
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:42 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[INFO]     - 09/06/2025 - 13:16:42 - Beginning to process file: /Pictures-test/My_Cameras/3 test/Dir_folder/Ernst-Jan Saskia show Clip 01 245_new Name.AVI
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/3 test/Dir_folder/Summer Thoughts-stripped.jpg
+[INFO]     - 09/06/2025 - 13:16:43 - File /Pictures-test/My_Cameras/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.aae not in scope
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.avi
+[INFO]     - 09/06/2025 - 13:16:43 - File /Pictures-test/My_Cameras/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.bae not in scope
+[INFO]     - 09/06/2025 - 13:16:43 - File /Pictures-test/My_Cameras/3 test/Ernst-Jan Saskia show Clip 01 245_new Name.XMP not in scope
+[INFO]     - 09/06/2025 - 13:16:43 - File /Pictures-test/My_Cameras/3 test/requirements - Copy (3).txt not in scope
+[INFO]     - 09/06/2025 - 13:16:43 - File /Pictures-test/My_Cameras/3 test/requirements - Copy.txt not in scope
+[INFO]     - 09/06/2025 - 13:16:43 - File /Pictures-test/My_Cameras/3 test/requirements.txt not in scope
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/2001-08-12_17-47-07_DSC00048.JPG
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/2001-08-12_17-47-13_DSC00049.JPG
+[ERROR]    - 09/06/2025 - 13:16:43 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/2002-04-11_19-24-18_DSC00065.JPG
+[ERROR]    - 09/06/2025 - 13:16:43 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:43 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:43 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:43 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[ERROR]    - 09/06/2025 - 13:16:43 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Boesta1.jpg
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Boesta2.jpg
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Brouwer1.jpg
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Brouwer2.jpg
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00001-a.JPG
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00002.JPG
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00011.JPG
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00012.JPG
+[INFO]     - 09/06/2025 - 13:16:43 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00014.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00015.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00017.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00018.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00031.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00034.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00035.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00036.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00037.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00038.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00039.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00040.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00041.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00042.JPG
+[INFO]     - 09/06/2025 - 13:16:44 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00043.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00044.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00045.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00047.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00048.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00049.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00050.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00052.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00056.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00057.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00058.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00059.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00060.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00061.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00062.JPG
+[INFO]     - 09/06/2025 - 13:16:45 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00063.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00064.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00066.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00067.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00075.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00076.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00077.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00078.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00079.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00080.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00081.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00082.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00083.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00084.JPG
+[INFO]     - 09/06/2025 - 13:16:46 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00085.JPG
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00086.JPG
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00087.JPG
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00088.JPG
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/DSC00089.JPG
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Erna1.jpg
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Erna2.jpg
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Ernst-Jan Saskia show Clip 01 245.avi
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Gerard L.jpg
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Inklap.jpg
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Jacob.jpg
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/John1.jpg
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00003.JPG
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00004.JPG
+[INFO]     - 09/06/2025 - 13:16:47 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00005.JPG
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00006.JPG
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00007.JPG
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00008.JPG
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00009.JPG
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00010.JPG
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Kopie van DSC00016.JPG
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Maaltijd1.jpg
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Marion.jpg
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Munnik.jpg
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Parapente.jpg
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Raft-achter.jpg
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Raftvoor1.jpg
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Totem.jpg
+[INFO]     - 09/06/2025 - 13:16:48 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Vlucht1.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - File /Pictures-test/My_Cameras/DCR-TRV10/Zwaan - Copy not in scope
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/DCR-TRV10/Zwaan.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0004.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0005.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0009_50.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0035.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0036.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0037.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0038.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0039.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0044.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0045.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0046.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0047.jpg
+[INFO]     - 09/06/2025 - 13:16:49 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0048.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0049.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0050.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0059.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0061.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0064.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0065.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0066.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0067.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0068.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0069.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0070.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0072.jpg
+[INFO]     - 09/06/2025 - 13:16:50 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0073.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0074.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0075.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0076.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0077.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0078.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0079.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0080.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0081.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0082.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0083.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0084.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0085.jpg
+[INFO]     - 09/06/2025 - 13:16:51 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0086.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0087.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0088.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0090.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0091.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0092.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0096.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0099.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0100.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0101.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0103.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0108.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0110.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0111.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0113.jpg
+[INFO]     - 09/06/2025 - 13:16:52 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0114.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0115.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0116.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0117.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0118.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0119.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0120.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0121.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0123.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0124.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0125.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/HPIM0129.jpg
+[INFO]     - 09/06/2025 - 13:16:53 - Beginning to process file: /Pictures-test/My_Cameras/HP IPAQ hw6900/Image00002.jpg
+[ERROR]    - 09/06/2025 - 13:16:53 - cannot access local variable 'glob_cnt' where it is not associated with a value
+[INFO]     - 09/06/2025 - 13:16:54 - Beginning to process file: /Pictures-test/My_Cameras/HTC/131056.jpg
+[INFO]     - 09/06/2025 - 13:16:54 - Beginning to process file: /Pictures-test/My_Cameras/HTC/150401.jpg
+[INFO]     - 09/06/2025 - 13:16:54 - Beginning to process file: /Pictures-test/My_Cameras/HTC/155422.jpg
+[INFO]     - 09/06/2025 - 13:16:54 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2010-07-08_15-12-56_holmer taboe sideway ocho.3gp
+[INFO]     - 09/06/2025 - 13:16:54 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2010-07-08_16-26-06_holmer rockstep catch.3gp
+[INFO]     - 09/06/2025 - 13:16:54 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2010-07-09_12-46-28_ivan2 taboe.3gp
+[INFO]     - 09/06/2025 - 13:16:54 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2010-07-09_12-46-58_ivan taboe 1.3gp
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-06 13.35.15.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-06 13.35.56.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-07 12.38.07.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-07 12.38.17.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-07 12.38.39.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-07 12.39.24.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-07 12.39.28.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2011-07-07 12.39.33.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-16 19.19.41.jpg
+[INFO]     - 09/06/2025 - 13:16:55 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.08.35.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.09.24.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.40.24.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.40.39.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.44.54.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.45.51.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.46.26.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.47.13.jpg
+[INFO]     - 09/06/2025 - 13:16:56 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.47.54.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.48.30.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.49.01.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.50.18.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.52.12.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.52.39.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 15.52.45.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 16.08.14.jpg
+[INFO]     - 09/06/2025 - 13:16:57 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 16.08.30.jpg
+[INFO]     - 09/06/2025 - 13:16:58 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 16.09.05.jpg
+[INFO]     - 09/06/2025 - 13:16:58 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 16.52.26.jpg
+[INFO]     - 09/06/2025 - 13:16:58 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 16.52.49.jpg
+[INFO]     - 09/06/2025 - 13:16:58 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 16.53.02.jpg
+[INFO]     - 09/06/2025 - 13:16:58 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 16.54.06.jpg
+[INFO]     - 09/06/2025 - 13:16:58 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 17.07.34.jpg
+[INFO]     - 09/06/2025 - 13:16:58 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 17.07.43.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 21.06.31.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-20 21.07.33.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-21 10.58.39.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-21 10.59.16.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-21 10.59.30.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 11.44.52.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 11.45.28.jpg
+[INFO]     - 09/06/2025 - 13:16:59 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 11.45.43.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 11.46.56.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 18.05.40.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 18.05.51.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 19.46.07.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 19.59.49.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.00.43.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.01.03.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.03.30.jpg
+[INFO]     - 09/06/2025 - 13:17:00 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.03.41.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.03.53.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.04.08.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.06.12.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.09.11.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.09.51.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.11.21.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.11.44.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.12.38.jpg
+[INFO]     - 09/06/2025 - 13:17:01 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.57.03.jpg
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2012-08-23 20.57.47.jpg
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2013-01-05 12.39.35.jpg
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2013-01-08 10.51.10.jpg
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2013-01-08 10.52.27.jpg
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2013-01-10 13.10.56.jpg
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/2013-01-11 15.54.21.jpg
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/emmelien accordion op bank.mp4
+[INFO]     - 09/06/2025 - 13:17:02 - Beginning to process file: /Pictures-test/My_Cameras/HTC/emmelien uitvoering.3gp
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/emmelien.jpg
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/foto's 182.avi
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/helene roze.jpg
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/ilse bed.jpg
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/ilse emma.mp4
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/ilse en em dansen.mp4
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/ilse wit.jpg
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG-0001.jpg
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG-0002.jpg
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0001.jpg
+[INFO]     - 09/06/2025 - 13:17:03 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0002.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0002a.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0003.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0003a.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0004.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0004a.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0005.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0006.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0007.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0008.jpg
+[INFO]     - 09/06/2025 - 13:17:04 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0009.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0010.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0010a.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0011.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0012.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0013.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0013a.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0014.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0014a.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0015.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0015a.jpg
+[INFO]     - 09/06/2025 - 13:17:05 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0016.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0016a.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0017.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0017a.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0018.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0018a.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0019.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0019a.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0020.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0020a.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0021.jpg
+[INFO]     - 09/06/2025 - 13:17:06 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0021a.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0022.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0022a.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0023.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0023a.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0024.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0024a.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0025.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0026.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0027.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0028.jpg
+[INFO]     - 09/06/2025 - 13:17:07 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0029.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0030.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0031-a.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0031-b.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0032.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0032a.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0033.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0034.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0035.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0035a.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0036.jpg
+[INFO]     - 09/06/2025 - 13:17:08 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0036a.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0037.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0038.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0038a.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0039.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0039a.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0040.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0055.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0056.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0057.jpg
+[INFO]     - 09/06/2025 - 13:17:09 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0058.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0059.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0060.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0061.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0062.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0063.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0064.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0065.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0066.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0067.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0069.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0070.jpg
+[INFO]     - 09/06/2025 - 13:17:10 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0071.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0072.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0073.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0074.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0075.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0076.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0077.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0078.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0079.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0080.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0081.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0082.jpg
+[INFO]     - 09/06/2025 - 13:17:11 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0083.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0086.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0087.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0088.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0089.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0090.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0091.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0092.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0093.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0094.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0095.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0096.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0097.jpg
+[INFO]     - 09/06/2025 - 13:17:12 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0098.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0099.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0100.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0101.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0102.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0103.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0104.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0105.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0106.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0107.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0111.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0112.jpg
+[INFO]     - 09/06/2025 - 13:17:13 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0113.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0114.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0115.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0116.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0117.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0118.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0119.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0120.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0122.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0123.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0124.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0125.jpg
+[INFO]     - 09/06/2025 - 13:17:14 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0126.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0127.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0128.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0129.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0130.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0150.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0151.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0152.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0153.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0154.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0155.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0156.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0157.jpg
+[INFO]     - 09/06/2025 - 13:17:15 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0158.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0159.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0160.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0161.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0162.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0163.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0164.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0165.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0166.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0167.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0167a.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0168.jpg
+[INFO]     - 09/06/2025 - 13:17:16 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0168a.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0169.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0169a.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0170.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0170a.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0171.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0171a.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0172.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0172a.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0173.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0173a.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0174.jpg
+[INFO]     - 09/06/2025 - 13:17:17 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0174a.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0175.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0176.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0177.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0178.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0179.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0180.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0181.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0182.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0183.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0184.jpg
+[INFO]     - 09/06/2025 - 13:17:18 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0185.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0186.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0187.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMAG0188.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_02012013_165242.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_02012013_165318.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_02012013_165331.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_09102012_194132.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_09102012_194140.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_09122012_214259.jpg
+[INFO]     - 09/06/2025 - 13:17:19 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_09122012_214311.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_09122012_214315.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_210506.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_210629.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_212210.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_212218.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_214538.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_214611.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_214620.jpg
+[INFO]     - 09/06/2025 - 13:17:20 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_214809.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_214820.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_214829.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_220436.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_220447.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_220519.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_220630.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_220635.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_223936.jpg
+[INFO]     - 09/06/2025 - 13:17:21 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_223941.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_223946.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_223950.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_14102012_224008.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_20082012_150401.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_20092012_173923.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_20092012_174211.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_20092012_174218.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_23102012_131840.jpg
+[INFO]     - 09/06/2025 - 13:17:22 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_23102012_131924.jpg
+[INFO]     - 09/06/2025 - 13:17:23 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_24102012_152610.jpg
+[INFO]     - 09/06/2025 - 13:17:23 - Beginning to process file: /Pictures-test/My_Cameras/HTC/IMG_30082012_175712.jpg
+[INFO]     - 09/06/2025 - 13:17:23 - Beginning to process file: /Pictures-test/My_Cameras/HTC/lief ontbijt.mp4
+[INFO]     - 09/06/2025 - 13:17:23 - Beginning to process file: /Pictures-test/My_Cameras/HTC/VIDEO0001.3gp
+[INFO]     - 09/06/2025 - 13:17:23 - Beginning to process file: /Pictures-test/My_Cameras/HTC/VIDEO0029.mp4
+[INFO]     - 09/06/2025 - 13:17:23 - Beginning to process file: /Pictures-test/My_Cameras/HTC/VIDEO0052.3gp
+[INFO]     - 09/06/2025 - 13:17:23 - Beginning to process file: /Pictures-test/My_Cameras/HTC/VIDEO0053.3gp
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/HTC/VIDEO0054.3gp
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0003.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0004.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0005.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0006.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0007.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0008.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0010.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0011.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0013.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0014.JPG
+[INFO]     - 09/06/2025 - 13:17:24 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0015.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0016.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0017.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0019.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0022.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0023.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0024.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0025.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0026.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0027.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0028.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0029.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0031.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0032.JPG
+[INFO]     - 09/06/2025 - 13:17:25 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0033.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0034.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0035.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0036.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0037.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0038.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0039.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0040.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0041.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0042.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0043.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0044.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0045.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0046.JPG
+[INFO]     - 09/06/2025 - 13:17:26 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0047.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0048.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0049.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0050.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0051.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0052.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0053.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0054.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0055.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0056.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0057.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0058.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0059.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0060.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0061.JPG
+[INFO]     - 09/06/2025 - 13:17:27 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0062.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0063.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0064.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0065.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0066.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0067.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0068.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0069.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0070.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0071.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0072.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0073.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0074.JPG
+[INFO]     - 09/06/2025 - 13:17:28 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0075.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0076.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0077.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0078.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0079.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0080.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0081.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0082.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0083.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0084.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0085.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0086.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0088.JPG
+[INFO]     - 09/06/2025 - 13:17:29 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0089.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0090.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0091.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0092.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0093.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0094.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0097.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0098.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0100.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0101.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0102.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0103.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0104.JPG
+[INFO]     - 09/06/2025 - 13:17:30 - Beginning to process file: /Pictures-test/My_Cameras/IPad2/IMG_0105.JPG
+[INFO]     - 09/06/2025 - 13:17:31 - Processing aborted by user

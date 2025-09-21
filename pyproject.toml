@@ -1,0 +1,144 @@
+[tool.poetry]
+name = "yapmo"
+version = "2.0.0"
+description = "Yey antoher PhotoManager and Organizer"
+authors = ["keirriek <keir4ad@gmail.com>"]
+package-mode = false
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+nicegui = "^2.22.2"
+json5 = "^0.12.1"
+psutil = "^7.0.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.12.9"
+pylint = "^3.0.0"  # Python linter voor uitgebreide code analyse
+mypy = "^1.8.0"    # Static type checker voor Python
+pytest = "^8.0.0"  # Test framework voor Python
+watchdog = "^3.0.0"  # File watching voor hot reload en development
+
+# ===== RUFF CONFIGURATIE =====
+# Ruff is een snelle Python linter en formatter geschreven in Rust
+pytest-asyncio = "^1.1.0"
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+lint.select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+lint.ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# ===== PYLINT CONFIGURATIE =====
+# Pylint is een uitgebreide Python linter met meer checks dan ruff
+[tool.pylint.messages_control]
+# Schakel waarschuwingen uit die te streng zijn voor development
+disable = [
+    "C0114",  # missing-module-docstring - niet nodig voor kleine modules
+    "C0115",  # missing-class-docstring - niet nodig voor eenvoudige classes
+    "C0116",  # missing-function-docstring - niet nodig voor eenvoudige functies
+    "R0903",  # too-few-public-methods - te streng voor utility classes
+    "R0913",  # too-many-arguments - soms nodig voor complexe functies
+]
+
+[tool.pylint.format]
+max-line-length = 88  # Zelfde als ruff voor consistentie
+
+[tool.pylint.basic]
+# Namen die pylint als geldig moet beschouwen
+good-names = ["i", "j", "k", "ex", "Run", "_"]
+
+[tool.pylint.design]
+# Limieten voor code complexiteit
+max-args = 10          # Maximum aantal argumenten per functie
+max-attributes = 10    # Maximum aantal attributen per class
+max-bool-expr = 5      # Maximum aantal boolean operatoren per expressie
+max-branches = 12      # Maximum aantal branches per functie
+max-locals = 15        # Maximum aantal lokale variabelen per functie
+max-parents = 7        # Maximum aantal parent classes
+max-public-methods = 20 # Maximum aantal publieke methoden per class
+max-returns = 6        # Maximum aantal return statements per functie
+max-statements = 50    # Maximum aantal statements per functie
+
+# ===== MYPY CONFIGURATIE =====
+# MyPy is een static type checker voor Python - vindt type fouten voordat je code runt
+[tool.mypy]
+python_version = "3.13"                    # Gebruik Python 3.13 syntax
+warn_return_any = true                     # Waarschuw als functie 'Any' return type heeft
+warn_unused_configs = true                 # Waarschuw voor ongebruikte configuratie
+disallow_untyped_defs = true               # Verplicht type hints voor alle functies
+disallow_incomplete_defs = true            # Verplicht complete type hints
+check_untyped_defs = true                  # Check functies zonder type hints
+disallow_untyped_decorators = true         # Verplicht type hints voor decorators
+no_implicit_optional = true                # Geen impliciete Optional types
+warn_redundant_casts = true                # Waarschuw voor overbodige type casts
+warn_unused_ignores = true                 # Waarschuw voor ongebruikte type ignore comments
+warn_no_return = true                      # Waarschuw als functie geen return statement heeft
+warn_unreachable = true                    # Waarschuw voor onbereikbare code
+strict_equality = true                     # Strikte vergelijking van types
+
+# Exclude directories die je niet wilt type checken
+exclude = [
+    'build',           # Build output directory
+    'dist',            # Distribution directory
+    '\.venv',          # Virtual environment
+    '\.git',           # Git directory
+    '\.mypy_cache',    # MyPy cache directory
+]
+
+# Per-module configuratie voor externe libraries
+[[tool.mypy.overrides]]
+module = [
+    "nicegui.*",       # NiceGUI modules (hebben mogelijk geen type hints)
+]
+ignore_missing_imports = true              # Negeer ontbrekende imports voor deze modules
+
+# ===== PYTEST CONFIGURATIE =====
+# Pytest is een krachtig test framework voor Python
+[tool.pytest.ini_options]
+testpaths = ["tests", "test"]              # Waar pytest naar tests zoekt
+python_files = ["test_*.py", "*_test.py"]  # Welke bestanden tests bevatten
+python_classes = ["Test*"]                 # Welke classes tests bevatten
+python_functions = ["test_*"]              # Welke functies tests zijn
+addopts = [
+    "-v",                                  # Verbose output
+    "--tb=short",                          # Korte traceback format
+    "--strict-markers",                     # Strikte marker validatie
+    "--disable-warnings",                   # Onderdruk waarschuwingen tijdens tests
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "nicegui: marks tests that require NiceGUI",
+]
+
+# ===== WATCHDOG CONFIGURATIE =====
+# Watchdog is een file watcher voor hot reload en development
+[tool.watchdog]
+# Basis configuratie voor file watching
+patterns = ["*.py", "*.pyi", "*.pyx", "*.pyw"]  # Welke bestanden te monitoren
+ignore_patterns = ["*.pyc", "*.pyo", "__pycache__", ".git", ".venv"]  # Welke te negeren
+ignore_directories = true                  # Negeer directory events
+case_sensitive = false                     # Case-insensitive matching
+recursive = true                           # Recursief door subdirectories
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

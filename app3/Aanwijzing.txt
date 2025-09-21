@@ -1,0 +1,3 @@
+Doe alle wijzigingen op de volgende manier:
+- regels die weg moeten:  zet er een # voor en  een #AI- achter
+- regels die erbij komen: zet er een regel voor met  #AI+

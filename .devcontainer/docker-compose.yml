@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.rancher
+    volumes:
+      - ..:/workspaces:cached
+      - D:\Pictures:/Pictures:ro
+      - D:\Pictures-test:/Pictures-test:ro
+      - D:\Python-Mars\YAPMO-dev:/workspaces/YAPMO-dev:ro
+      - D:\Python-Mars\YAPMO-dev\YAPMO-V6:/workspaces/YAPMO-V6:ro
+      - D:\Python-Mars\Work\Dev_5BU-werkend:/workspaces/YAPMO-Dev5BU-werkend:ro
+      - D:\Python-Mars\org_rdear4\:/workspaces/YAPMO-rdear:ro
+      - nfs_test_volume:/mnt/nas_test
+    working_dir: /workspaces
+    command: sleep infinity
+
+volumes:
+  nfs_test_volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=192.168.1.31,rw
+      device: ":/NFS-Test"
