@@ -190,53 +190,125 @@ Elke FASE bouwt alle code die nodig is om een specifieke STATE mogelijk te maken
 
 ### 4.1 TOUCHED
 - **SCANNING**: State transition logic toevoegen
+- **Directory Change Detection**: Real-time directory input change detection
 
 ### 4.2 Specs Updaten
 - [x] **UI Elements**: Scan controls enabled, processing controls enabled
-- [x] **Transitions**: IDLE_SCAN_DONE → FILE_PROCESSING (start processing), IDLE_SCAN_DONE → IDLE
-- [x] **Scan Results**: Display final scan results
-- [x] **Config Values**: extensions voor file filtering
+- [x] **Transitions**: IDLE_SCAN_DONE → PROCESSING (start processing), IDLE_SCAN_DONE → IDLE (directory change)
+- [x] **Scan Results**: Display final scan results via global variables
+- [x] **Directory Change Detection**: Real-time detection via on_change event
+- [x] **File Collection**: Files collected during scan for later processing
 - [x] **SCANNING**: State transition logic toevoegen
 
 ### 4.3 Spec Checken
-- [x] **Scan Results**: Controleer scan result display mechanisme
+- [x] **Scan Results**: Controleer scan result display mechanisme via global variables
 - [x] **Button States**: Correct enabled/disabled states voor scan complete
+- [x] **Directory Change**: Controleer real-time directory change detection
+- [x] **File Collection**: Controleer file collection during scan
 - [x] **SCANNING**: Controleer state transition logic
 
 ### 4.4 Bouwen
 **Core Components:**
 - [x] `_configure_ui_for_state()` voor IDLE_SCAN_DONE state
-- [x] `_display_scan_results()` scan results display
-- [x] `_reset_all()` reset functionality
+- [x] `_on_directory_input_changed()` directory change detection
+- [x] `_scan_directory_sync_with_updates()` file collection during scan
+- [x] `_scan_files_for_processing()` simplified file retrieval
 - [x] `debug_current_state_label` updates bij state changes
 - [x] **SCANNING**: State transition logic toevoegen
 
 **UI Configuration voor IDLE_SCAN_DONE:**
-- [x] scan_select_directory: disabled
-- [x] scan_search_directory_input:disabled, current directory path
-- [x] scan_start_button: "Start Scanning", disabled
+- [x] scan_select_directory: enabled (new scan possible)
+- [x] scan_search_directory_input: enabled, current directory path
+- [x] scan_start_button: "START Scanning", enabled
 - [x] scan_spinner: disabled, hidden
 - [x] scan_state_label: "scan complete"
-- [x] processing_start_button: "START PROCESSING", disabled
+- [x] processing_start_button: "START PROCESSING", enabled
+- [x] scan_details_button: enabled (scan data available)
 - [x] Alle counters: final scan results (KNOWN DATA)
 - [x] debug_current_state_label: "State: idle_scan_done"
 
+**File Collection Implementation:**
+- [x] `files_to_process = []` in `_scan_directory_sync_with_updates()`
+- [x] `self.scanned_files = files_to_process` storage
+- [x] `self.last_scanned_directory = directory` storage
+- [x] `_scan_files_for_processing()` returns `self.scanned_files`
+
 ### 4.5 Deel Test
 - [x] **UI Elements**: Correct enabled/disabled states
-- [x] **Scan Results**: Final scan results correct displayed
-- [x] **Reset Functionality**: Reset werkt correct
+- [x] **Scan Results**: Final scan results correct displayed via global variables
+- [x] **Directory Change**: Real-time detection works correctly
+- [x] **File Collection**: Files collected and stored correctly
 - [x] **Button Logic**: START PROCESSING button enabled
 - [x] **Debug State Label**: Toont correct "State: idle_scan_done"
 - [x] **SCANNING**: Test state transition logic
 
 ### 4.6 Totale Test
 - [x] **Complete Flow**: INITIALISATION → IDLE → SCANNING → IDLE_SCAN_DONE
-- [x] **User Interaction**: Scan complete en reset
+- [x] **Directory Change Flow**: IDLE_SCAN_DONE → directory change → IDLE
+- [x] **User Interaction**: Scan complete en directory change detection
 - [x] **State Persistence**: State correct na page refresh
 - [x] **Error Handling**: Scan complete errors correct afgehandeld
 - [x] **Performance**: Snelle UI updates, geen blocking
 
-## Fase 5: FILE_PROCESSING STATE mogelijk maken
+## Fase 5: IDLE_ACTION_DONE STATE mogelijk maken
+
+### 5.1 TOUCHED
+- **SCANNING**: State transition logic toevoegen
+- **PROCESSING**: State transition logic toevoegen
+- **ABORT**: State transition logic toevoegen
+
+### 5.2 Specs Updaten
+- [x] **UI Elements**: All controls disabled during action completion
+- [x] **Transitions**: IDLE_ACTION_DONE → IDLE (scan completed), IDLE_ACTION_DONE → IDLE_SCAN_DONE (processing completed)
+- [x] **Flag Management**: Unified flag coordination system
+- [x] **Queue Processing**: Log queue processing until empty
+- [x] **State Determination**: Based on scan data availability
+
+### 5.3 Spec Checken
+- [x] **Flag Coordination**: Controleer unified flag management
+- [x] **Queue Processing**: Controleer log queue processing
+- [x] **State Determination**: Controleer scan data based state selection
+- [x] **UI Configuration**: Controleer disabled state during completion
+
+### 5.4 Bouwen
+**Core Components:**
+- [x] `_configure_ui_for_state()` voor IDLE_ACTION_DONE state
+- [x] `_check_action_flag_transition()` unified flag transition logic
+- [x] `_confirm_abort()` abort handler with flag management
+- [x] `debug_current_state_label` updates bij state changes
+
+**UI Configuration voor IDLE_ACTION_DONE:**
+- [x] scan_select_directory: disabled
+- [x] scan_search_directory_input: disabled
+- [x] scan_start_button: disabled
+- [x] processing_start_button: disabled
+- [x] scan_details_button: enabled (if scan data available)
+- [x] scan_state_label: "Action completed"
+- [x] Alle counters: behoudt waarden van vorige actie
+- [x] debug_current_state_label: "State: idle_action_done"
+
+**Flag Management System:**
+- [x] `action_finished_flag = True` (set by action process)
+- [x] `ui_update_finished = True` (set by UI update when queue empty)
+- [x] Both flags True → transition to next state
+- [x] Flag clearing on state transition
+
+### 5.5 Deel Test
+- [x] **UI Elements**: Correct disabled/configured during completion
+- [x] **Flag Coordination**: Both flags correctly managed
+- [x] **Queue Processing**: Log messages processed until empty
+- [x] **State Determination**: Correct state selection based on scan data
+- [x] **Debug State Label**: Toont correct "State: idle_action_done"
+
+### 5.6 Totale Test
+- [x] **Complete Flow**: SCANNING → IDLE_ACTION_DONE → IDLE_SCAN_DONE
+- [x] **Processing Flow**: PROCESSING → IDLE_ACTION_DONE → IDLE
+- [x] **Abort Flow**: SCANNING/PROCESSING → ABORT → IDLE_ACTION_DONE → IDLE
+- [x] **Flag Management**: Unified flag system works correctly
+- [x] **Queue Processing**: All log messages processed correctly
+- [x] **Performance**: Snelle transitions, geen blocking
+
+## Fase 6: FILE_PROCESSING STATE mogelijk maken
 
 ### 5.1 TOUCHED
 - **IDLE**: Directory validation hergebruiken in `_start_processing()` methode

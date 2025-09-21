@@ -221,6 +221,7 @@ class ApplicationState(Enum):
     INITIALISATION = "initialisation"
     IDLE = "idle"
     SCANNING = "scanning"
+    IDLE_SCAN_DONE = "idle_scan_done"
     PROCESSING = "processing"
     IDLE_ACTION_DONE = "idle_action_done"
     ABORTED = "aborted"
@@ -374,7 +375,7 @@ class FillDbPageV2:
                         self.scan_search_directory_input = ui.input(
                             placeholder="Enter directory path...",
                             value=get_param("paths", "search_path")
-                        ).classes("w-full")
+                        ).classes("w-full").on('change', self._on_directory_input_changed)
                     
                     # Hourglass spinner
                     with ui.column().classes("items-center justify-center"):
@@ -639,6 +640,12 @@ class FillDbPageV2:
             # Clear all callbacks to prevent race conditions
             self.ui_update_manager.update_callbacks.clear()
             
+            # Clear scan data (fresh start)
+            if hasattr(self, 'scanned_files'):
+                self.scanned_files = []
+            if hasattr(self, 'last_scanned_directory'):
+                self.last_scanned_directory = ""
+            
             # Reset ALL flags
             yapmo_globals.action_finished_flag = False
             yapmo_globals.ui_update_finished = False
@@ -673,10 +680,9 @@ class FillDbPageV2:
                 self.scan_details_button.enable()
                 self.scan_details_button.props("color=secondary")
             
-            # Processing controls ENABLED (nieuwe pagina - geen scan data vereist!)
+            # Processing controls DISABLED (no scan data available)
             if self.processing_start_button:
-                self.processing_start_button.props(remove="disabled")
-                self.processing_start_button.enable()
+                self.processing_start_button.disable()
                 self.processing_start_button.text = "START PROCESSING"
                 self.processing_start_button.props("color=primary")
             
@@ -702,10 +708,99 @@ class FillDbPageV2:
                 self.processing_progressbar.set_visibility(False)  # Verberg progress bar
             # Alle andere processing labels behouden hun waarden
                 
+        elif state == ApplicationState.IDLE_SCAN_DONE:
+            # Scan completed - processing enabled, scan data available
+            # Stop UI update timer
+            self._stop_ui_update()
+            
+            # Clean up all active timers
+            self._cleanup_timers()
+            
+            # Clear all callbacks to prevent race conditions
+            self.ui_update_manager.update_callbacks.clear()
+            
+            # Reset ALL flags
+            yapmo_globals.action_finished_flag = False
+            yapmo_globals.ui_update_finished = False
+            yapmo_globals.abort_requested = False
+            yapmo_globals.stop_processing_flag = False
+            
+            # Unregister abort handler
+            from yapmo_globals import abort_manager
+            abort_manager.unregister_abort_handler("fill_db_page_v2")
+            
+            # Disable ABORT button
+            from theme import YAPMOTheme
+            if hasattr(YAPMOTheme, 'abort_button') and YAPMOTheme.abort_button:
+                YAPMOTheme.abort_button.disable()
+            
+            # Scan controls enabled
+            if self.scan_select_directory:
+                self.scan_select_directory.props(remove="disabled")
+                self.scan_select_directory.enable()
+                self.scan_select_directory.props("color=secondary")
+            if self.scan_start_button:
+                self.scan_start_button.props(remove="disabled")
+                self.scan_start_button.enable()
+                self.scan_start_button.text = "START Scanning"
+                self.scan_start_button.props("color=primary")
+            if self.scan_search_directory_input:
+                self.scan_search_directory_input.enable()
+            
+            # Scan details enabled (scan data available)
+            if self.scan_details_button:
+                self.scan_details_button.props(remove="disabled")
+                self.scan_details_button.enable()
+                self.scan_details_button.props("color=secondary")
+            
+            # Processing controls ENABLED (scan data available!)
+            if self.processing_start_button:
+                self.processing_start_button.props(remove="disabled")
+                self.processing_start_button.enable()
+                self.processing_start_button.text = "START PROCESSING"
+                self.processing_start_button.props("color=primary")
+            
+            # Log controls enabled
+            if self.log_clear_button:
+                self.log_clear_button.enable()
+            
+            # Spinner hidden
+            if self.scan_spinner:
+                self.scan_spinner.set_visibility(False)
+            
+            # State label
+            if self.scan_state_label:
+                self.scan_state_label.text = "scan complete"
+            
+            # Keep counter values from scan (show scan results)
+            # Counters will show the scan results
+            
+            # Processing section - behoud resultaten (don't reset to 0)
+            # Progress bar en labels behouden hun waarden van laatste processing
+            # Alleen visibility van progress bar aanpassen
+            if self.processing_progressbar:
+                self.processing_progressbar.set_visibility(False)  # Verberg progress bar
+            # Alle andere processing labels behouden hun waarden
+                
         elif state == ApplicationState.IDLE_ACTION_DONE:
             # Unified action completion state
             # This state waits for ui_update_finished = True
             # Then resets flags and transitions to IDLE
+            
+            # All controls disabled during action completion
+            if self.scan_select_directory:
+                self.scan_select_directory.disable()
+                self.scan_select_directory.props("color=secondary disabled")
+            if self.scan_start_button:
+                self.scan_start_button.disable()
+            if self.processing_start_button:
+                self.processing_start_button.disable()
+            if self.log_clear_button:
+                self.log_clear_button.disable()
+            
+            # Input disabled
+            if self.scan_search_directory_input:
+                self.scan_search_directory_input.disable()
             
             # State label
             if self.scan_state_label:
@@ -862,6 +957,8 @@ class FillDbPageV2:
             self.scan_search_directory_input.value = selected_path
             # Save to config.json
             set_param("paths", "search_path", selected_path)
+            # Trigger directory change detection
+            self._on_directory_input_changed(None)
 
     def _start_scanning(self) -> None:
         """Start the scanning process."""
@@ -904,6 +1001,24 @@ class FillDbPageV2:
         timer = ui.timer(0.1, lambda: asyncio.create_task(self._run_scan_process(current_path)), once=True)
         self.active_timers.append(timer)
 
+    def _on_directory_input_changed(self, event) -> None:
+        """Called when directory input changes."""
+        # Get the new directory value from the input field
+        new_directory = self.scan_search_directory_input.value if self.scan_search_directory_input else ""
+        logging_service.log("DEBUG", f"Directory input changed to: {new_directory}")
+        
+        # Check if we have scan data and directory changed
+        if hasattr(self, 'scanned_files') and self.scanned_files:
+            if hasattr(self, 'last_scanned_directory') and self.last_scanned_directory != new_directory:
+                logging_service.log("INFO", "Directory changed - clearing scan data")
+                self.scanned_files = []
+                self.last_scanned_directory = ""
+                
+                # Transition to IDLE if we were in IDLE_SCAN_DONE
+                if self.current_state == ApplicationState.IDLE_SCAN_DONE:
+                    self._set_state(ApplicationState.IDLE)
+                    ui.notify("Directory changed - please scan again", type="info")
+
     def _start_processing(self) -> None:
         """Start the file processing process."""
         # Log processing start attempt
@@ -925,20 +1040,29 @@ class FillDbPageV2:
         # Validation successful
         logging_service.log("INFO", f"Directory validation successful: {current_path}")
         
-        # 2. Validation lukt: Reset flags en transition naar PROCESSING
+        # 2. Check if we're in correct state (IDLE_SCAN_DONE)  #TODO Dit kan volgens mij weg
+        if self.current_state != ApplicationState.IDLE_SCAN_DONE:
+            logging_service.log("WARNING", "Processing can only start from IDLE_SCAN_DONE state")
+            ui.notify("No Scanninng done", type="warning")
+            return
+        
+        # 3. Get files to process (guaranteed to exist in IDLE_SCAN_DONE state)
+        files_to_process = self._scan_files_for_processing("")
+        
+        # 4. Validation lukt: Reset flags en transition naar PROCESSING
         yapmo_globals.action_finished_flag = False
         yapmo_globals.stop_processing_flag = False
         logging_service.log("DEBUG", "Reset processing flags")#DEBUG_ON Reset processing flags
         
-        # 3. Transition naar PROCESSING state
+        # 5. Transition naar PROCESSING state
         logging_service.log("DEBUG", "Transitioning to PROCESSING state")#DEBUG_ON Transitioning to PROCESSING state
         self._set_state(ApplicationState.PROCESSING)
         
-        # 4. Start UI update
+        # 6. Start UI update
         logging_service.log("DEBUG", "Starting UI update timer")#DEBUG_ON Starting UI update timer
         self._start_ui_update()
         
-        # 5. Start processing process (dummy voor nu)
+        # 7. Start processing process (dummy voor nu)
         logging_service.log("DEBUG", "Starting background processing task")#DEBUG_ON Starting background processing task
         timer = ui.timer(0.1, lambda: asyncio.create_task(self._run_processing_process(current_path)), once=True)
         self.active_timers.append(timer)
@@ -1011,8 +1135,16 @@ class FillDbPageV2:
                 self.worker_manager.stop_workers()
                 self.worker_manager = None
         
+        # Clear scan data on abort
+        if hasattr(self, 'scanned_files'):
+            self.scanned_files = []
+        if hasattr(self, 'last_scanned_directory'):
+            self.last_scanned_directory = ""
+        
         # Set action_finished_flag (unified flag for all actions including abort)
         yapmo_globals.action_finished_flag = True
+        # Set ui_update_finished for abort (no log queue processing needed)
+        yapmo_globals.ui_update_finished = True
         
         # Show notification
         ui.notify("User ABORTED", type="negative")
@@ -1185,7 +1317,7 @@ class FillDbPageV2:
 
 
     def _check_action_flag_transition(self) -> None:
-        """Check if action is finished and transition to IDLE if in IDLE_ACTION_DONE state."""
+        """Check if action is finished and transition to appropriate state."""
         try:
             # Check if we're in IDLE_ACTION_DONE state
             if self.current_state == ApplicationState.IDLE_ACTION_DONE:
@@ -1200,8 +1332,13 @@ class FillDbPageV2:
                     # Stop UI update process
                     self._stop_ui_update()
                     
-                    # Transition to IDLE
-                    self._set_state(ApplicationState.IDLE)
+                    # Determine next state based on what was completed
+                    if hasattr(self, 'scanned_files') and self.scanned_files:
+                        # Scan completed - go to IDLE_SCAN_DONE
+                        self._set_state(ApplicationState.IDLE_SCAN_DONE)
+                    else:
+                        # Processing completed - go to IDLE
+                        self._set_state(ApplicationState.IDLE)
             
         except Exception as e:
             # Silent error handling - flag check should not crash the app
@@ -1223,8 +1360,8 @@ class FillDbPageV2:
             # Set action_finished_flag (unified flag for all actions)
             yapmo_globals.action_finished_flag = True
             
-            # Transition to IDLE_ACTION_DONE state after scanning
-            self._set_state(ApplicationState.IDLE_ACTION_DONE)
+            # Transition to IDLE_SCAN_DONE state after scanning
+            self._set_state(ApplicationState.IDLE_SCAN_DONE)
             
             # Process any remaining log messages
             self._display_log_queue()
@@ -1280,6 +1417,9 @@ class FillDbPageV2:
         media_files_count = 0
         sidecars_count = 0
         
+        # List to collect media files for processing
+        files_to_process = []
+        
         # Load extensions from config and create lookup dictionary
         image_exts = set(get_param("extensions", "image_extensions"))
         video_exts = set(get_param("extensions", "video_extensions"))
@@ -1320,6 +1460,8 @@ class FillDbPageV2:
                 file_type = extension_map.get(file_ext, 'other')
                 if file_type == 'media':
                     media_files_count += 1
+                    # Add media files to processing list
+                    files_to_process.append(os.path.join(root, file))
                 elif file_type == 'sidecar':
                     sidecars_count += 1
             
@@ -1354,6 +1496,11 @@ class FillDbPageV2:
         
         logging_service.log("INFO", f"Scanning summary: {files_count} files, {media_files_count} \
 media files, {sidecars_count} sidecars, {directories_count} directories - Elapsed time: {elapsed_str} ({files_per_sec:.2f} files/sec)")
+        
+        # Store files for later use in processing
+        self.scanned_files = files_to_process
+        self.last_scanned_directory = directory
+        
         return {
             "files": files_count,
             "directories": directories_count,
@@ -1394,55 +1541,6 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         if hasattr(self, 'processing_time_to_finish_label') and self.processing_time_to_finish_label:
             self.processing_time_to_finish_label.text = "Complete"
 
-    def _scan_directory_pure(self, directory: str) -> None:
-        """Pure directory scanning - alleen kale scanning, geen logging/debug/UI updates.
-        
-        Maybe framework to use as basis for File_Processing.
-        """
-        # Reset globale counters
-        yapmo_globals.scan_total_files = 0
-        yapmo_globals.scan_media_files = 0
-        yapmo_globals.scan_sidecars = 0
-        yapmo_globals.scan_total_directories = 0
-        
-        # Reset extension counts for details popup (only when starting new scan)
-        # Don't reset here - keep existing data until new scan starts
-        
-        # Load extensions from config and create lookup dictionary
-        image_exts = set(get_param("extensions", "image_extensions"))
-        video_exts = set(get_param("extensions", "video_extensions"))
-        sidecar_exts = set(get_param("extensions", "sidecar_extensions"))
-        
-        # Create extension lookup dictionary for efficient file categorization
-        extension_map = {}
-        for ext in image_exts:
-            extension_map[ext] = 'media'
-        for ext in video_exts:
-            extension_map[ext] = 'media'
-        for ext in sidecar_exts:
-            extension_map[ext] = 'sidecar'
-        
-        # Recursive directory traversal met Unicode support
-        for root, dirs, files in os.walk(directory):
-            yapmo_globals.scan_total_directories += 1
-            
-            for file in files:
-
-                yapmo_globals.scan_total_files += 1
-                file_ext = Path(file).suffix.lower()
-                
-                # Track file extension counts for details popup
-                if file_ext in self.extension_counts:
-                    self.extension_counts[file_ext] += 1
-                else:
-                    self.extension_counts[file_ext] = 1
-                
-                # Use dictionary lookup for efficient categorization
-                file_type = extension_map.get(file_ext, 'other')
-                if file_type == 'media':
-                    yapmo_globals.scan_media_files += 1
-                elif file_type == 'sidecar':
-                    yapmo_globals.scan_sidecars += 1
 
     def _process_files_parallel(self, directory: str) -> dict:
         """Process files using parallel workers."""
@@ -1521,29 +1619,8 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         return final_stats
     
     def _scan_files_for_processing(self, directory: str) -> List[str]:
-        """Scan directory and return list of files to process."""
-        files_to_process = []
-        
-        # Load extensions from config
-        image_exts = set(get_param("extensions", "image_extensions"))
-        video_exts = set(get_param("extensions", "video_extensions"))
-        all_media_exts = image_exts.union(video_exts)
-        
-        # Scan directory for media files
-        for root, dirs, files in os.walk(directory):
-            if yapmo_globals.stop_processing_flag:
-                break
-                
-            for file in files:
-                if yapmo_globals.stop_processing_flag:
-                    break
-                    
-                file_ext = Path(file).suffix.lower()
-                if file_ext in all_media_exts:
-                    files_to_process.append(os.path.join(root, file))
-        
-        logging_service.log("INFO", f"Found {len(files_to_process)} files to process")
-        return files_to_process
+        """Get files to process from previous scan."""
+        return getattr(self, 'scanned_files', [])
     
     def _process_worker_logs(self) -> None:
         """Process worker log messages from logging queue."""

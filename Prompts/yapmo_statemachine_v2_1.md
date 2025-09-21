@@ -29,21 +29,38 @@
 ### **ABORT → IDLE_ACTION_DONE:**
 1. Abort proces is klaar
 2. Zet `yapmo_globals.action_finished_flag = True`
-3. Transition naar `IDLE_ACTION_DONE`
+3. Zet `yapmo_globals.ui_update_finished = True` (abort heeft geen queue processing nodig)
+4. Transition naar `IDLE_ACTION_DONE`
 
-### **IDLE_ACTION_DONE → IDLE:**
+### **IDLE_ACTION_DONE → IDLE/IDLE_SCAN_DONE:**
 1. Wacht op `yapmo_globals.ui_update_finished = True`
 2. Wanneer beide flags `True` zijn:
    - Clear `yapmo_globals.action_finished_flag = False`
    - Clear `yapmo_globals.ui_update_finished = False`
    - Stop UI update process
-   - Transition naar `IDLE`
+   - **State determination:**
+     - Als `scanned_files` beschikbaar → `IDLE_SCAN_DONE`
+     - Anders → `IDLE`
 
-### **IDLE → PROCESSING:**
+### **IDLE → SCANNING:**
+1. Directory validation
+2. Zet `yapmo_globals.action_finished_flag = False`
+3. Zet `yapmo_globals.ui_update_finished = False`
+4. Start UI update timer
+5. Transition naar `SCANNING`
+
+### **IDLE_SCAN_DONE → PROCESSING:**
 1. Directory validation
 2. Zet `yapmo_globals.action_finished_flag = False`
 3. Zet `yapmo_globals.stop_processing_flag = False`
-4. Transition naar `PROCESSING`
+4. Start UI update timer
+5. Transition naar `PROCESSING`
+
+### **Directory Change Detection:**
+- **IDLE_SCAN_DONE** → directory wijziging → **IDLE**
+- Real-time detection via `on_change` event
+- Clears `scanned_files` en `last_scanned_directory`
+- Forces new scan before processing
 
 ### **UI Update Logic (V2.2 - Unified):**
 - Wanneer `yapmo_globals.action_finished_flag = True` EN state = `IDLE_ACTION_DONE`:
@@ -137,17 +154,77 @@ def _set_state(self, new_state: ApplicationState) -> None:
 
 ## States (V2.2 - Unified Action State):
 - [x] **INITIALISATION**: Page loading, setting up UI elements
-- [x] **IDLE**: Ready to scan/process, all controls available (START PROCESSING always enabled)
-- [x] **SCANNING**: Currently scanning directory (met pure scanning functie)
-- [x] **PROCESSING**: Currently processing files (dummy processing implemented)
+- [x] **IDLE**: Ready to scan, processing disabled (no scan data available)
+- [x] **SCANNING**: Currently scanning directory (collects files for processing)
+- [x] **IDLE_SCAN_DONE**: Scan completed, ready to process (scan data available)
+- [x] **PROCESSING**: Currently processing files (uses collected files from scan)
 - [x] **IDLE_ACTION_DONE**: Unified state voor alle actie completion (scan/process/abort) - wacht op UI update completion
 - [x] **ABORTED**: Operation cancelled, returning to IDLE (✅ Geïmplementeerd)
 - [x] **EXIT_PAGE**: Page cleanup, saving state (behouden voor toekomst)
 
 ## **VERWIJDERDE STATES (V2.2):**
-- ~~**IDLE_SCAN_DONE**~~ - Vervangen door **IDLE_ACTION_DONE**
 - ~~**IDLE_PROCESSING_DONE**~~ - Vervangen door **IDLE_ACTION_DONE**
 - ~~**IDLE_AFTER_ABORT**~~ - Vervangen door **IDLE_ACTION_DONE**
+
+## **NIEUWE STATES (V2.2):**
+- **IDLE_SCAN_DONE** - Scan completed, ready to process (scan data available)
+- **IDLE_ACTION_DONE** - Unified completion state for all actions
+
+## **State Machine Flow Diagram:**
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│    IDLE     │───▶│  SCANNING   │───▶│IDLE_ACTION_ │
+│             │    │             │    │    DONE     │
+│ ui_update:  │    │ ui_update:  │    │ ui_update:  │
+│   STOPPED   │    │   STARTED   │    │  CONTINUES  │
+└─────────────┘    └─────────────┘    └─────────────┘
+       ▲                   │                   │
+       │                   ▼                   ▼
+       │            ┌─────────────┐    ┌─────────────┐
+       │            │   ABORTED   │    │IDLE_SCAN_   │
+       │            │             │    │    DONE     │
+       │            │ ui_update:  │    │ ui_update:  │
+       │            │ CONTINUES   │    │   STOPPED   │
+       │            └─────────────┘    └─────────────┘
+       │                   │                   │
+       │                   └───────────────────┘
+       │                                         │
+       │                   ┌─────────────┐       │
+       │                   │ PROCESSING  │       │
+       │                   │             │       │
+       │                   │ ui_update:  │       │
+       │                   │   STARTED   │       │
+       │                   └─────────────┘       │
+       │                         │               │
+       └─────────────────────────┴───────────────┘
+```
+
+### **Flow Transitions:**
+
+**1. Normal Scan Flow:**
+- `IDLE` → `SCANNING` → `IDLE_ACTION_DONE` → `IDLE_SCAN_DONE`
+
+**2. Directory Change Flow:**
+- `IDLE_SCAN_DONE` → `IDLE` (directory changed)
+
+**3. Processing Flow:**
+- `IDLE_SCAN_DONE` → `PROCESSING` → `IDLE_ACTION_DONE` → `IDLE`
+
+**4. Abort Flows:**
+- `SCANNING` → `ABORTED` → `IDLE_ACTION_DONE` → `IDLE`
+- `PROCESSING` → `ABORTED` → `IDLE_ACTION_DONE` → `IDLE`
+
+### **Flag Transitions per State:**
+
+| State | Entry Flags | During Flags | Exit Flags | UI Update |
+|-------|-------------|--------------|------------|-----------|
+| **IDLE** | `ui_finished=true, action_finished=true` | - | `ui_finished=true, action_finished=true` | **STOPPED** |
+| **SCANNING** | `ui_finished=true, action_finished=true` | `ui_finished→false, action_finished→false→true` | `ui_finished=false, action_finished=true` | **STARTED** |
+| **PROCESSING** | `ui_finished=true, action_finished=true` | `ui_finished→false, action_finished→false→true` | `ui_finished=false, action_finished=true` | **STARTED** |
+| **IDLE_ACTION_DONE** | `ui_finished=false, action_finished=true` | `ui_finished→true, action_finished=true` | `ui_finished=true, action_finished=true` | **CONTINUES** |
+| **IDLE_SCAN_DONE** | `ui_finished=true, action_finished=true` | - | `ui_finished=true, action_finished=true` | **STOPPED** |
+| **ABORTED** | `ui_finished=false, action_finished=true` | `ui_finished→true, action_finished=true` | `ui_finished=true, action_finished=true` | **CONTINUES** |
 
 ## **REFACTORING VOORDELEN (V2.2):**
 
@@ -210,18 +287,34 @@ def _set_state(self, new_state: ApplicationState) -> None:
 - `yapmo_globals.max_workers` - Maximum aantal parallelle workers
 - `yapmo_globals.worker_stats` - Statistieken per worker (files/sec, etc.)
 
-### **Pure Directory Scanning:**
-- `_scan_directory_pure(directory: str)` - Kale scanning zonder logging/debug/UI updates
+### **File Collection During Scanning:**
+- `_scan_directory_sync_with_updates(directory: str)` - Scanning met file collection
+- `files_to_process = []` - Collects media file paths during scan
+- `self.scanned_files = files_to_process` - Stores collected files for processing
+- `self.last_scanned_directory = directory` - Stores scanned directory for validation
 - Unicode support voor non-ASCII bestandsnamen via `os.walk()`
 - File categorization op basis van config.json extensions
 - Direct globale variabelen bijwerken tijdens scanning
-- Geen locks/semaphoren nodig voor uitlezen
+
+### **File Processing Integration:**
+- `_scan_files_for_processing(directory: str)` - Returns collected files from scan
+- Simplified implementation: `return getattr(self, 'scanned_files', [])`
+- No new scanning during processing - uses pre-collected files
+- Directory validation ensures scan data matches current directory
 
 ### **State Machine Integratie:**
 - SCANNING state start scanning proces na directory validatie
 - IDLE_ACTION_DONE state toont scan resultaten via globale variabelen
 - UI update code verwijderd (niet geïmplementeerd)
 - EXIT_PAGE state behouden voor toekomstige navigatie detectie
+
+### **Directory Change Detection:**
+- `_on_directory_input_changed(event)` - Real-time directory input change detection
+- NiceGUI `on_change` event handler for input field
+- Clears `scanned_files` and `last_scanned_directory` when directory changes
+- Transitions from `IDLE_SCAN_DONE` to `IDLE` when directory changes
+- Forces new scan before processing can begin
+- `_select_directory()` also triggers change detection via `_on_directory_input_changed(None)`
 
 ### **Abort Functionaliteit:**
 - ABORTED state volledig geïmplementeerd en getest

@@ -59,4 +59,4 @@ YAPMO-*/
 # org*/
 # app_not_used/Prompts/
 debug*.txt
-# *.db
+*.db
