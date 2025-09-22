@@ -18,6 +18,7 @@ from config import get_param, set_param
 import yapmo_globals
 from pages.debug.fill_db_page_v2_debug import FillDbPageV2Debug
 from core.logging_service_v2 import logging_service
+from core.result_processor import ResultProcessor
 from worker_functions import dummy_worker_process
 
 
@@ -65,9 +66,9 @@ class UIUpdateManager:
     def _schedule_update(self) -> None:
         """Schedule the next UI update."""
         def update_ui():
-            if not self.timer_active:
-                return
                 
+            # if not self.timer_active:#JM De restart wel/niet gebeurt toch al
+            #     return
             # Call all registered callbacks
             for callback_info in self.update_callbacks:
                 try:
@@ -174,6 +175,9 @@ class ParallelWorkerManager:
             for log_msg in result.get('log_messages', []):
                 self.logging_queue.put(log_msg)
             
+            # Add result to result queue for ResultProcessor
+            self.result_queue.put(result)
+            
             # Update progress
             if self.progress_callback:
                 progress_data = self._get_progress_data()
@@ -248,6 +252,7 @@ class FillDbPageV2:
         
         # Initialize parallel worker manager
         self.worker_manager: Optional[ParallelWorkerManager] = None
+        self.result_processor: Optional[ResultProcessor] = None
         
         # Initialize timer tracking
         self.active_timers = []
@@ -295,6 +300,11 @@ class FillDbPageV2:
         self.debug_queue_count_label: ui.label | None = None
         self.debug_direct_update_btn: ui.button | None = None
         self.debug_counter_label: ui.label | None = None
+        # Flag status labels
+        self.debug_ui_update_timer_label: ui.label | None = None
+        self.debug_ui_update_finished_label: ui.label | None = None
+        self.debug_action_finished_label: ui.label | None = None
+        self.debug_ui_finished_label: ui.label | None = None
         
         # Create the page
         self._create_page()
@@ -476,8 +486,9 @@ class FillDbPageV2:
         self.current_state = new_state
         self._configure_ui_for_state(new_state)
         
-        # Update debug state label
+        # Update debug state label and flags
         self.debug_helper.update_debug_state_label()
+        self.debug_helper.update_debug_flags()
 
     def _configure_ui_for_state(self, state: ApplicationState) -> None:
         """Configure UI elements for the given state.
@@ -985,7 +996,6 @@ class FillDbPageV2:
         
         # 3. Validatie OK → clear flags and start UI update timer
         yapmo_globals.action_finished_flag = False
-        yapmo_globals.ui_update_finished = False
         yapmo_globals.abort_requested = False  # Reset abort flag for new scan
         self._start_ui_update()
         
@@ -1130,10 +1140,23 @@ class FillDbPageV2:
         if self.current_state == ApplicationState.PROCESSING:
             yapmo_globals.stop_processing_flag = True
             
-            # Stop worker manager if running
+            # Stop worker manager if running (no more results will be added)
             if self.worker_manager:
                 self.worker_manager.stop_workers()
+                
+                # Wait for all workers to be completely stopped
+                while not self.worker_manager.is_complete():
+                    time.sleep(0.1)
+                
+                # Now all workers are stopped, no more results will be added
                 self.worker_manager = None
+            
+            # Wait for result processor to finish processing remaining results
+            if self.result_processor:
+                # Wait for all remaining results to be processed
+                self.result_processor.wait_for_completion(timeout=5.0)
+                self.result_processor.stop()
+                self.result_processor = None
         
         # Clear scan data on abort
         if hasattr(self, 'scanned_files'):
@@ -1143,8 +1166,7 @@ class FillDbPageV2:
         
         # Set action_finished_flag (unified flag for all actions including abort)
         yapmo_globals.action_finished_flag = True
-        # Set ui_update_finished for abort (no log queue processing needed)
-        yapmo_globals.ui_update_finished = True
+        # Note: ui_update_finished is NOT set here - only UI update functions can set this
         
         # Show notification
         ui.notify("User ABORTED", type="negative")
@@ -1240,6 +1262,17 @@ class FillDbPageV2:
         except Exception as e:
             logging_service.log("WARNING", f"Log display error: {e}")
 
+    def _format_time_estimate(self, seconds: float) -> str:
+        """Format time estimate in hh:mm:ss.ss format."""
+        if seconds <= 0:
+            return "00:00:00.00"
+        
+        hours = int(seconds // 3600)
+        minutes = int((seconds % 3600) // 60)
+        secs = seconds % 60
+        
+        return f"{hours:02d}:{minutes:02d}:{secs:05.2f}"
+
     def _update_scan_progress_ui(self, scan_data: dict) -> None:
         """Update UI elements from scan progress data."""
         try:
@@ -1256,14 +1289,26 @@ class FillDbPageV2:
             # Always display log messages (allowed in all states)
             self._display_log_queue()
             
+            # Update debug flags
+            self.debug_helper.update_debug_flags()
+            
             # Check if action is finished and we're in IDLE_ACTION_DONE state
             if (yapmo_globals.action_finished_flag and 
                 self.current_state == ApplicationState.IDLE_ACTION_DONE):
-                # Check if log queue is empty before setting ui_update_finished
+                # Check if both queues are empty before setting ui_update_finished
                 messages = logging_service.get_ui_messages()
-                if len(messages) == 0:
-                    # Log queue is empty, set ui_update_finished flag
+                log_queue_empty = len(messages) == 0
+                
+                # Check result queue if worker manager exists
+                result_queue_empty = True
+                if self.worker_manager:
+                    result_queue_empty = self.worker_manager.result_queue.empty()
+                
+                if log_queue_empty and result_queue_empty:
+                    # Both queues are empty, set ui_update_finished flag
                     yapmo_globals.ui_update_finished = True
+                    # Update debug flags after flag change
+                    self.debug_helper.update_debug_flags()
             
             # Abort now goes directly to IDLE_ACTION_DONE, no special handling needed here
                 
@@ -1295,21 +1340,33 @@ class FillDbPageV2:
             if hasattr(self, 'processing_time_to_finish_label') and self.processing_time_to_finish_label:
                 time_to_finish = processing_data.get('time_to_finish', 0)
                 if time_to_finish > 0:
-                    self.processing_time_to_finish_label.text = f"{time_to_finish:.1f}s"
+                    self.processing_time_to_finish_label.text = self._format_time_estimate(time_to_finish)
                 else:
-                    self.processing_time_to_finish_label.text = "0"
+                    self.processing_time_to_finish_label.text = "00:00:00.00"
             
             # Always display log messages (allowed in all states)
             self._display_log_queue()
             
+            # Update debug flags
+            self.debug_helper.update_debug_flags()
+            
             # Check if action is finished and we're in IDLE_ACTION_DONE state
             if (yapmo_globals.action_finished_flag and 
                 self.current_state == ApplicationState.IDLE_ACTION_DONE):
-                # Check if log queue is empty before setting ui_update_finished
+                # Check if both queues are empty before setting ui_update_finished
                 messages = logging_service.get_ui_messages()
-                if len(messages) == 0:
-                    # Log queue is empty, set ui_update_finished flag
+                log_queue_empty = len(messages) == 0
+                
+                # Check result queue if worker manager exists
+                result_queue_empty = True
+                if self.worker_manager:
+                    result_queue_empty = self.worker_manager.result_queue.empty()
+                
+                if log_queue_empty and result_queue_empty:
+                    # Both queues are empty, set ui_update_finished flag
                     yapmo_globals.ui_update_finished = True
+                    # Update debug flags after flag change
+                    self.debug_helper.update_debug_flags()
             
         except Exception as e:
             # Silent error handling - UI update should not crash the app
@@ -1329,8 +1386,8 @@ class FillDbPageV2:
                     yapmo_globals.action_finished_flag = False
                     yapmo_globals.ui_update_finished = False
                     
-                    # Stop UI update process
-                    self._stop_ui_update()
+                    # Update debug flags after flag clearing
+                    self.debug_helper.update_debug_flags()
                     
                     # Determine next state based on what was completed
                     if hasattr(self, 'scanned_files') and self.scanned_files:
@@ -1403,6 +1460,14 @@ class FillDbPageV2:
             # Clear flags on error
             yapmo_globals.action_finished_flag = False
             yapmo_globals.stop_processing_flag = False
+            
+            # Stop result processor on error (after workers are stopped)
+            if self.result_processor:
+                # Wait for any remaining results to be processed
+                self.result_processor.wait_for_completion(timeout=5.0)
+                self.result_processor.stop()
+                self.result_processor = None
+            
             self._set_state(ApplicationState.IDLE)
 
     def _scan_directory_sync_with_updates(self, directory: str) -> dict:
@@ -1446,6 +1511,7 @@ class FillDbPageV2:
             # Count files and categorize them
             for file in files:
                 if yapmo_globals.abort_requested:
+                    files_to_process.clear()  #JM reset list om naar IDLE te gaan
                     break
                 files_count += 1
                 file_ext = Path(file).suffix.lower()
@@ -1576,6 +1642,13 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         # Start workers
         self.worker_manager.start_workers()
         
+        # Start result processor to consume results from the queue
+        self.result_processor = ResultProcessor(
+            result_queue=self.worker_manager.result_queue,
+            logging_queue=self.worker_manager.logging_queue
+        )
+        self.result_processor.start()
+        
         # Submit files to workers
         for i, file_path in enumerate(files_to_process):
             if yapmo_globals.stop_processing_flag:
@@ -1607,9 +1680,22 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         # Get final statistics
         final_stats = self.worker_manager.get_final_stats()
         
-        # Stop workers
+        # Stop workers first (no more results will be added to queue)
         self.worker_manager.stop_workers()
+        
+        # Wait for all workers to be completely stopped
+        while not self.worker_manager.is_complete():
+            time.sleep(0.1)
+        
+        # Now all workers are stopped, no more results will be added
         self.worker_manager = None
+        
+        # Wait for result processor to finish processing remaining results
+        if self.result_processor:
+            # Wait for all remaining results to be processed
+            self.result_processor.wait_for_completion(timeout=10.0)
+            self.result_processor.stop()
+            self.result_processor = None
         
         # Log processing completion
         # logging_service.log("INFO", f"Parallel processing completed successfully!")
@@ -1631,7 +1717,20 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         while not self.worker_manager.logging_queue.empty():
             try:
                 log_msg = self.worker_manager.logging_queue.get_nowait()
-                logging_service.log(log_msg['level'], log_msg['message'])
+                
+                # Handle both dictionary and string log messages
+                if isinstance(log_msg, dict):
+                    logging_service.log(log_msg['level'], log_msg['message'])
+                elif isinstance(log_msg, str):
+                    # Parse string log message (format: "LEVEL: message")
+                    if ':' in log_msg:
+                        level, message = log_msg.split(':', 1)
+                        logging_service.log(level.strip(), message.strip())
+                    else:
+                        logging_service.log("INFO", log_msg)
+                else:
+                    logging_service.log("WARNING", f"Unknown log message type: {type(log_msg)}")
+                    
             except queue.Empty:
                 break
             except Exception as e:

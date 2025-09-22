@@ -5,7 +5,7 @@ import queue
 import threading
 import time
 from typing import Dict, Any
-from core.logging_service import logging_service
+from core.logging_service_v2 import logging_service
 
 
 class ResultProcessor:
@@ -75,10 +75,10 @@ class ResultProcessor:
             
             if result.get('success', False):
                 self.successful_count += 1
-                self._log_success(result)
+                # self._log_success(result)#DEBUG_OFF Worker logging
             else:
                 self.failed_count += 1
-                self._log_failure(result)
+                # self._log_failure(result)#DEBUG_OFF Worker logging
     
     def _log_success(self, result: Dict[str, Any]):
         """Log a successful result."""

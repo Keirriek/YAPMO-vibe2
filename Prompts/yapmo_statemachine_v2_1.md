@@ -29,8 +29,9 @@
 ### **ABORT → IDLE_ACTION_DONE:**
 1. Abort proces is klaar
 2. Zet `yapmo_globals.action_finished_flag = True`
-3. Zet `yapmo_globals.ui_update_finished = True` (abort heeft geen queue processing nodig)
+3. **NIET** `yapmo_globals.ui_update_finished` - alleen UI update functies kunnen dit
 4. Transition naar `IDLE_ACTION_DONE`
+5. **Important:** ABORT wacht op UI update completion via normale flow
 
 ### **IDLE_ACTION_DONE → IDLE/IDLE_SCAN_DONE:**
 1. Wacht op `yapmo_globals.ui_update_finished = True`
@@ -219,12 +220,12 @@ def _set_state(self, new_state: ApplicationState) -> None:
 
 | State | Entry Flags | During Flags | Exit Flags | UI Update |
 |-------|-------------|--------------|------------|-----------|
-| **IDLE** | `ui_finished=true, action_finished=true` | - | `ui_finished=true, action_finished=true` | **STOPPED** |
-| **SCANNING** | `ui_finished=true, action_finished=true` | `ui_finished→false, action_finished→false→true` | `ui_finished=false, action_finished=true` | **STARTED** |
-| **PROCESSING** | `ui_finished=true, action_finished=true` | `ui_finished→false, action_finished→false→true` | `ui_finished=false, action_finished=true` | **STARTED** |
-| **IDLE_ACTION_DONE** | `ui_finished=false, action_finished=true` | `ui_finished→true, action_finished=true` | `ui_finished=true, action_finished=true` | **CONTINUES** |
-| **IDLE_SCAN_DONE** | `ui_finished=true, action_finished=true` | - | `ui_finished=true, action_finished=true` | **STOPPED** |
-| **ABORTED** | `ui_finished=false, action_finished=true` | `ui_finished→true, action_finished=true` | `ui_finished=true, action_finished=true` | **CONTINUES** |
+| **IDLE** | `ui_update_finished=true, action_finished=true` | - | `ui_update_finished=true, action_finished=true` | **STOPPED** |
+| **SCANNING** | `ui_update_finished=true, action_finished=true` | `ui_update_finished→false, action_finished→false→true` | `ui_update_finished=false, action_finished=true` | **STARTED** |
+| **PROCESSING** | `ui_update_finished=true, action_finished=true` | `ui_update_finished→false, action_finished→false→true` | `ui_update_finished=false, action_finished=true` | **STARTED** |
+| **IDLE_ACTION_DONE** | `ui_update_finished=false, action_finished=true` | `ui_update_finished→true, action_finished=true` | `ui_update_finished=true, action_finished=true` | **CONTINUES** |
+| **IDLE_SCAN_DONE** | `ui_update_finished=true, action_finished=true` | - | `ui_update_finished=true, action_finished=true` | **STOPPED** |
+| **ABORTED** | `ui_update_finished=false, action_finished=true` | `ui_update_finished→true, action_finished=true` | `ui_update_finished=true, action_finished=true` | **CONTINUES** |
 
 ## **REFACTORING VOORDELEN (V2.2):**
 

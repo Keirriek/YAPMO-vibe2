@@ -80,6 +80,7 @@ scan_total_directories: int = 0
 
 # State coordination flags
 ui_update_finished: bool = False
+ui_finished: bool = False
 
 # Unified action flag
 action_finished_flag: bool = False

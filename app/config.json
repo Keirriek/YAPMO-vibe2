@@ -8,7 +8,7 @@
   },
   "logging": {
     "log_enabled": true,
-    "log_clean": false,
+    "log_clean": true,
     "log_file_path": "./log/yapmo_log.log",
     "debug_file_path": "./log/yapmo_debug.log",
     "log_files_count_update": 1000,

@@ -56,6 +56,15 @@ class FillDbPageV2Debug:
                 )
                 self.parent_page.debug_queue_count_label = ui.label("Queue: 0")
             
+            # Flag Status Display
+            ui.label("Flag Status").classes("text-lg font-bold mb-2")
+            
+            with ui.row().classes("gap-4"):
+                self.parent_page.debug_ui_update_timer_label = ui.label("UI Update Timer: OFF")
+                self.parent_page.debug_ui_update_finished_label = ui.label("ui_update_finished: false")
+                self.parent_page.debug_action_finished_label = ui.label("action_finished: false")
+                self.parent_page.debug_ui_finished_label = ui.label("ui_finished: false")
+            
             # Direct UI Test
             ui.label("Direct UI Test").classes("text-lg font-bold mb-2")
             
@@ -70,6 +79,25 @@ class FillDbPageV2Debug:
         """Update debug state label."""
         if hasattr(self.parent_page, 'debug_current_state_label') and self.parent_page.debug_current_state_label:
             self.parent_page.debug_current_state_label.text = f"State: {self.parent_page.current_state.value}"
+    
+    def update_debug_flags(self) -> None:
+        """Update debug flag status labels."""
+        import yapmo_globals
+        
+        # Update UI update timer status
+        if hasattr(self.parent_page, 'debug_ui_update_timer_label') and self.parent_page.debug_ui_update_timer_label:
+            timer_status = "ON" if self.parent_page.ui_update_manager.timer_active else "OFF"
+            self.parent_page.debug_ui_update_timer_label.text = f"UI Update Timer: {timer_status}"
+        
+        # Update flag status
+        if hasattr(self.parent_page, 'debug_ui_update_finished_label') and self.parent_page.debug_ui_update_finished_label:
+            self.parent_page.debug_ui_update_finished_label.text = f"ui_update_finished: {yapmo_globals.ui_update_finished}"
+        
+        if hasattr(self.parent_page, 'debug_action_finished_label') and self.parent_page.debug_action_finished_label:
+            self.parent_page.debug_action_finished_label.text = f"action_finished: {yapmo_globals.action_finished_flag}"
+        
+        if hasattr(self.parent_page, 'debug_ui_finished_label') and self.parent_page.debug_ui_finished_label:
+            self.parent_page.debug_ui_finished_label.text = f"ui_finished: N/A (removed)"
     
     def debug_start_ui_update(self) -> None:
         """Debug: Start UI update cycle."""
