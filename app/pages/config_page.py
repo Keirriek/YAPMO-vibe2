@@ -7,7 +7,7 @@ from local_directory_picker import pick_directory
 from nicegui import ui
 from shutdown_manager import handle_exit_click
 from theme import YAPMOTheme
-from core.logging_service import logging_service
+from core.logging_service_v2 import logging_service
 
 
 class ConfigPage:

@@ -2,7 +2,7 @@
 
 from typing import Any
 from nicegui import ui
-from core.logging_service import logging_service
+from core.logging_service_v2 import logging_service
 
 
 class FillDbPageV2Debug:
