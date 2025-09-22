@@ -27,7 +27,7 @@ class LoggingService:
             self._lock = threading.Lock()
             self._ui_messages = deque(maxlen=1000)
             self._config = self._load_config()
-            self._clean_log_files_if_requested()  #TODO Check ENABLED Disabled: log clear only on Start Scanning
+            # self._clean_log_files_if_requested()  #TODO Check ENABLED Disabled: log clear only on Start Scanning
             self._initialized = True
     
     def _load_config(self) -> dict:
@@ -72,7 +72,7 @@ class LoggingService:
             
             # If no routes configured, don't log anything
             if not routes:
-                print(f"DEBUG: No routes configured for level {level}") #DEBUG_ON Testing route configuration
+                # print(f"DEBUG: No routes configured for level {level}") #DEBUG_OFF Testing route configuration    
                 return
             
             timestamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
@@ -124,13 +124,13 @@ class LoggingService:
             debug_file = self._config.get("debug_file_path", "debug.log")
             worker_str = f"Worker {log_entry['worker_id']}" if log_entry['worker_id'] is not None else "Main"
             log_line = f"[{log_entry['timestamp']}] {worker_str} {log_entry['level']}: {log_entry['message']}"
-            print(f"DEBUG PRINT: Writing to debug file '{debug_file}': {log_line}") #DEBUG Testing debug file write with content
+            # print(f"DEBUG PRINT: Writing to debug file '{debug_file}': {log_line}") #DEBUG_OFF Testing debug file write with content
             self._ensure_log_directory(debug_file)
             with open(debug_file, "a", encoding="utf-8") as f:
                 f.write(f"{log_line}\n")
                 f.flush()  #DEBUG check if this is really needed - tested: not strictly necessary but ensures immediate visibility
         except Exception as e:
-            print(f"Error writing to debug file: {e}") #DEBUG Testing debug file write errors
+            print(f"Error writing to debug file: {e}") #DEBUG_OFF Testing debug file write errors
     
     def get_ui_messages(self) -> list:
         """Get and clear UI messages."""

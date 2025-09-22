@@ -15,34 +15,37 @@
     "levels": {
       "ERROR": [
         "t",
-        "ui",
-        "df"
+        "ui"
       ],
       "WARNING": [
         "t",
-        "ui",
-        "df"
+        "ui"
       ],
       "INFO": [
-        "ui",
-        "df"
+        "ui"
       ],
       "INFO_EXTRA": [
-        "ui",
-        "df"
+        "ui"
       ],
       "DEBUG": [
         "ui",
         "df"
       ],
       "TEST_AI": [
-        "ui",
         "df"
       ],
-      "TEST1": [],
-      "TEST2": [],
-      "TEST3": [],
-      "TEST4": []
+      "TEST1": [
+        "df"
+      ],
+      "TEST2": [
+        "df"
+      ],
+      "TEST3": [
+        "df"
+      ],
+      "TEST4": [
+        "df"
+      ]
     },
     "test_key": "new_test_value"
   },
@@ -73,7 +76,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures-test/3-test/Dir_folder",
+    "search_path": "/Pictures-test",
     "browse_path": "/"
   },
   "extensions": {

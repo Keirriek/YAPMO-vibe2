@@ -122,7 +122,7 @@ class ParallelWorkerManager:
             future.cancel()
         self.pending_futures.clear()
         self.executor.shutdown(wait=True)  # Wait for cleanup to prevent semaphore leaks
-        logging_service.log("DEBUG", "Stopped parallel worker manager")#DEBUG_ON Stopped parallel worker manager
+        # logging_service.log("DEBUG", "Stopped parallel worker manager")#DEBUG_OFF Stopped parallel worker manager
     
     def submit_file(self, file_path: str, worker_id: int) -> None:
         """Submit file to worker process."""
@@ -1062,18 +1062,18 @@ class FillDbPageV2:
         # 4. Validation lukt: Reset flags en transition naar PROCESSING
         yapmo_globals.action_finished_flag = False
         yapmo_globals.stop_processing_flag = False
-        logging_service.log("DEBUG", "Reset processing flags")#DEBUG_ON Reset processing flags
+        # logging_service.log("DEBUG", "Reset processing flags")#DEBUG_OFF Reset processing flags
         
         # 5. Transition naar PROCESSING state
-        logging_service.log("DEBUG", "Transitioning to PROCESSING state")#DEBUG_ON Transitioning to PROCESSING state
+        # logging_service.log("DEBUG", "Transitioning to PROCESSING state")#DEBUG_OFF Transitioning to PROCESSING state
         self._set_state(ApplicationState.PROCESSING)
         
         # 6. Start UI update
-        logging_service.log("DEBUG", "Starting UI update timer")#DEBUG_ON Starting UI update timer
+        # logging_service.log("DEBUG", "Starting UI update timer")#DEBUG_OFF Starting UI update timer
         self._start_ui_update()
         
         # 7. Start processing process (dummy voor nu)
-        logging_service.log("DEBUG", "Starting background processing task")#DEBUG_ON Starting background processing task
+        # logging_service.log("DEBUG", "Starting background processing task")#DEBUG_OFF Starting background processing task
         timer = ui.timer(0.1, lambda: asyncio.create_task(self._run_processing_process(current_path)), once=True)
         self.active_timers.append(timer)
 

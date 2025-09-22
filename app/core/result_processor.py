@@ -28,7 +28,7 @@ class ResultProcessor:
         self.running = False
         self.thread = None
         
-        logging_service.log("DEBUG", "ResultProcessor initialized")#DEBUG_ON ResultProcessor initialized
+        # logging_service.log("DEBUG", "ResultProcessor initialized")#DEBUG_OFF ResultProcessor initialized
     
     def start(self):
         """Start the result processor in a background thread."""
@@ -38,14 +38,14 @@ class ResultProcessor:
         self.running = True
         self.thread = threading.Thread(target=self._process_loop, daemon=True)
         self.thread.start()
-        logging_service.log("DEBUG", "ResultProcessor started")#DEBUG_ON ResultProcessor started
+        # logging_service.log("DEBUG", "ResultProcessor started")#DEBUG_OFF ResultProcessor started
     
     def stop(self):
         """Stop the result processor."""
         self.running = False
         if self.thread:
             self.thread.join(timeout=5.0)
-        logging_service.log("DEBUG", "ResultProcessor stopped")#DEBUG_ON ResultProcessor stopped
+        # logging_service.log("DEBUG", "ResultProcessor stopped")#DEBUG_OFF ResultProcessor stopped
     
     def _process_loop(self):
         """Main processing loop."""
@@ -75,10 +75,10 @@ class ResultProcessor:
             
             if result.get('success', False):
                 self.successful_count += 1
-                self._log_success(result)#DEBUG_ON Worker logging
+                # self._log_success(result)#DEBUG_OFF Worker logging
             else:
                 self.failed_count += 1
-                self._log_failure(result)#DEBUG_ON Worker logging
+                # self._log_failure(result)#DEBUG_OFF Worker logging
     
     def _log_success(self, result: Dict[str, Any]):
         """Log a successful result."""
@@ -92,7 +92,7 @@ class ResultProcessor:
         self.logging_queue.put(log_message)
         
         # Also log to logging service
-        logging_service.log("INFO", f"ResultProcessor _log_succes_Processed {media_type} file: {file_path}")#DEBUG_ON Processed file name logging
+        # logging_service.log("INFO", f"ResultProcessor _log_succes_Processed {media_type} file: {file_path}")#DEBUG_OFF Processed file name logging
     
     def _log_failure(self, result: Dict[str, Any]):
         """Log a failed result."""
