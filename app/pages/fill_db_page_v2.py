@@ -19,7 +19,7 @@ import yapmo_globals
 from pages.debug.fill_db_page_v2_debug import FillDbPageV2Debug
 from core.logging_service_v2 import logging_service
 from core.result_processor import ResultProcessor
-from worker_functions import dummy_worker_process
+from worker_functions import process_media_file
 
 
 class UIUpdateManager:
@@ -129,7 +129,7 @@ class ParallelWorkerManager:
         if not self.is_running:
             return
             
-        future = self.executor.submit(dummy_worker_process, file_path, worker_id)
+        future = self.executor.submit(process_media_file, file_path, worker_id)
         self.pending_futures.append(future)
         
     def process_completed_workers(self) -> None:
