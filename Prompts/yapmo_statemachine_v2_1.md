@@ -6,10 +6,6 @@
 - `yapmo_globals.stop_processing_flag` - Abort flag voor processing proces
 - `yapmo_globals.abort_requested` - Abort flag voor UI coordination
 
-## **Parallel Processing Flags:**
-- `yapmo_globals.parallel_workers_active` - Parallel workers zijn actief
-- `yapmo_globals.worker_results_ready` - Worker resultaten beschikbaar in queue
-- `yapmo_globals.worker_logs_ready` - Worker log messages beschikbaar in queue
 
 ## **State Transitions naar IDLE - BELANGRIJK!**
 **ALLE transitions naar IDLE moeten `ui_update_finished` clearen!**
@@ -63,6 +59,11 @@
 - Clears `scanned_files` en `last_scanned_directory`
 - Forces new scan before processing
 
+### **Scan List Management:**
+- **Directory wijziging**: Clears `scanned_files` list → **IDLE_SCAN_DONE** → **IDLE**
+- **Na SCANNING**: `scanned_files` list gevuld → **IDLE_ACTION_DONE** → **IDLE** → **IDLE_SCAN_DONE**
+- **Na PROCESSING**: `scanned_files` list nog steeds gevuld → **IDLE_ACTION_DONE** → **IDLE** → **IDLE_SCAN_DONE**
+
 ### **UI Update Logic (V2.2 - Unified):**
 - Wanneer `yapmo_globals.action_finished_flag = True` EN state = `IDLE_ACTION_DONE`:
   - Check of log queue leeg is
@@ -77,18 +78,12 @@
 - `ui_update_finished = True`: Gezet door UI update wanneer log queue leeg is
 - `stop_processing_flag = True`: Gezet door abort handler voor processing
 - `abort_requested = True`: Gezet door abort handler voor UI coordination
-- `parallel_workers_active = True`: Gezet wanneer parallel workers starten
-- `worker_results_ready = True`: Gezet wanneer result_queue items bevat
-- `worker_logs_ready = True`: Gezet wanneer logging_queue items bevat
 
 ### **Flag Clearing (V2.2 - Unified):**
 - `action_finished_flag = False`: Gecleared door `IDLE_ACTION_DONE` → `IDLE` transition
 - `ui_update_finished = False`: Gecleared door `IDLE_ACTION_DONE` → `IDLE` transition
 - `stop_processing_flag = False`: Gecleared bij processing start en IDLE state
 - `abort_requested = False`: Gecleared bij IDLE state
-- `parallel_workers_active = False`: Gecleared wanneer alle workers stoppen
-- `worker_results_ready = False`: Gecleared wanneer result_queue leeg is
-- `worker_logs_ready = False`: Gecleared wanneer logging_queue leeg is
 
 ### **Flag Reset (V2.2 - Unified):**
 - Alle flags worden gecleared bij:
@@ -204,13 +199,13 @@ def _set_state(self, new_state: ApplicationState) -> None:
 ### **Flow Transitions:**
 
 **1. Normal Scan Flow:**
-- `IDLE` → `SCANNING` → `IDLE_ACTION_DONE` → `IDLE_SCAN_DONE`
+- `IDLE` → `SCANNING` → `IDLE_ACTION_DONE` → `IDLE` → `IDLE_SCAN_DONE` (scanned_files gevuld)
 
 **2. Directory Change Flow:**
-- `IDLE_SCAN_DONE` → `IDLE` (directory changed)
+- `IDLE_SCAN_DONE` → `IDLE` (directory changed, scanned_files gecleared)
 
 **3. Processing Flow:**
-- `IDLE_SCAN_DONE` → `PROCESSING` → `IDLE_ACTION_DONE` → `IDLE`
+- `IDLE_SCAN_DONE` → `PROCESSING` → `IDLE_ACTION_DONE` → `IDLE` → `IDLE_SCAN_DONE` (scanned_files blijft gevuld)
 
 **4. Abort Flows:**
 - `SCANNING` → `ABORTED` → `IDLE_ACTION_DONE` → `IDLE`
@@ -252,18 +247,25 @@ def _set_state(self, new_state: ApplicationState) -> None:
 ## Queue System Architecture (V2.2 - Volledig Geïmplementeerd):
 
 ### **Queue Types:**
-- **result_queue**: Worker resultaten → Manager → UI updates
-- **logging_queue**: Worker log messages → Manager → UI logging
+- **result_queue**: Worker resultaten → ParallelWorkerManager → ResultProcessor → UI updates
+- **logging_queue**: Worker log messages → ParallelWorkerManager → ResultProcessor → UI logging
 
-### **Worker Communicatie:**
-- **Dummy Workers**: Genereren resultaten en log messages
-- **Result Processing**: `_process_worker_result()` verwerkt worker output
-- **Log Processing**: `_process_worker_logs()` verwerkt log messages
-- **UI Updates**: Real-time progress en log message display
+### **Queue Management:**
+- **ParallelWorkerManager**: Bevat beide queues (`result_queue` en `logging_queue`)
+- **ResultProcessor**: Consumeert beide queues en verwerkt resultaten
+- **Queue Processing**: Background thread in ResultProcessor verwerkt queues
+- **UI Integration**: Real-time progress en log message display via callbacks
+- **Geen globale queue flags**: Queue management gebeurt lokaal in classes (niet via globale flags)
+
+### **Implementatie Details:**
+- **Queue Creation**: In `ParallelWorkerManager.__init__()`
+- **Queue Consumption**: Via `ResultProcessor` background thread
+- **Queue Monitoring**: `is_queue_empty()` checks voor completion
+- **Queue Cleanup**: Automatic cleanup bij worker stop
 
 ### **Implementatie Status:**
 - ✅ Queue system volledig functioneel
-- ✅ Worker management compleet
+- ✅ ResultProcessor background processing
 - ✅ UI integration werkt perfect
 - ✅ Logging integration werkt
 - ✅ Abort support geïmplementeerd
@@ -282,11 +284,10 @@ def _set_state(self, new_state: ApplicationState) -> None:
 - `yapmo_globals.scan_total_directories` - Totaal aantal directories
 
 ### **Parallel Processing Variabelen:**
-- `yapmo_globals.parallel_workers_active` - Parallel workers zijn actief
-- `yapmo_globals.worker_results_ready` - Worker resultaten beschikbaar in queue
-- `yapmo_globals.worker_logs_ready` - Worker log messages beschikbaar in queue
-- `yapmo_globals.max_workers` - Maximum aantal parallelle workers
-- `yapmo_globals.worker_stats` - Statistieken per worker (files/sec, etc.)
+- `max_workers` - Maximum aantal parallelle workers (config parameter)
+- `worker_stats` - Statistieken per worker (files_processed, success_count, total_time) - in ParallelWorkerManager class
+  - **Opmerking:** Worker stats worden bijgehouden maar NIET gebruikt voor performance berekeningen
+  - **Performance berekening:** Gebruikt totaal `files_processed / elapsed_time` over alle workers
 
 ### **File Collection During Scanning:**
 - `_scan_directory_sync_with_updates(directory: str)` - Scanning met file collection
@@ -326,7 +327,7 @@ def _set_state(self, new_state: ApplicationState) -> None:
 - ✅ **Queue System**: result_queue + logging_queue communicatie volledig werkend
 - ✅ **UI Integration**: Real-time progress van parallel workers
 - ✅ **Abort Support**: Stop alle workers via abort_queue
-- ✅ **Performance Metrics**: Files/sec per worker, total throughput
+- ✅ **Performance Metrics**: Total throughput (niet per worker)
 - ✅ **Log Integration**: Worker log messages verschijnen in UI
 - ✅ **Statistics**: Per-worker en totale statistieken worden bijgehouden
 - Abort button in header (theme.py) met bevestigingsdialog
@@ -337,11 +338,26 @@ def _set_state(self, new_state: ApplicationState) -> None:
 
 ### **Performance Monitoring:**
 - **Elapsed Time Tracking**: Start tijd vastleggen tijdens scanning start
-- **Files/sec Metrics**: Performance berekening (total files / elapsed time)
+- **Files/sec Metrics**: Performance berekening (total files / elapsed time) - **NIET per worker**
+- **Worker Statistics**: Per-worker stats worden bijgehouden maar NIET gebruikt voor performance berekening
 - **Intelligent Time Formatting**: Automatische formatting (seconds/minutes/hours)
 - **Logging Integration**: Performance metrics in scanning summary
 - **Error Handling**: Veilige deling door nul voorkomen
 - **User Feedback**: Concrete performance metrics voor gebruikers
+
+### **Debug Code Conventie:**
+**PASSIEVE Debug code:**
+- **1 regel**: Begin van regel markeren met `#`, eind van regel markeren met `#DEBUG_OFF` en toelichting
+- **Meerdere regels**: 
+  - Voor debug code: `#DEBUG_OFF Block start` en toelichting
+  - Elke code regel beginnen met `#`
+  - Na laatste code regel: `#DEBUG_OFF Block end` en toelichting
+
+**ACTIEVE Debug code:**
+- **1 regel**: Eind van regel markeren met `#DEBUG_ON` en toelichting
+- **Meerdere regels**:
+  - Voor debug code: `#DEBUG_ON Block start` en toelichting
+  - Na laatste code regel: `#DEBUG_ON Block end` en toelichting
 
 
 
