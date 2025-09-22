@@ -1048,7 +1048,7 @@ class FillDbPageV2:
             return
         
         # Validation successful
-        logging_service.log("INFO", f"Directory validation successful: {current_path}")
+        logging_service.log("INFO_EXTRA", f"Directory validation successful: {current_path}")
         
         # 2. Check if we're in correct state (IDLE_SCAN_DONE)  #TODO Dit kan volgens mij weg
         if self.current_state != ApplicationState.IDLE_SCAN_DONE:
@@ -1611,11 +1611,11 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
     def _process_files_parallel(self, directory: str) -> dict:
         """Process files using parallel workers."""
         # Log processing start
-        logging_service.log("INFO", f"Starting parallel file processing in directory: {directory}")
+        # logging_service.log("DEBUG", f"Starting parallel file processing in directory: {directory}")#DEBUG_OFF Starting parallel file processing in directory:
         
         # Scan directory for files to process
         files_to_process = self._scan_files_for_processing(directory)
-        logging_service.log("INFO", f"Found {len(files_to_process)} files to process")
+        # logging_service.log("INFO", f"Found {len(files_to_process)} files to process")#DEGUB_OFF Found XX files to process
         
         total_files = len(files_to_process)
         
