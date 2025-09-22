@@ -213,10 +213,6 @@ class YAPMOTheme:
                     lambda: ui.navigate.to("/element-test"),
                 ).classes("hover:bg-blue-50 px-4 py-2")
                 ui.menu_item(
-                    "Fill Database New",
-                    lambda: ui.navigate.to("/fill-db-new"),
-                ).classes("hover:bg-blue-50 px-4 py-2")
-                ui.menu_item(
                     "Fill Database Page V2",
                     lambda: ui.navigate.to("/fill-db-page-v2"),
                 ).classes("hover:bg-blue-50 px-4 py-2")

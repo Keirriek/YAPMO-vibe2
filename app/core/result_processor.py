@@ -75,10 +75,10 @@ class ResultProcessor:
             
             if result.get('success', False):
                 self.successful_count += 1
-                # self._log_success(result)#DEBUG_OFF Worker logging
+                self._log_success(result)#DEBUG_ON Worker logging
             else:
                 self.failed_count += 1
-                # self._log_failure(result)#DEBUG_OFF Worker logging
+                self._log_failure(result)#DEBUG_ON Worker logging
     
     def _log_success(self, result: Dict[str, Any]):
         """Log a successful result."""
@@ -92,7 +92,7 @@ class ResultProcessor:
         self.logging_queue.put(log_message)
         
         # Also log to logging service
-        logging_service.log("INFO", f"Processed {media_type} file: {file_path}")
+        logging_service.log("INFO", f"ResultProcessor _log_succes_Processed {media_type} file: {file_path}")#DEBUG_ON Processed file name logging
     
     def _log_failure(self, result: Dict[str, Any]):
         """Log a failed result."""

@@ -23,10 +23,10 @@ def dummy_worker_process(file_path: str, worker_id: int) -> Dict[str, Any]:
         'success': success,
         'processing_time': processing_time,
         'log_messages': [
-            # { #DEBUG_OFF Worker logging
-            #     'level': 'DEBUG', 
-            #     'message': f'Worker {worker_id} processed {file_path} in {processing_time:.2f}s'
-            # }
+            {
+                'level': 'DEBUG', 
+                'message': f'Created in Workerfunctions.py: Worker {worker_id} processed {file_path} in {processing_time:.2f}s'
+            }
         ]
     }
     return result

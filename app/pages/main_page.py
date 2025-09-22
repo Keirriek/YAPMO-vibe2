@@ -63,12 +63,6 @@ class MainPage:
                     "lg",
                 )
                 YAPMOTheme.create_button(
-                    "Fill Database New",
-                    lambda: ui.navigate.to("/fill-db-new"),
-                    "primary",
-                    "lg",
-                )
-                YAPMOTheme.create_button(
                     "Fill Database Page V2",
                     lambda: ui.navigate.to("/fill-db-page-v2"),
                     "secondary",

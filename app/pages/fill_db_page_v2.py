@@ -122,7 +122,7 @@ class ParallelWorkerManager:
             future.cancel()
         self.pending_futures.clear()
         self.executor.shutdown(wait=True)  # Wait for cleanup to prevent semaphore leaks
-        # logging_service.log("DEBUG", "Stopped parallel worker manager")#DEBUG_OFF Stopped parallel worker manager
+        logging_service.log("DEBUG", "Stopped parallel worker manager")#DEBUG_ON Stopped parallel worker manager
     
     def submit_file(self, file_path: str, worker_id: int) -> None:
         """Submit file to worker process."""
