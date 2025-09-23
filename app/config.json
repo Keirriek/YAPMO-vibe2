@@ -76,7 +76,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/mnt/nas_test/My Cameras",
+    "search_path": "/Pictures-test/test-unicode/Dir_Ã-a_tilde",
     "browse_path": "/"
   },
   "extensions": {

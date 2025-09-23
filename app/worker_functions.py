@@ -142,9 +142,16 @@ def parse_exiftool_batch_json(json_output: str) -> Dict[str, Dict[str, str]]:
         return {}
 
 
-def map_metadata_fields(exiftool_metadata: Dict[str, str], media_type: str, config: Dict[str, Any]) -> Dict[str, str]:
-    """Map ExifTool fields to database column names based on config."""
+def map_metadata_fields(exiftool_metadata: Dict[str, str], media_type: str, config: Dict[str, Any], file_path: str, sidecars: List[str]) -> Tuple[Dict[str, str], List[Dict[str, str]]]:
+    """Map ExifTool fields to database column names based on config.
+    
+    This function now also adds FILE:* fields (OS metadata) and YAPMO:* fields (custom calculations).
+    """
+    import datetime
+    import os
+    
     mapped_metadata = {}
+    log_messages = []
     
     # Get field mappings from config
     file_fields = config.get('metadata_fields_file', {})
@@ -154,15 +161,81 @@ def map_metadata_fields(exiftool_metadata: Dict[str, str], media_type: str, conf
     # Combine all field mappings
     all_field_mappings = {**file_fields, **image_fields, **video_fields}
     
-    # Map ExifTool fields to database column names
+    # First: Map ExifTool fields to database column names
     for exif_field, db_field in all_field_mappings.items():
         if exif_field in exiftool_metadata:
             mapped_metadata[db_field] = exiftool_metadata[exif_field]
         else:
-            # Set to None for missing fields
+            # Set to None for missing ExifTool fields
             mapped_metadata[db_field] = None
     
-    return mapped_metadata
+    # Second: Add FILE:* fields with OS metadata
+    for exif_field, db_field in all_field_mappings.items():
+        if exif_field.startswith('FILE:') or exif_field.startswith('File:'):
+            try:
+                if exif_field == 'FILE:FileName' or exif_field == 'File:FileName':
+                    mapped_metadata[db_field] = os.path.basename(file_path)
+                elif exif_field == 'FILE:Directory' or exif_field == 'File:Directory':
+                    mapped_metadata[db_field] = os.path.dirname(file_path)
+                elif exif_field == 'FILE:FileSize' or exif_field == 'File:FileSize':
+                    mapped_metadata[db_field] = str(os.path.getsize(file_path))
+                elif exif_field == 'FILE:FileModifyDate' or exif_field == 'File:FileModifyDate':
+                    # Format as "YYYY:MM:DD HH:MM:SS+HH:MM"
+                    mtime = os.path.getmtime(file_path)
+                    dt = datetime.datetime.fromtimestamp(mtime)
+                    formatted_date = dt.strftime("%Y:%m:%d %H:%M:%S+01:00")  # TODO: Get actual timezone
+                    mapped_metadata[db_field] = formatted_date
+                elif exif_field == 'FILE:FileType' or exif_field == 'File:FileType':
+                    file_ext = os.path.splitext(file_path)[1].lower()
+                    mapped_metadata[db_field] = file_ext
+                else:
+                    # Unknown FILE field, keep as None
+                    mapped_metadata[db_field] = None
+            except OSError as e:
+                log_messages.append({
+                    'level': 'WARNING',
+                    'message': f'OS error accessing {file_path} for {exif_field}: {str(e)}'
+                })
+                mapped_metadata[db_field] = None
+    
+    # Third: Add YAPMO:* fields with custom calculations
+    for exif_field, db_field in all_field_mappings.items():
+        if exif_field.startswith('YAPMO:'):
+            try:
+                if exif_field == 'YAPMO:FileName':
+                    mapped_metadata[db_field] = os.path.basename(file_path)
+                elif exif_field == 'YAPMO:Directory':
+                    mapped_metadata[db_field] = os.path.dirname(file_path)
+                elif exif_field == 'YAPMO:FileSize':
+                    mapped_metadata[db_field] = str(os.path.getsize(file_path))
+                elif exif_field == 'YAPMO:FileType':
+                    file_ext = os.path.splitext(file_path)[1].lower()
+                    mapped_metadata[db_field] = file_ext
+                elif exif_field == 'YAPMO:FileModifyDate':
+                    # Format as "YYYY:MM:DD HH:MM:SS+HH:MM"
+                    mtime = os.path.getmtime(file_path)
+                    dt = datetime.datetime.fromtimestamp(mtime)
+                    formatted_date = dt.strftime("%Y:%m:%d %H:%M:%S+01:00")  # TODO: Get actual timezone
+                    mapped_metadata[db_field] = formatted_date
+                elif exif_field == 'YAPMO:Hash':
+                    mapped_metadata[db_field] = "to be calculated"
+                elif exif_field == 'YAPMO:Sidecars':
+                    # Convert sidecars list to string representation
+                    mapped_metadata[db_field] = str(sidecars) if sidecars else "[]"
+                elif exif_field == 'YAPMO:FQPN':
+                    # Fully Qualified Path Name
+                    mapped_metadata[db_field] = os.path.abspath(file_path)
+                else:
+                    # Unknown YAPMO field, keep as None
+                    mapped_metadata[db_field] = None
+            except OSError as e:
+                log_messages.append({
+                    'level': 'WARNING',
+                    'message': f'OS error accessing {file_path} for {exif_field}: {str(e)}'
+                })
+                mapped_metadata[db_field] = None
+    
+    return mapped_metadata, log_messages
 
 
 def process_media_files_batch(file_paths: List[str], worker_id: int) -> List[Dict[str, Any]]:
@@ -251,7 +324,10 @@ def process_single_file_with_metadata(file_path: str, worker_id: int, exiftool_m
                 sidecars.append(sidecar_ext)
         
         # Map metadata fields to database column names
-        mapped_metadata = map_metadata_fields(exiftool_metadata, media_type, config)
+        mapped_metadata, metadata_log_messages = map_metadata_fields(exiftool_metadata, media_type, config, file_path, sidecars)
+        
+        # Add metadata log messages to main log messages
+        log_messages.extend(metadata_log_messages)
         
         processing_time = time.time() - start_time
         
@@ -267,11 +343,11 @@ def process_single_file_with_metadata(file_path: str, worker_id: int, exiftool_m
             #     'level': 'DEBUG',
             #     'message': f'Results: name={file_name}, size={os_disk_size}, type={media_type}, sidecars={sidecars}'
             # },#DEBUG_OFF Block End - Worker logging Results: name={file_name}, size={os_disk_size}, type={media_type}, sidecars={sidecars}
-            #DEBUG_OFF Block Start - Worker logging Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}
-            #{
+            # #DEBUG_OFF Block Start - Worker logging Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}
+            # {
             #    'level': 'DEBUG',
             #    'message': f'Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}'
-            #},#DEBUG_OFF Block End - Worker logging Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}
+            # },#DEBUG_OFF Block End - Worker logging Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}
         ]
         
         result = {
@@ -389,7 +465,10 @@ def process_media_file(file_path: str, worker_id: int) -> Dict[str, Any]:
         exiftool_metadata = extract_exiftool_metadata_tsv(file_path)
         
         # Map metadata fields to database column names
-        mapped_metadata = map_metadata_fields(exiftool_metadata, media_type, config)
+        mapped_metadata, metadata_log_messages = map_metadata_fields(exiftool_metadata, media_type, config, file_path, sidecars)
+        
+        # Add metadata log messages to main log messages
+        log_messages.extend(metadata_log_messages)
         
         processing_time = time.time() - start_time
         
