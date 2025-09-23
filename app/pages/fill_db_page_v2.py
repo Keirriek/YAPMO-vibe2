@@ -1019,7 +1019,7 @@ class FillDbPageV2:
         """Called when directory input changes."""
         # Get the new directory value from the input field
         new_directory = self.scan_search_directory_input.value if self.scan_search_directory_input else ""
-        logging_service.log("DEBUG", f"Directory input changed to: {new_directory}")
+        #logging_service.log("DEBUG", f"Directory input changed to: {new_directory}")#DEBUG_OFF Directory input changed
         
         # Check if we have scan data and directory changed
         if hasattr(self, 'scanned_files') and self.scanned_files:
@@ -1551,6 +1551,12 @@ class FillDbPageV2:
         video_exts = set(get_param("extensions", "video_extensions"))
         sidecar_exts = set(get_param("extensions", "sidecar_extensions"))
         
+        #DEBUG_OFF Block start - Extension mapping debug
+        #logging_service.log("DEBUG", f"Image extensions loaded: {sorted(image_exts)}")
+        #logging_service.log("DEBUG", f"Video extensions loaded: {sorted(video_exts)}")
+        #logging_service.log("DEBUG", f"Sidecar extensions loaded: {sorted(sidecar_exts)}")
+        #DEBUG_OFF Block end - Extension mapping debug
+        
         # Create extension lookup dictionary for efficient file categorization
         extension_map = {}
         for ext in image_exts:
@@ -1559,6 +1565,10 @@ class FillDbPageV2:
             extension_map[ext] = 'media'
         for ext in sidecar_exts:
             extension_map[ext] = 'sidecar'
+        
+        #DEBUG_OFF Block start - Extension map debug
+        #logging_service.log("DEBUG", f"Extension map created: {extension_map}")
+        #DEBUG_OFF Block end - Extension map debug
         
         # Use os.walk() for recursive directory traversal
         for root, dirs, files in os.walk(directory):
@@ -1569,6 +1579,11 @@ class FillDbPageV2:
             # Count directories
             directories_count += 1
             
+            #DEBUG_OFF Block start - Directory scan debug
+            #logging_service.log("DEBUG", f"Scanning directory: {root}")
+            #logging_service.log("DEBUG", f"Found {len(files)} files: {files}")
+            #DEBUG_OFF Block end - Directory scan debug
+            
             # Count files and categorize them
             for file in files:
                 if yapmo_globals.abort_requested:
@@ -1576,6 +1591,10 @@ class FillDbPageV2:
                     break
                 files_count += 1
                 file_ext = Path(file).suffix.lower()
+                
+                #DEBUG_OFF Block start - File processing debug
+                #logging_service.log("DEBUG", f"Processing file: {file} -> extension: {file_ext}")
+                #DEBUG_OFF Block end - File processing debug
                 
                 # Track file extension counts for details popup
                 if file_ext in self.extension_counts:
@@ -1585,10 +1604,19 @@ class FillDbPageV2:
                 
                 # Use dictionary lookup for efficient categorization
                 file_type = extension_map.get(file_ext, 'other')
+                
+                #DEBUG_OFF Block start - File categorization debug
+                #logging_service.log("DEBUG", f"File {file}: ext={file_ext}, type={file_type}, mapped_from={extension_map.get(file_ext, 'NOT_FOUND')}")
+                #DEBUG_OFF Block end - File categorization debug
+                
                 if file_type == 'media':
                     media_files_count += 1
                     # Add media files to processing list
                     files_to_process.append(os.path.join(root, file))
+                    
+                    #DEBUG_OFF Block start - Media file found debug
+                    #logging_service.log("DEBUG", f"MEDIA FILE FOUND: {file} -> {os.path.join(root, file)}")
+                    #DEBUG_OFF Block end - Media file found debug
                 elif file_type == 'sidecar':
                     sidecars_count += 1
             
@@ -1627,6 +1655,15 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         # Store files for later use in processing
         self.scanned_files = files_to_process
         self.last_scanned_directory = directory
+        
+        #DEBUG_OFF Block start - Final scan results debug
+        #logging_service.log("DEBUG", f"FINAL SCAN RESULTS:")
+        #logging_service.log("DEBUG", f"  - Total files found: {files_count}")
+        #logging_service.log("DEBUG", f"  - Media files found: {media_files_count}")
+        #logging_service.log("DEBUG", f"  - Sidecars found: {sidecars_count}")
+        #logging_service.log("DEBUG", f"  - Files to process: {len(files_to_process)}")
+        #logging_service.log("DEBUG", f"  - Files list: {files_to_process}")
+        #DEBUG_OFF Block end - Final scan results debug
         
         return {
             "files": files_count,

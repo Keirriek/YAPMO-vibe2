@@ -37,6 +37,55 @@ def validate_exiftool_config() -> Tuple[bool, str]:
     return True, "ExifTool available and configured"
 
 
+def extract_exiftool_metadata_tsv(file_path: str) -> Dict[str, str]:
+    """Extract metadata using ExifTool TSV format (fastest)."""
+    try:
+        # Use charset=utf8 for proper handling of spaces and non-ASCII characters
+        cmd = ["exiftool", "-charset", "filename=utf8", "-T", "-G", file_path]
+        result = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=get_param("processing", "exiftool_timeout") / 1000.0)
+        
+        if result.returncode == 0:
+            return parse_exiftool_tsv(result.stdout)
+        else:
+            return {"exiftool_error": result.stderr}
+    except Exception as e:
+        return {"exiftool_error": str(e)}
+
+
+def parse_exiftool_tsv(tsv_output: str) -> Dict[str, str]:
+    """Parse ExifTool TSV output (fast)."""
+    metadata = {}
+    for line in tsv_output.strip().split('\n'):
+        if '\t' in line:
+            field, value = line.split('\t', 1)
+            metadata[field] = value
+    return metadata
+
+
+def map_metadata_fields(exiftool_metadata: Dict[str, str], media_type: str, config: Dict[str, Any]) -> Dict[str, str]:
+    """Map ExifTool fields to database column names based on config."""
+    mapped_metadata = {}
+    
+    # Get field mappings from config
+    file_fields = config.get('metadata_fields_file', {})
+    image_fields = config.get('metadata_fields_image', {})
+    video_fields = config.get('metadata_fields_video', {})
+    
+    # Combine all field mappings
+    all_field_mappings = {**file_fields, **image_fields, **video_fields}
+    
+    # Map ExifTool fields to database column names
+    for exif_field, db_field in all_field_mappings.items():
+        if exif_field in exiftool_metadata:
+            mapped_metadata[db_field] = exiftool_metadata[exif_field]
+        else:
+            # Set to None for missing fields
+            mapped_metadata[db_field] = None
+    
+    return mapped_metadata
+
+
 def process_media_file(file_path: str, worker_id: int) -> Dict[str, Any]:
     """Process a single media file and extract metadata."""
     
@@ -86,18 +135,31 @@ def process_media_file(file_path: str, worker_id: int) -> Dict[str, Any]:
             if os.path.exists(sidecar_path):
                 sidecars.append(sidecar_ext)
         
+        # Extract ExifTool metadata
+        exiftool_metadata = extract_exiftool_metadata_tsv(file_path)
+        
+        # Map metadata fields to database column names
+        mapped_metadata = map_metadata_fields(exiftool_metadata, media_type, config)
+        
         processing_time = time.time() - start_time
         
         # Success log messages
         log_messages = [
-            {
-                'level': 'DEBUG',
-                'message': f'Worker {worker_id} processed {file_name} in {processing_time:.3f}s'
-            },
-            {
-                'level': 'DEBUG',
-                'message': f'Results: name={file_name}, size={os_disk_size}, type={media_type}, sidecars={sidecars}'
-            }
+            #DEBUG_OFF Block Start - Worker logging ID, file name and processing time
+            #{
+            #    'level': 'DEBUG',
+            #    'message': f'Worker {worker_id} processed {file_name} in {processing_time:.3f}s'
+            #},#DEBUG_OFF Block End - Worker logging ID, file name and processing time
+            #DEBUG_OFF Block Start - Worker logging Results: name={file_name}, size={os_disk_size}, type={media_type}, sidecars={sidecars}
+            # {
+            #     'level': 'DEBUG',
+            #     'message': f'Results: name={file_name}, size={os_disk_size}, type={media_type}, sidecars={sidecars}'
+            # },#DEBUG_OFF Block End - Worker logging Results: name={file_name}, size={os_disk_size}, type={media_type}, sidecars={sidecars}
+            #DEBUG_OFF Block Start - Worker logging Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}
+            #{
+            #    'level': 'DEBUG',
+            #    'message': f'Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}'
+            #},#DEBUG_OFF Block End - Worker logging Metadata: {len(mapped_metadata)} fields extracted, exiftool_exit_code={exiftool_metadata.get("exiftool_error", 0)}
         ]
         
         result = {
@@ -110,6 +172,8 @@ def process_media_file(file_path: str, worker_id: int) -> Dict[str, Any]:
             'os_disk_size': os_disk_size,
             'media_type': media_type,
             'sidecars': sidecars,
+            'metadata': mapped_metadata,
+            'exiftool_exit_code': exiftool_metadata.get('exiftool_error', 0),
             'log_messages': log_messages
         }
         
