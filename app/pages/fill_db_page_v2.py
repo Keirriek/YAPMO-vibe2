@@ -19,7 +19,7 @@ import yapmo_globals
 from pages.debug.fill_db_page_v2_debug import FillDbPageV2Debug
 from core.logging_service_v2 import logging_service
 from core.result_processor import ResultProcessor
-from worker_functions import process_media_file
+from worker_functions import process_media_file, process_media_files_batch
 
 
 class UIUpdateManager:
@@ -131,6 +131,14 @@ class ParallelWorkerManager:
             
         future = self.executor.submit(process_media_file, file_path, worker_id)
         self.pending_futures.append(future)
+    
+    def submit_files_batch(self, file_paths: List[str], worker_id: int) -> None:
+        """Submit multiple files to worker process (batch processing for better ExifTool performance)."""
+        if not self.is_running or not file_paths:
+            return
+            
+        future = self.executor.submit(process_media_files_batch, file_paths, worker_id)
+        self.pending_futures.append(future)
         
     def process_completed_workers(self) -> None:
         """Process completed worker results."""
@@ -150,7 +158,18 @@ class ParallelWorkerManager:
         for future in completed_futures:
             self.pending_futures.remove(future)
     
-    def _process_worker_result(self, result: Dict[str, Any]) -> None:
+    def _process_worker_result(self, result) -> None:
+        """Process a single worker result or batch of results."""
+        # Handle both single results and batch results
+        if isinstance(result, list):
+            # Batch result - process each result in the batch
+            for single_result in result:
+                self._process_single_result(single_result)
+        else:
+            # Single result - process directly
+            self._process_single_result(result)
+    
+    def _process_single_result(self, result: Dict[str, Any]) -> None:
         """Process a single worker result."""
         with self.lock:
             self.files_processed += 1
@@ -1206,7 +1225,7 @@ class FillDbPageV2:
                 self.worker_manager.stop_workers()
                 
                 # Wait for all workers to be completely stopped
-                while not self.worker_manager.is_complete():
+                while self.worker_manager and not self.worker_manager.is_complete():
                     time.sleep(0.1)
                 
                 # Now all workers are stopped, no more results will be added
@@ -1747,14 +1766,20 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         )
         self.result_processor.start()
         
-        # Submit files to workers
-        for i, file_path in enumerate(files_to_process):
+        # Submit files to workers using batch processing for better ExifTool performance
+        batch_size = get_param("processing", "read_batch_size")  # Get read batch size from config
+        
+        for i in range(0, len(files_to_process), batch_size):
             if yapmo_globals.stop_processing_flag:
                 logging_service.log("INFO", "Processing aborted by user")
                 break
                 
-            worker_id = i % max_workers
-            self.worker_manager.submit_file(file_path, worker_id)
+            # Get batch of files
+            batch_files = files_to_process[i:i + batch_size]
+            worker_id = (i // batch_size) % max_workers
+            
+            # Submit batch to worker
+            self.worker_manager.submit_files_batch(batch_files, worker_id)
         
         # Process results from workers
         while not self.worker_manager.is_complete():

@@ -49,13 +49,14 @@
     "test_key": "new_test_value"
   },
   "processing": {
-    "max_workers": 20,
+    "max_workers": 32,
     "use_exiftool": true,
     "exiftool_timeout": 30000,
     "nicegui_update_interval": 100,
     "ui_update": 500,
     "processing_array": null,
-    "worker_timeout": 30000
+    "worker_timeout": 30000,
+    "read_batch_size": 15
   },
   "processing_queues": {
     "result_queue_depth": 32,
@@ -75,7 +76,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures",
+    "search_path": "/mnt/nas_test/My Cameras",
     "browse_path": "/"
   },
   "extensions": {

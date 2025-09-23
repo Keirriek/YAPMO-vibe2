@@ -348,6 +348,22 @@ class ConfigPage:
                         format="%i",
                     ).classes("w-full")
 
+                    # Read Batch Size - ExifTool Performance Optimization
+                    self.ui_elements["read_batch_size"] = ui.number(
+                        "read_batch_size (for ExifTool optimalisation)",
+                        value=get_param("processing", "read_batch_size"),
+                        min=1,
+                        max=1000,
+                        format="%i",
+                    ).classes("w-full")
+                    
+                    # Add help text for batch size
+                    ui.label(
+                        "Controls how many files are processed together in one ExifTool call. "
+                        "Higher values = faster processing but more memory usage. "
+                        "Recommended: 5-15 for optimal performance."
+                    ).classes("text-sm text-gray-600 mt-2")
+
     def _create_database_settings(self) -> None:
         """Maak database settings sectie."""
         with ui.card().classes("w-full mb-4"):
@@ -443,7 +459,7 @@ class ConfigPage:
             self.ui_elements["ui_update"].value = 500
             self.ui_elements["database_write_retry"].value = 3
             self.ui_elements["database_max_retry_files"].value = 10
-            self.ui_elements["log_files_count_update"].value = 1000
+            self.ui_elements["read_batch_size"].value = 5
             
             ui.notify("Configuration reset to new default values", type="positive")
         except Exception as e:
@@ -494,6 +510,7 @@ class ConfigPage:
             set_param("processing", "ui_update", int(self.ui_elements["ui_update"].value))
             set_param("processing", "processing_array", self.ui_elements["processing_array"].value)
             set_param("processing", "worker_timeout", int(self.ui_elements["worker_timeout"].value))
+            set_param("processing", "read_batch_size", int(self.ui_elements["read_batch_size"].value))
 
             # Save paths parameters
             set_param("paths", "source_path", self.ui_elements["source_path"].value)
