@@ -976,10 +976,14 @@ class FillDbPageV2:
         # Reset extension counts for new scan
         self.extension_counts = {}
         
-        # 1. EERSTE ACTIE: Transitie naar SCANNING state
+        # 1. EERSTE ACTIE: ExifTool check (VOOR directory validatie)
+        if not self._check_exiftool_availability():
+            return  # ExifTool not available, stay in IDLE state
+        
+        # 2. DAN: Transitie naar SCANNING state
         self._set_state(ApplicationState.SCANNING)
         
-        # 2. DAN: Directory validatie
+        # 3. DAN: Directory validatie
         current_path = self.scan_search_directory_input.value if self.scan_search_directory_input else ""
         is_valid, error_msg = self._validate_directory_path(current_path)
         
@@ -1032,6 +1036,16 @@ class FillDbPageV2:
     def _start_processing(self) -> None:
         """Start the file processing process."""
         # Log processing start attempt
+        
+        # Log ExifTool support status
+        from worker_functions import check_exiftool_availability
+        is_available = check_exiftool_availability()
+        use_exiftool = get_param("processing", "use_exiftool")
+        
+        if use_exiftool and is_available:
+            logging_service.log("INFO_EXTRA", "Start Processing with exiftool support")
+        else:
+            logging_service.log("INFO_EXTRA", "Start Processing WITHOUT exiftool support")
         
         # 1. EERSTE ACTIE: Directory validatie
         current_path = self.scan_search_directory_input.value if self.scan_search_directory_input else ""
@@ -1120,6 +1134,53 @@ class FillDbPageV2:
                 ui.button("CLOSE", on_click=dialog.close).classes(
                     "bg-blue-500 text-white px-4 py-2 rounded mt-4").props("color=primary")
 
+        dialog.open()
+
+    def _check_exiftool_availability(self) -> bool:
+        """Check ExifTool availability. Returns True to continue, False to stay in IDLE."""
+        from worker_functions import check_exiftool_availability
+        from config import get_param
+        
+        # Check ExifTool status
+        is_available = check_exiftool_availability()
+        use_exiftool = get_param("processing", "use_exiftool")
+        
+        # Log status
+        if use_exiftool and is_available:
+            logging_service.log("INFO_EXTRA", "Start Scanning with exiftool support")
+        else:
+            logging_service.log("INFO_EXTRA", "Start Scanning WITHOUT exiftool support")
+        
+        # Show dialog if ExifTool is enabled but not available
+        if use_exiftool and not is_available:
+            self._show_exiftool_unavailable_dialog()
+            return False  # Stay in IDLE state
+        
+        return True  # Continue normally
+
+    def _show_exiftool_unavailable_dialog(self) -> None:
+        """Show ExifTool unavailable dialog."""
+        def _close_dialog(dialog: ui.dialog) -> None:
+            """Close dialog and stay in IDLE."""
+            dialog.close()
+            logging_service.log("INFO_EXTRA", "User acknowledged ExifTool unavailability")
+        
+        # Create dialog with same styling as exit/abort dialogs
+        dialog = ui.dialog()
+        with dialog, YAPMOTheme.create_dialog_card():
+            YAPMOTheme.create_dialog_title("ExifTool Not Available")
+            
+            YAPMOTheme.create_dialog_content(
+                "Sorry, ExifTool is not available.\n\n"
+                "You can change your config to proceed without ExifTool. Or make ExifTool available."
+            )
+            
+            with YAPMOTheme.create_dialog_buttons():
+                YAPMOTheme.create_dialog_button_confirm(
+                    "OK",
+                    lambda: _close_dialog(dialog)
+                )
+        
         dialog.open()
 
     def _handle_abort(self) -> None:

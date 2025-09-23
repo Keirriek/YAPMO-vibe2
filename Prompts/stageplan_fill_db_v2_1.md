@@ -748,11 +748,67 @@ def _process_files_parallel(self, directory: str) -> dict:
 - ✅ Real file processing met metadata extractie
 - ✅ Database manager interface klaar (`db_dummy()`)
 
-**Totaal Progress: 150/150 (100%) ✅**
+**Totaal Progress: 155/160 (97%) ✅**
+
+## Fase 8: EXIFTOOL AVAILABILITY CHECK - ✅ VOLTOOID
+
+### **✅ Status: VOLLEDIG GEÏMPLEMENTEERD**
+
+**Root Cause:** ExifTool availability check en user dialogs voor betere user experience.
+
+### **✅ Oplossing Geïmplementeerd:**
+
+**1. ExifTool Availability Check:**
+```python
+def check_exiftool_availability() -> bool:
+    """Check if ExifTool is available and configured."""
+    try:
+        result = subprocess.run(["exiftool", "-ver"], 
+                              capture_output=True, text=True, timeout=5)
+        return result.returncode == 0
+    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        return False
+```
+
+**2. User Dialog Integration:**
+- **Scan Start Check**: ExifTool check VOOR directory validatie
+- **User Dialog**: "Sorry, ExifTool is not available..." met OK button
+- **State Management**: Blijft in IDLE state als ExifTool niet available
+- **Consistent Styling**: Zelfde styling als exit/abort dialogs
+
+**3. Logging Integration:**
+- **INFO_EXTRA**: "Start Scanning with/without exiftool support"
+- **INFO_EXTRA**: "Start Processing with/without exiftool support"
+- **User Actions**: Log wanneer user dialog sluit
+
+### **🎯 Voordelen:**
+- **✅ User Experience**: Duidelijke feedback over ExifTool status
+- **✅ Error Prevention**: Voorkomt crashes door missing ExifTool
+- **✅ Consistent UI**: Zelfde dialog styling als andere dialogs
+- **✅ Logging**: Duidelijke log messages voor debugging
+- **✅ State Management**: Correcte state transitions
+
+### **📋 Technische Implementatie:**
+1. **Worker Functions**: `check_exiftool_availability()` en `validate_exiftool_config()`
+2. **UI Integration**: Dialog in `_start_scanning()` functie
+3. **State Flow**: IDLE → ExifTool check → SCANNING (of blijft IDLE)
+4. **Error Handling**: Robuuste error handling voor subprocess calls
+5. **Logging**: INFO_EXTRA level logging voor user feedback
+
+### **🔧 Huidige Status:**
+**VOLLEDIG VOLTOOID:**
+- ✅ ExifTool availability check geïmplementeerd
+- ✅ User dialog met OK button geïmplementeerd
+- ✅ State management correct geïmplementeerd
+- ✅ Logging integration volledig werkend
+- ✅ Consistent UI styling met andere dialogs
+- ✅ Error handling robuust en betrouwbaar
+
+**Totaal Progress: 160/160 (100%) ✅**
 
 ### Volgende Stappen (Optioneel - Applicatie is volledig functioneel)
 1. **Database Operations**: Vervang `db_dummy()` door echte database write operations
-2. **ExifTool Integratie**: Voeg ExifTool metadata extractie toe aan `process_media_file()`
+2. **ExifTool Metadata Extractie**: Implementeer TSV-based metadata extractie in `process_media_file()`
 3. **File Validation**: Uitbreiden van file validation en error handling
 4. **Performance**: Optimize voor zeer grote file sets (>100k files)
 5. **Advanced Features**: Thumbnail generation, duplicate detection, etc.
@@ -762,6 +818,7 @@ De YAPMO applicatie is nu volledig werkend met:
 - ✅ Complete state machine (alle 8 states)
 - ✅ Parallel file processing met real-time UI updates
 - ✅ File metadata extractie (name, size, type, sidecars)
+- ✅ ExifTool availability check en user dialogs
 - ✅ Abort functionaliteit
 - ✅ Error handling en logging
 - ✅ Performance monitoring

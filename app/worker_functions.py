@@ -3,8 +3,38 @@
 import os
 import time
 import json
+import subprocess
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Tuple
+from config import get_param
+
+
+def check_exiftool_availability() -> bool:
+    """Check if ExifTool is available and configured."""
+    try:
+        result = subprocess.run(
+            ["exiftool", "-ver"], 
+            capture_output=True, 
+            text=True, 
+            timeout=5,
+            check=False
+        )
+        return result.returncode == 0
+    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        return False
+
+
+def validate_exiftool_config() -> Tuple[bool, str]:
+    """Validate ExifTool configuration and availability."""
+    use_exiftool = get_param("processing", "use_exiftool", False)
+    
+    if not use_exiftool:
+        return True, "ExifTool disabled in config"
+    
+    if not check_exiftool_availability():
+        return False, "ExifTool enabled in config but not available. Please install ExifTool or disable use_exiftool in config.json"
+    
+    return True, "ExifTool available and configured"
 
 
 def process_media_file(file_path: str, worker_id: int) -> Dict[str, Any]:

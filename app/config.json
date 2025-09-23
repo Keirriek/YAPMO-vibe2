@@ -73,7 +73,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/mnt/nas_test",
+    "search_path": "/Pictures-test",
     "browse_path": "/"
   },
   "extensions": {
