@@ -27,10 +27,7 @@
       "INFO_EXTRA": [
         "ui"
       ],
-      "DEBUG": [
-        "ui",
-        "df"
-      ],
+      "DEBUG": [],
       "TEST_AI": [
         "df"
       ],
@@ -76,7 +73,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures-test/3-test",
+    "search_path": "/mnt/nas_test",
     "browse_path": "/"
   },
   "extensions": {

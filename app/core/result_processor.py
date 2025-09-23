@@ -65,7 +65,7 @@ class ResultProcessor:
     
     def _process_result(self, result: Dict[str, Any]):
         """
-        Process a single result and create log messages.
+        Process a single result and send to database.
         
         Args:
             result: Result from worker process
@@ -75,38 +75,16 @@ class ResultProcessor:
             
             if result.get('success', False):
                 self.successful_count += 1
-                # self._log_success(result)#DEBUG_OFF Worker logging
+                # Success → Database
+                from core.db_manager_v2 import db_dummy
+                db_dummy(result)
             else:
                 self.failed_count += 1
-                # self._log_failure(result)#DEBUG_OFF Worker logging
+                # Failure → WARNING log + Database
+                logging_service.log("WARNING", f"Failed to process file {result.get('file_path', 'unknown')}: {result.get('log_message', 'Unknown error')}")
+                from core.db_manager_v2 import db_dummy
+                db_dummy(result)
     
-    def _log_success(self, result: Dict[str, Any]):
-        """Log a successful result."""
-        file_path = result.get('file_path', 'unknown')
-        media_type = result.get('media_type', 'unknown')
-        
-        # Create log message
-        log_message = f"INFO: Successfully processed (log_message) {media_type} file: {file_path}"
-        
-        # Add to logging queue
-        self.logging_queue.put(log_message)
-        
-        # Also log to logging service
-        # logging_service.log("INFO", f"ResultProcessor _log_succes_Processed {media_type} file: {file_path}")#DEBUG_OFF Processed file name logging
-    
-    def _log_failure(self, result: Dict[str, Any]):
-        """Log a failed result."""
-        file_path = result.get('file_path', 'unknown')
-        error = result.get('error', 'Unknown error')
-        
-        # Create log message
-        log_message = f"WARNING: Failed to process file (log_message) {file_path}: {error}"
-        
-        # Add to logging queue
-        self.logging_queue.put(log_message)
-        
-        # Also log to logging service
-        logging_service.log("WARNING", f"Failed to process file {file_path}: {error}")
     
     def get_stats(self) -> Dict[str, int]:
         """Get processing statistics."""

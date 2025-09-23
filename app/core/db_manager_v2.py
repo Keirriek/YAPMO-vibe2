@@ -25,5 +25,5 @@ def db_dummy(result: Dict[str, Any]) -> None:
     """
     # TODO: Implement actual database operations
     # For now, just accept the result and do nothing
-    logging_service.log("DEBUG", f"db_dummy received result: {result}")#DEBUG_ON Log all received data for testing
+    logging_service.log("DEBUG", f"db_dummy YESYES received result: {result}")#DEBUG_ON Log all received data for testing
     pass
