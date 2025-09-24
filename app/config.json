@@ -76,7 +76,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures-test/test-unicode/Dir_Ã-a_tilde",
+    "search_path": "/Pictures-test/3-test",
     "browse_path": "/"
   },
   "extensions": {
@@ -129,6 +129,14 @@
     "IPTC:DateCreated": "IPTC_DateCreated",
     "EXIF:GPSDateStamp": "EXIF_GPSDateStamp",
     "EXIF:GPSTimeStamp": "EXIF_GPSTimeStamp",
+    "EXIF:GPSLatitude": "EXIF_GPSLatitude",
+    "EXIF:GPSLongitude": "EXIF_GPSLongitude",
+    "EXIF:GPSAltitude": "EXIF_GPSAltitude",
+    "EXIF:GPSLatitudeRef": "EXIF_GPSLatitudeRef",
+    "EXIF:GPSLongitudeRef": "EXIF_GPSLongitudeRef",
+    "EXIF:GPSAltitudeRef": "EXIF_GPSAltitudeRef",
+    "Composite:GPSPosition": "Composite_GPSPosition",
+    "Composite:GPSDateTime": "Composite_GPSDateTime",
     "IPTC:Keywords": "IPTC_Keywords",
     "IPTC:TimeCreated": "IPTC_TimeCreated",
     "XMP_CreateDate": "XMP_CreateDate",

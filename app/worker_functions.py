@@ -48,30 +48,6 @@ def validate_exiftool_config() -> Tuple[bool, str]:
     return True, "ExifTool available and configured"
 
 
-def extract_exiftool_metadata_tsv(file_path: str) -> Dict[str, str]:
-    """Extract metadata using ExifTool TSV format (fastest)."""
-    try:
-        # Use charset=utf8 for proper handling of spaces and non-ASCII characters
-        cmd = ["exiftool", "-charset", "filename=utf8", "-T", "-G", file_path]
-        result = subprocess.run(cmd, capture_output=True, text=True,
-                              timeout=get_param("processing", "exiftool_timeout") / 1000.0)
-        
-        if result.returncode == 0:
-            return parse_exiftool_tsv(result.stdout)
-        else:
-            return {"exiftool_error": result.stderr}
-    except Exception as e:
-        return {"exiftool_error": str(e)}
-
-
-def parse_exiftool_tsv(tsv_output: str) -> Dict[str, str]:
-    """Parse ExifTool TSV output (fast)."""
-    metadata = {}
-    for line in tsv_output.strip().split('\n'):
-        if '\t' in line:
-            field, value = line.split('\t', 1)
-            metadata[field] = value
-    return metadata
 
 
 def extract_exiftool_metadata_batch(file_paths: List[str]) -> Dict[str, Dict[str, str]]:
@@ -461,8 +437,8 @@ def process_media_file(file_path: str, worker_id: int) -> Dict[str, Any]:
             if os.path.exists(sidecar_path):
                 sidecars.append(sidecar_ext)
         
-        # Extract ExifTool metadata
-        exiftool_metadata = extract_exiftool_metadata_tsv(file_path)
+        # Extract ExifTool metadata using JSON (more reliable than TSV)
+        exiftool_metadata = extract_exiftool_metadata_batch([file_path])[file_path]
         
         # Map metadata fields to database column names
         mapped_metadata, metadata_log_messages = map_metadata_fields(exiftool_metadata, media_type, config, file_path, sidecars)
