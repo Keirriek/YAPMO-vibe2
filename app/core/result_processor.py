@@ -28,6 +28,11 @@ class ResultProcessor:
         self.running = False
         self.thread = None
         
+        # Batch processing
+        self.batch_buffer = []
+        from config import get_param
+        self.batch_size = get_param("database", "database_write_batch_size")
+        
         # logging_service.log("DEBUG", "ResultProcessor initialized")#DEBUG_OFF ResultProcessor initialized
     
     def start(self):
@@ -45,6 +50,10 @@ class ResultProcessor:
         self.running = False
         if self.thread:
             self.thread.join(timeout=5.0)
+        # Process any remaining results in buffer
+        with self.lock:
+            if self.batch_buffer:
+                self._process_batch()
         # logging_service.log("DEBUG", "ResultProcessor stopped")#DEBUG_OFF ResultProcessor stopped
     
     def _process_loop(self):
@@ -65,7 +74,7 @@ class ResultProcessor:
     
     def _process_result(self, result: Dict[str, Any]):
         """
-        Process a single result and send to database.
+        Process a single result and add to batch buffer.
         
         Args:
             result: Result from worker process
@@ -73,17 +82,39 @@ class ResultProcessor:
         with self.lock:
             self.processed_count += 1
             
+            # Add to batch buffer
+            self.batch_buffer.append(result)
+            
+            # Check if this is END_OF_BATCH marker
+            if result.get('is_last_result', False):
+                # Process final batch
+                self._process_batch()
+                return
+            
+            # Check if batch is full
+            if len(self.batch_buffer) >= self.batch_size:
+                self._process_batch()
+    
+    def _process_batch(self):
+        """Process the current batch buffer."""
+        if not self.batch_buffer:
+            return
+            
+        # Count successes and failures
+        for result in self.batch_buffer:
             if result.get('success', False):
                 self.successful_count += 1
-                # Success → Database
-                from core.db_manager_v2 import db_dummy
-                db_dummy(result)
             else:
                 self.failed_count += 1
-                # Failure → WARNING log + Database
+                # Log failures
                 logging_service.log("WARNING", f"Failed to process file {result.get('file_path', 'unknown')}: {result.get('log_message', 'Unknown error')}")
-                from core.db_manager_v2 import db_dummy
-                db_dummy(result)
+        
+        # Send batch to database
+        from core.db_manager_v3 import db_add_result
+        db_add_result(self.batch_buffer.copy())
+        
+        # Clear buffer
+        self.batch_buffer.clear()
     
     
     def get_stats(self) -> Dict[str, int]:

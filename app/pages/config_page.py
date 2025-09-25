@@ -370,9 +370,9 @@ class ConfigPage:
             ui.label("Database Settings").classes("text-h6 q-mb-md")
 
             with ui.grid(columns=2).classes("w-full gap-4"):
-                self.ui_elements["database_name"] = ui.input(
-                    "Database Name",
-                    value=get_param("database", "database_name"),
+                self.ui_elements["database_path"] = ui.input(
+                    "Database Path",
+                    value=get_param("database", "database_path"),
                     placeholder="./images_auto_field.db",
                 ).classes("w-full")
 
@@ -394,10 +394,6 @@ class ConfigPage:
                     label="Database Table Directories",
                 ).classes("w-full")
 
-                self.ui_elements["database_clean"] = ui.switch(
-                    value=get_param("database", "database_clean"),
-                    text="Database Clean",
-                )
 
                 self.ui_elements["database_write_retry"] = ui.number(
                     "Database Write Retry",
@@ -474,11 +470,10 @@ class ConfigPage:
             set_param("general", "app_description", self.ui_elements["app_description"].value)
 
             # Save database parameters
-            set_param("database", "database_name", self.ui_elements["database_name"].value)
+            set_param("database", "database_path", self.ui_elements["database_path"].value)
             set_param("database", "database_table_media", self.ui_elements["database_table_media"].value)
             set_param("database", "database_table_media_new", self.ui_elements["database_table_media_new"].value)
             set_param("database", "database_table_dirs", self.ui_elements["database_table_dirs"].value)
-            set_param("database", "database_clean", self.ui_elements["database_clean"].value)
             set_param("database", "database_write_retry", int(self.ui_elements["database_write_retry"].value))
             set_param("database", "database_max_retry_files", int(self.ui_elements["database_max_retry_files"].value))
             set_param("database", "database_write_batch_size", int(self.ui_elements["database_write_batch_size"].value))

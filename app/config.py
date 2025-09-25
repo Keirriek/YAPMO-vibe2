@@ -88,14 +88,19 @@ class ConfigManager:
                 "get_log_timeout": 100
             },
             "database": {
-                "database_clean": False,
-                "database_name": "./images_auto_field.db",
+                "database_path": "./images_auto_field.db",
                 "database_table_media": "Media",
                 "database_table_media_new": "Media_New",
                 "database_table_dirs": "Directories",
                 "database_write_retry": 3,
                 "database_max_retry_files": 10,
-                "database_write_batch_size": 1000
+                "database_write_batch_size": 1000,
+                "database_timeout": 30,
+                "database_encoding": "UTF-8",
+                "database_journal_mode": "WAL",
+                "database_synchronous": "NORMAL",
+                "database_cache_size": -64000,
+                "database_temp_store": "MEMORY"
             },
             "paths": {
                 "source_path": "/workspaces",
@@ -155,14 +160,19 @@ class ConfigManager:
                 "get_log_timeout": 100
             },
             "database": {
-                "database_clean": False,
-                "database_name": "./images_auto_field.db",
+                "database_path": "./images_auto_field.db",
                 "database_table_media": "Media",
                 "database_table_media_new": "Media_New",
                 "database_table_dirs": "Directories",
                 "database_write_retry": 3,
                 "database_max_retry_files": 10,
-                "database_write_batch_size": 1000
+                "database_write_batch_size": 1000,
+                "database_timeout": 30,
+                "database_encoding": "UTF-8",
+                "database_journal_mode": "WAL",
+                "database_synchronous": "NORMAL",
+                "database_cache_size": -64000,
+                "database_temp_store": "MEMORY"
             },
             "paths": {
                 "source_path": "/workspaces",
@@ -311,7 +321,7 @@ class ConfigManager:
         
         # Text fields that cannot be empty
         text_fields = {
-            "database": ["database_name", "database_table_media", "database_table_media_new", "database_table_dirs"],
+            "database": ["database_path", "database_table_media", "database_table_media_new", "database_table_dirs"],
             "logging": ["log_file_path", "debug_file_path"],
             "paths": ["source_path", "search_path", "browse_path"]
         }
@@ -372,7 +382,7 @@ class ConfigManager:
         
         # Text fields that cannot be empty
         text_fields = {
-            "database": ["database_name", "database_table_media", "database_table_media_new", "database_table_dirs"],
+            "database": ["database_path", "database_table_media", "database_table_media_new", "database_table_dirs"],
             "logging": ["log_file_path", "debug_file_path"],
             "paths": ["source_path", "search_path", "browse_path"]
         }
@@ -404,7 +414,7 @@ class ConfigManager:
                     # Set default values for missing text fields
                     defaults = {
                         "database": {
-                            "database_name": "./images_auto_field.db",
+                            "database_path": "./images_auto_field.db",
                             "database_table_media": "Media",
                             "database_table_media_new": "Media_New",
                             "database_table_dirs": "Directories",

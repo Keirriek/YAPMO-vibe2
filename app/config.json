@@ -28,6 +28,7 @@
         "ui"
       ],
       "DEBUG": [
+        "ui",
         "df"
       ],
       "TEST_AI": [
@@ -65,14 +66,19 @@
     "get_log_timeout": 100
   },
   "database": {
-    "database_clean": false,
-    "database_name": "./images_auto_field.db",
+    "database_path": "./images_auto_field.db",
     "database_table_media": "Media",
     "database_table_media_new": "Media_New",
     "database_table_dirs": "Directories",
     "database_write_retry": 3,
     "database_max_retry_files": 10,
-    "database_write_batch_size": 1000
+    "database_write_batch_size": 150,
+    "database_timeout": 30,
+    "database_encoding": "UTF-8",
+    "database_journal_mode": "WAL",
+    "database_synchronous": "NORMAL",
+    "database_cache_size": -64000,
+    "database_temp_store": "MEMORY"
   },
   "paths": {
     "source_path": "/workspaces",
@@ -106,23 +112,22 @@
       ".pp3"
     ]
   },
-  "metadata_fields_file": {
+  "metadata_fields_yapmo": {
     "YAPMO:Modify": "YAPMO_Modify",
-    "YAPMO:FileName": "YAPMO_FILE_Name",
-    "FILE:FileName": "FILE_Name",
-    "YAPMO:Directory": "YAPMO_FILE_Path",
-    "FILE:Directory": "FILE_Path",
     "YAPMO:FileSize": "YAPMO_FILE_Size",
-    "FILE:FileSize": "FILE_Size",
     "YAPMO:FileType": "YAPMO_FILE_Type",
-    "FILE:FileType": "FILE_Type",
     "YAPMO:Name_New": "YAPMO_FILE_Name_New",
-    "YAPMO:Path_New": "YAPMO_FILE_Path_New",
+    "YAPMO:Path_New": "YAPMO_FILE_Path_Old",
     "YAPMO:Hash": "YAPMO_hash",
     "YAPMO:FileModifyDate": "YAPMO_FILE_Modify_Date",
-    "YAPMO:Sidecars": "YAPMO_Sidecars",
-    "File:FileModifyDate": "FILE_Modify_Date",
-    "YAPMO:FQPN": "YAPMO_FQPN"
+    "YAPMO:Sidecars": "YAPMO_Sidecars"
+  },
+  "metadata_fields_file": {
+    "FILE:FileName": "FILE_Name",
+    "FILE:Directory": "FILE_Path",
+    "FILE:FileSize": "FILE_Size",
+    "FILE:FileType": "FILE_Type",
+    "File:FileModifyDate": "FILE_Modify_Date"
   },
   "metadata_fields_image": {
     "EXIF:DateTimeOriginal": "EXIF_DateTimeOriginal",

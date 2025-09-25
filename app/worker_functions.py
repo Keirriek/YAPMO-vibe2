@@ -198,9 +198,6 @@ def map_metadata_fields(exiftool_metadata: Dict[str, str], media_type: str, conf
                 elif exif_field == 'YAPMO:Sidecars':
                     # Convert sidecars list to string representation
                     mapped_metadata[db_field] = str(sidecars) if sidecars else "[]"
-                elif exif_field == 'YAPMO:FQPN':
-                    # Fully Qualified Path Name
-                    mapped_metadata[db_field] = os.path.abspath(file_path)
                 else:
                     # Unknown YAPMO field, keep as None
                     mapped_metadata[db_field] = None

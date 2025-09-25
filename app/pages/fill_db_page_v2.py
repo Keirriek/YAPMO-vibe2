@@ -354,7 +354,7 @@ class FillDbPageV2:
     def _create_logging_section(self) -> None:
         """Create the logging section with log area and clear button."""
         with ui.card().classes("w-full bg-white rounded-lg mb-6"), ui.card_section().classes("w-full p-6"):
-            ui.label("Progress and Log").classes("text-xl font-semibold text-gray-800 mb-4")
+            ui.label("Logging and Database").classes("text-xl font-semibold text-gray-800 mb-4")
             
             # Log section
             ui.label("Log info:").classes("text-grey-700 font-medium mb-2")
@@ -367,9 +367,23 @@ class FillDbPageV2:
             
             # Control buttons
             with ui.row().classes("w-full items-center gap-4"):
-                self.log_clear_button = YAPMOTheme.create_button(
-                    "CLEAR LOG",
+                self.clear_screen_button = YAPMOTheme.create_button(
+                    "CLEAR SCREEN",
                     self._clear_log,
+                    "secondary",
+                    "md",
+                )
+                
+                self.clear_log_files_button = YAPMOTheme.create_button(
+                    "CLEAR LOG FILES",
+                    self._clear_log_files,
+                    "positive",
+                    "md",
+                )
+                
+                self.clear_database_button = YAPMOTheme.create_button(
+                    "CLEAR DATABASE",
+                    self._clear_database,
                     "secondary",
                     "md",
                 )
@@ -979,6 +993,51 @@ class FillDbPageV2:
                 self.log_column.clear()
         except Exception as e:
             ui.notify(f"Log clear error: {str(e)}", type="error")
+
+    def _clear_log_files(self) -> None:
+        """Clear both log files."""
+        try:
+            from config import get_param
+            from pathlib import Path
+            
+            # Get log file paths from config
+            log_file_path = get_param("logging", "log_file_path")
+            debug_file_path = get_param("logging", "debug_file_path")
+            
+            # Clear log files
+            log_path = Path(log_file_path)
+            debug_path = Path(debug_file_path)
+            
+            if log_path.exists():
+                log_path.write_text("", encoding="utf-8")
+                logging_service.log("INFO", f"Cleared log file: {log_file_path}")
+            
+            if debug_path.exists():
+                debug_path.write_text("", encoding="utf-8")
+                logging_service.log("INFO", f"Cleared debug file: {debug_file_path}")
+            
+            ui.notify("Log files cleared successfully", type="positive")
+            
+        except Exception as e:
+            error_msg = f"Error clearing log files: {str(e)}"
+            logging_service.log("ERROR", error_msg)
+            ui.notify(error_msg, type="error")
+
+    def _clear_database(self) -> None:
+        """Clear the database using database manager."""
+        try:
+            from core.db_manager_v3 import get_database_manager
+            
+            # Get database manager and clear database
+            db_manager = get_database_manager()
+            db_manager.clear_database()
+            
+            ui.notify("Database cleared successfully", type="positive")
+                
+        except Exception as e:
+            error_msg = f"Error clearing database: {str(e)}"
+            logging_service.log("ERROR", error_msg)
+            ui.notify(error_msg, type="error")
 
     async def _select_directory(self) -> None:
         """Select directory for scanning."""
@@ -1803,6 +1862,12 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         # Get final statistics
         final_stats = self.worker_manager.get_final_stats()
         
+        # Add END_OF_BATCH marker to signal end of processing
+        from core.db_manager_v3 import create_end_of_batch_result
+        end_of_batch_result = create_end_of_batch_result()
+        self.worker_manager.result_queue.put(end_of_batch_result)
+        logging_service.log("DEBUG", "END_OF_BATCH marker added to result queue")#DEBUG_ON END_OF_BATCH marker added to result queue
+        
         # Stop workers first (no more results will be added to queue)
         self.worker_manager.stop_workers()
         
@@ -1822,7 +1887,7 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         
         # Log processing completion
         # logging_service.log("INFO", f"Parallel processing completed successfully!")
-        logging_service.log("INFO", f"Final summary: {final_stats['files_processed']} files, {final_stats['directories_processed']} directories processed in {final_stats['elapsed_time']:.2f}s")
+        logging_service.log("INFO", f"Final summary: {final_stats['files_processed']} media files, {final_stats['directories_processed']} directories processed in {final_stats['elapsed_time']:.2f}s")
         logging_service.log("INFO_EXTRA", f"Average performance: {final_stats['files_per_sec']:.1f} files/sec, {final_stats['directories_per_sec']:.1f} dirs/sec")
         
         return final_stats
@@ -1888,6 +1953,11 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         try:
             # Initialize logging service
             logging_service.reload_config()
+            
+            # Initialize database manager
+            from core.db_manager_v3 import get_database_manager
+            db_manager = get_database_manager()
+            logging_service.log("INFO", "Database manager initialized successfully")
             
             # Check for any critical errors during initialization
             # For now, we assume initialization is always successful
