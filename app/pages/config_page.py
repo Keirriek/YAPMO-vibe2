@@ -419,6 +419,14 @@ class ConfigPage:
                     format="%i",
                 ).classes("w-full")
 
+                self.ui_elements["database_transaction_batch_size"] = ui.number(
+                    "Database Transaction Batch Size",
+                    value=get_param("database", "database_transaction_batch_size"),
+                    min=1,
+                    max=500,
+                    format="%i",
+                ).classes("w-full")
+
     async def _browse_folder(self, field_name: str) -> None:
         """Browse voor folder selectie."""
         try:
@@ -455,6 +463,7 @@ class ConfigPage:
             self.ui_elements["ui_update"].value = 500
             self.ui_elements["database_write_retry"].value = 3
             self.ui_elements["database_max_retry_files"].value = 10
+            self.ui_elements["database_transaction_batch_size"].value = 10
             self.ui_elements["read_batch_size"].value = 5
             
             ui.notify("Configuration reset to new default values", type="positive")
@@ -477,6 +486,7 @@ class ConfigPage:
             set_param("database", "database_write_retry", int(self.ui_elements["database_write_retry"].value))
             set_param("database", "database_max_retry_files", int(self.ui_elements["database_max_retry_files"].value))
             set_param("database", "database_write_batch_size", int(self.ui_elements["database_write_batch_size"].value))
+            set_param("database", "database_transaction_batch_size", int(self.ui_elements["database_transaction_batch_size"].value))
 
             # Save logging parameters
             set_param("logging", "log_clean", self.ui_elements["log_clean"].value)

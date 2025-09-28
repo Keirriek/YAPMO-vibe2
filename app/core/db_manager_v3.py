@@ -41,6 +41,8 @@ class DatabaseManagerV3:
         
         # Cache batch size for efficiency
         self.batch_size = get_param("database", "database_write_batch_size")
+        self.transaction_batch_size = get_param("database", "database_transaction_batch_size")
+        self.pending_batches = 0
         
         # Cache INSERT SQL statement for efficiency
         placeholders = ', '.join(['?' for _ in self.db_fields])
@@ -287,8 +289,16 @@ class DatabaseManagerV3:
                 if all_values:
                     cursor.executemany(insert_sql, all_values)
                     # logging_service.log("DEBUG", f"Batch inserted {len(all_values)} records")#DEBUG_OFF Batch inserted X records
-                
-                conn.commit()
+                    
+                    # Transaction batching - commit after X batches
+                    self.pending_batches += 1
+                    if self.pending_batches >= self.transaction_batch_size:
+                        conn.commit()
+                        self.pending_batches = 0
+                        # logging_service.log("DEBUG", f"Transaction committed after {self.transaction_batch_size} batches")#DEBUG_OFF Transaction committed after X batches
+                    else:
+                        # logging_service.log("DEBUG", f"Batch queued, pending batches: {self.pending_batches}/{self.transaction_batch_size}")#DEBUG_OFF Batch queued, pending batches: X/Y
+                        pass
                 # logging_service.log("DEBUG", f"Successfully wrote {len(results)} results to database")#DEBUG_OFF Successfully wrote X results to database
                 
         except Exception as e:
@@ -296,9 +306,23 @@ class DatabaseManagerV3:
             logging_service.log("ERROR", error_msg)
             raise
 
+    def _finalize_transaction(self) -> None:
+        """Finalize any pending transaction batches."""
+        try:
+            if self.pending_batches > 0:
+                with self._get_connection() as conn:
+                    conn.commit()
+                logging_service.log("DEBUG", f"Finalized transaction with {self.pending_batches} pending batches")#DEBUG_OFF Finalized transaction with X pending batches
+                self.pending_batches = 0
+        except Exception as e:
+            logging_service.log("ERROR", f"Error finalizing transaction: {e}")
+
     def clear_database(self) -> None:
         """Clear the database by removing the database file."""
         try:
+            # Finalize any pending transactions before clearing
+            self._finalize_transaction()
+            
             if self.db_path.exists():
                 self.db_path.unlink()
                 logging_service.log("INFO", f"Database cleared: {self.db_path}")
@@ -373,6 +397,9 @@ def db_add_result(result: List[Dict[str, Any]]) -> None:
     # else:
     #     logging_service.log("DEBUG", f"Processing batch with {len(result)} results")#DEBUG_OFF Processing batch with X results
     # #DEBUG_OFF End Block Last batch add_db_result
+    # Check if this is the last batch (END_OF_BATCH marker present)
+    is_last_batch = any(r.get('is_last_result', False) for r in result)
+    
     # Filter out END_OF_BATCH markers and process only real results
     real_results = [r for r in result if not r.get('is_last_result', False)]
     
@@ -385,6 +412,12 @@ def db_add_result(result: List[Dict[str, Any]]) -> None:
         db_manager = get_database_manager()
         db_manager._write_results_to_database(real_results)
         # logging_service.log("DEBUG", f"db_add_result: Successfully wrote {len(real_results)} results to database")#DEBUG_OFF db_add_result: Successfully wrote X results to database
+        
+        # Finalize transaction if this is the last batch
+        if is_last_batch:
+            db_manager._finalize_transaction()
+            # logging_service.log("DEBUG", "db_add_result: Finalized transaction for last batch")#DEBUG_OFF db_add_result: Finalized transaction for last batch
+            
     except Exception as e:
         logging_service.log("ERROR", f"db_add_result: Failed to write results to database: {e}")
         # Log individual results for debugging

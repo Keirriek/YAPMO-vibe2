@@ -57,7 +57,7 @@
     "ui_update": 500,
     "processing_array": null,
     "worker_timeout": 30000,
-    "read_batch_size": 15
+    "read_batch_size": 16
   },
   "processing_queues": {
     "result_queue_depth": 32,
@@ -72,7 +72,8 @@
     "database_table_dirs": "Directories",
     "database_write_retry": 3,
     "database_max_retry_files": 10,
-    "database_write_batch_size": 150,
+    "database_write_batch_size": 1000,
+    "database_transaction_batch_size": 40,
     "database_timeout": 30,
     "database_encoding": "UTF-8",
     "database_journal_mode": "WAL",

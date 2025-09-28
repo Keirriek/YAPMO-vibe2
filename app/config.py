@@ -95,6 +95,7 @@ class ConfigManager:
                 "database_write_retry": 3,
                 "database_max_retry_files": 10,
                 "database_write_batch_size": 1000,
+                "database_transaction_batch_size": 10,
                 "database_timeout": 30,
                 "database_encoding": "UTF-8",
                 "database_journal_mode": "WAL",
@@ -167,6 +168,7 @@ class ConfigManager:
                 "database_write_retry": 3,
                 "database_max_retry_files": 10,
                 "database_write_batch_size": 1000,
+                "database_transaction_batch_size": 10,
                 "database_timeout": 30,
                 "database_encoding": "UTF-8",
                 "database_journal_mode": "WAL",
@@ -313,6 +315,7 @@ class ConfigManager:
             "database": {
                 "database_write_retry": {"min": 1, "max": 30, "default": 3},
                 "database_max_retry_files": {"min": 1, "max": 30, "default": 10},
+                "database_transaction_batch_size": {"min": 1, "max": 500, "default": 10},
             },
             "logging": {
                 "log_files_count_update": {"min": 1, "max": 100000, "default": 1000},
@@ -374,6 +377,7 @@ class ConfigManager:
             "database": {
                 "database_write_retry": {"min": 1, "max": 30, "default": 3},
                 "database_max_retry_files": {"min": 1, "max": 30, "default": 10},
+                "database_transaction_batch_size": {"min": 1, "max": 500, "default": 10},
             },
             "logging": {
                 "log_files_count_update": {"min": 1, "max": 100000, "default": 1000},
