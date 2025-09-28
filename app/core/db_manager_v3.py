@@ -39,6 +39,13 @@ class DatabaseManagerV3:
         self.field_mappings = self._get_field_mappings()
         self.db_fields = list(self.field_mappings.values()) + ['id']
         
+        # Cache batch size for efficiency
+        self.batch_size = get_param("database", "database_write_batch_size")
+        
+        # Cache INSERT SQL statement for efficiency
+        placeholders = ', '.join(['?' for _ in self.db_fields])
+        self.insert_sql = f"INSERT INTO {self.db_table_media} ({', '.join(self.db_fields)}) VALUES ({placeholders})"
+        
         # Initialize database
         self._initialize_database()
         
@@ -263,22 +270,19 @@ class DatabaseManagerV3:
             with self._get_connection() as conn:
                 cursor = conn.cursor()
                 
-                # Use cached field mappings and db_fields for efficiency
+                # Use cached field mappings, db_fields and SQL statement for efficiency
                 field_mappings = self.field_mappings
                 db_fields = self.db_fields
+                insert_sql = self.insert_sql
                 
-                # Prepare INSERT statement
-                placeholders = ', '.join(['?' for _ in db_fields])
-                insert_sql = f"INSERT INTO {self.db_table_media} ({', '.join(db_fields)}) VALUES ({placeholders})"
-                
-                # Process each result
+                # Prepare all values for batch INSERT
+                all_values = []
                 for result in results:
                     if not result.get('success', False):
                         continue  # Skip failed results
                     
                     # Extract metadata from result
                     metadata = result.get('metadata', {})
-                    # logging_service.log("DEBUG", f"Metadata for {result.get('file_path', 'unknown')}: {metadata}")#DEBUG_OFF Metadata for file_path: metadata
                     
                     # Prepare values for insertion - simplified approach
                     values = []
@@ -290,11 +294,12 @@ class DatabaseManagerV3:
                             value = metadata.get(field, '')
                             values.append(value)
                     
-                    # logging_service.log("DEBUG", f"Values for insertion: {values[:5]}... (total: {len(values)})")#DEBUG_OFF Values for insertion: first 5 values and total count
-                    
-                    # Insert record
-                    cursor.execute(insert_sql, values)
-                    # logging_service.log("DEBUG", f"Inserted record for {result.get('file_path', 'unknown')}")#DEBUG_OFF Inserted record for file_path
+                    all_values.append(values)
+                
+                # Execute batch INSERT for all records at once
+                if all_values:
+                    cursor.executemany(insert_sql, all_values)
+                    # logging_service.log("DEBUG", f"Batch inserted {len(all_values)} records")#DEBUG_OFF Batch inserted X records
                 
                 conn.commit()
                 # logging_service.log("DEBUG", f"Successfully wrote {len(results)} results to database")#DEBUG_OFF Successfully wrote X results to database
