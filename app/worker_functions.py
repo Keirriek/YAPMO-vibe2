@@ -15,6 +15,8 @@ import os
 import time
 import json
 import subprocess
+import hashlib
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Any, List, Tuple
 from config import get_param
@@ -302,6 +304,37 @@ def process_single_file_with_metadata(file_path: str, worker_id: int, exiftool_m
         # Add metadata log messages to main log messages
         log_messages.extend(metadata_log_messages)
         
+        # Calculate file hash and store parameters
+        try:
+            # Get hash parameters from config (loaded earlier)
+            hash_chunk_size = config.get('processing', {}).get('hash_chunk_size', 65536)
+            video_header_size = config.get('processing', {}).get('video_header_size', 4096)
+            
+            file_hash = calculate_file_hash(file_path, media_type, exiftool_metadata, hash_chunk_size, video_header_size)
+            mapped_metadata['YAPMO_hash'] = file_hash
+            
+            # Store hash parameters for debugging/verification
+            mapped_metadata['YAPMO_hash_chunk_size'] = str(hash_chunk_size)
+            mapped_metadata['YAPMO_video_header_size'] = str(video_header_size)
+            
+            # Add hash calculation success to log messages
+            log_messages.append({
+                'level': 'DEBUG',
+                'message': f'Hash calculated for {file_name}: {file_hash[:16]}...'
+            })
+        except Exception as e:
+            mapped_metadata['YAPMO_hash'] = f"hash_error_{int(time.time())}"
+            mapped_metadata['YAPMO_hash_chunk_size'] = "0"
+            mapped_metadata['YAPMO_video_header_size'] = "0"
+            # Add hash calculation error to log messages
+            error_msg = f'Hash calculation failed for {file_path}: {str(e)}'
+            log_messages.append({
+                'level': 'ERROR',
+                'message': error_msg
+            })
+            # Also add to result for debugging
+            print(f"DEBUG: {error_msg}")  # This will show in console
+        
         processing_time = time.time() - start_time
         
         # Success log messages
@@ -526,5 +559,118 @@ def process_media_file(file_path: str, worker_id: int) -> Dict[str, Any]:
             'log_message': f'Unexpected error: {str(e)}',
             'log_messages': log_messages
         }
+        
+        return result
+
+
+def calculate_file_hash(file_path: str, file_type: str, existing_metadata: Dict[str, str] = None, hash_chunk_size: int = 65536, video_header_size: int = 4096) -> str:
+    """Calculate hash based on file type.
     
-    return result
+    Args:
+        file_path: Path to the file
+        file_type: Type of file ("image" or "video")
+        existing_metadata: Optional existing metadata for video hash calculation
+        
+    Returns:
+        Hash string for the file
+    """
+    try:
+        if file_type == "image":
+            return calculate_image_hash(file_path, hash_chunk_size)
+        elif file_type == "video":
+            return calculate_video_hash(file_path, existing_metadata, video_header_size)
+        else:
+            # Fallback for unknown types
+            return calculate_image_hash(file_path, hash_chunk_size)
+    except Exception as e:
+        return f"hash_error_{int(time.time())}"
+
+
+def calculate_image_hash(file_path: str, hash_chunk_size: int = 65536) -> str:
+    """Calculate full SHA-256 hash for images.
+    
+    Args:
+        file_path: Path to the image file
+        hash_chunk_size: Size of chunks to read at a time
+        
+    Returns:
+        SHA-256 hash string
+    """
+    hash_result = hashlib.sha256()
+    
+    try:
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(hash_chunk_size), b""):
+                hash_result.update(chunk)
+        
+        return hash_result.hexdigest()
+    except Exception as e:
+        raise
+
+
+def calculate_video_hash(file_path: str, existing_metadata: Dict[str, str] = None, video_header_size: int = 4096) -> str:
+    """Calculate hybrid hash for videos using metadata and header.
+    
+    Args:
+        file_path: Path to the video file
+        existing_metadata: Optional existing metadata for video hash calculation
+        video_header_size: Number of bytes to read from file header
+        
+    Returns:
+        Hybrid hash string for video
+    """
+    try:
+        # Get file info
+        file_stat = os.stat(file_path)
+        file_size = file_stat.st_size
+        file_ext = Path(file_path).suffix.lower().lstrip(".")
+        
+        # Read header bytes
+        header_bytes = read_file_header(file_path, video_header_size)
+        header_hash = hashlib.sha256(header_bytes).hexdigest()[:16]
+        
+        # Try to get creation date from existing metadata or file
+        date_str = "unknown_date"
+        
+        if existing_metadata and "EXIF_DateTimeOriginal" in existing_metadata:
+            exif_date = existing_metadata["EXIF_DateTimeOriginal"]
+            if exif_date and exif_date != "None":
+                # Parse ExifTool date format and convert to YYYY-MM-DD
+                try:
+                    # ExifTool format: "2024:01:15 14:30:25"
+                    if ":" in str(exif_date):
+                        date_parts = str(exif_date).split(" ")[0].split(":")
+                        if len(date_parts) >= 3:
+                            date_str = f"{date_parts[0]}-{date_parts[1]}-{date_parts[2]}"
+                except (ValueError, IndexError):
+                    pass
+        
+        # Fallback to file creation date if ExifTool date not available
+        if date_str == "unknown_date":
+            creation_time = datetime.fromtimestamp(file_stat.st_ctime, timezone.utc)
+            date_str = creation_time.strftime("%Y-%m-%d")
+        
+        # Create hybrid hash
+        video_hash = f"{file_ext}_{file_size}_{date_str}_{header_hash}"
+        
+        return video_hash
+        
+    except Exception as e:
+        raise
+
+
+def read_file_header(file_path: str, header_size: int) -> bytes:
+    """Read first N bytes of file for video hashing.
+    
+    Args:
+        file_path: Path to the file
+        header_size: Number of bytes to read
+        
+    Returns:
+        Bytes from file header
+    """
+    try:
+        with open(file_path, "rb") as f:
+            return f.read(header_size)
+    except Exception as e:
+        raise

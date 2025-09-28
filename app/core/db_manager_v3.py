@@ -306,13 +306,58 @@ class DatabaseManagerV3:
             logging_service.log("ERROR", error_msg)
             raise
 
+    def _write_results_to_database(self, results: List[Dict[str, Any]]) -> None:
+        """Write file processing results to database."""
+        if not results:
+            return
+            
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                
+                # Use cached field mappings, db_fields and SQL statement for efficiency
+                field_mappings = self.field_mappings
+                db_fields = self.db_fields
+                insert_sql = self.insert_sql
+                
+                # Prepare all values for batch INSERT using list comprehension for efficiency
+                all_values = [
+                    [None if field == 'id' else result.get('metadata', {}).get(field, '') 
+                     for field in db_fields]
+                    for result in results 
+                    if result.get('success', False)
+                ]
+                
+                # Execute batch INSERT for all records at once
+                if all_values:
+                    cursor.executemany(insert_sql, all_values)
+                    logging_service.log("DEBUG", f"Batch inserted {len(all_values)} records")#DEBUG_ON Batch inserted X records
+                    
+                    # Transaction batching - commit after X batches
+                    self.pending_batches += 1
+                    if self.pending_batches >= self.transaction_batch_size:
+                        conn.commit()
+                        self.pending_batches = 0
+                        logging_service.log("DEBUG", f"Transaction committed after {self.transaction_batch_size} batches")#DEBUG_ON Transaction committed after X batches
+                    else:
+                        logging_service.log("DEBUG", f"Batch queued, pending batches: {self.pending_batches}/{self.transaction_batch_size}")#DEBUG_ON Batch queued, pending batches: X/Y
+                        # Always commit for now to ensure data is written
+                        conn.commit()
+                        logging_service.log("DEBUG", "Force committed transaction to ensure data persistence")#DEBUG_ON Force committed transaction to ensure data persistence
+                logging_service.log("DEBUG", f"Successfully wrote {len(results)} results to database")#DEBUG_ON Successfully wrote X results to database
+                
+        except Exception as e:
+            error_msg = f"Error writing results to database: {e}"
+            logging_service.log("ERROR", error_msg)
+            raise
+
     def _finalize_transaction(self) -> None:
         """Finalize any pending transaction batches."""
         try:
             if self.pending_batches > 0:
                 with self._get_connection() as conn:
                     conn.commit()
-                logging_service.log("DEBUG", f"Finalized transaction with {self.pending_batches} pending batches")#DEBUG_OFF Finalized transaction with X pending batches
+                logging_service.log("DEBUG", f"Finalized transaction with {self.pending_batches} pending batches")#DEBUG_ON Finalized transaction with X pending batches
                 self.pending_batches = 0
         except Exception as e:
             logging_service.log("ERROR", f"Error finalizing transaction: {e}")

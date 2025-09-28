@@ -85,7 +85,25 @@ class ConfigPage:
 
             # Advanced Tab
             with ui.tab_panel(advanced_tab):
-                self._create_advanced_settings()
+                with ui.card().classes("w-full mb-4"):
+                    ui.label("Hash Settings").classes("text-h6 q-mb-md")
+                    
+                    with ui.grid(columns=2).classes("w-full gap-4"):
+                        self.ui_elements["hash_chunk_size"] = ui.number(
+                            "Hash Chunk Size (bytes)",
+                            value=get_param("processing", "hash_chunk_size"),
+                            min=1,
+                            max=2147483647,
+                            format="%i",
+                        ).classes("w-full")
+                        
+                        self.ui_elements["video_header_size"] = ui.number(
+                            "Video Header Size (bytes)",
+                            value=get_param("processing", "video_header_size"),
+                            min=1,
+                            max=2147483647,
+                            format="%i",
+                        ).classes("w-full")
 
     def _create_general_settings(self) -> None:
         """Maak general settings sectie."""
@@ -516,6 +534,8 @@ class ConfigPage:
             set_param("processing", "processing_array", self.ui_elements["processing_array"].value)
             set_param("processing", "worker_timeout", int(self.ui_elements["worker_timeout"].value))
             set_param("processing", "read_batch_size", int(self.ui_elements["read_batch_size"].value))
+            set_param("processing", "hash_chunk_size", int(self.ui_elements["hash_chunk_size"].value))
+            set_param("processing", "video_header_size", int(self.ui_elements["video_header_size"].value))
 
             # Save paths parameters
             set_param("paths", "source_path", self.ui_elements["source_path"].value)

@@ -79,7 +79,9 @@ class ConfigManager:
                 "nicegui_update_interval": 100,
                 "ui_update": 500,
                 "worker_timeout": 30000,
-                "read_batch_size": 5
+                "read_batch_size": 5,
+                "hash_chunk_size": 65536,
+                "video_header_size": 4096
             },
             "processing_queues": {
                 "result_queue_depth": 32,
@@ -152,7 +154,9 @@ class ConfigManager:
                 "nicegui_update_interval": 100,
                 "ui_update": 500,
                 "worker_timeout": 30000,
-                "read_batch_size": 5
+                "read_batch_size": 5,
+                "hash_chunk_size": 65536,
+                "video_header_size": 4096
             },
             "processing_queues": {
                 "result_queue_depth": 32,
@@ -305,6 +309,8 @@ class ConfigManager:
                 "nicegui_update_interval": {"min": 10, "max": 60000, "default": 100},
                 "ui_update": {"min": 20, "max": 60000, "default": 500},
                 "read_batch_size": {"min": 1, "max": 1000, "default": 5},
+                "hash_chunk_size": {"min": 1, "max": 2147483647, "default": 65536},
+                "video_header_size": {"min": 1, "max": 2147483647, "default": 4096},
             },
             "processing_queues": {
                 "result_queue_depth": {"min": 5, "max": 64, "default": 32},
@@ -367,6 +373,8 @@ class ConfigManager:
                 "nicegui_update_interval": {"min": 10, "max": 60000, "default": 100},
                 "ui_update": {"min": 20, "max": 60000, "default": 500},
                 "read_batch_size": {"min": 1, "max": 1000, "default": 5},
+                "hash_chunk_size": {"min": 1, "max": 2147483647, "default": 65536},
+                "video_header_size": {"min": 1, "max": 2147483647, "default": 4096},
             },
             "processing_queues": {
                 "result_queue_depth": {"min": 5, "max": 64, "default": 32},

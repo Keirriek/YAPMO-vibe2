@@ -57,7 +57,9 @@
     "ui_update": 500,
     "processing_array": null,
     "worker_timeout": 30000,
-    "read_batch_size": 16
+    "read_batch_size": 16,
+    "hash_chunk_size": 65536,
+    "video_header_size": 4096
   },
   "processing_queues": {
     "result_queue_depth": 32,
@@ -83,7 +85,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures",
+    "search_path": "/Pictures-test",
     "browse_path": "/"
   },
   "extensions": {
@@ -120,6 +122,8 @@
     "YAPMO:Name_New": "YAPMO_FILE_Name_New",
     "YAPMO:Path_New": "YAPMO_FILE_Path_New",
     "YAPMO:Hash": "YAPMO_hash",
+    "YAPMO:HashChunkSize": "YAPMO_hash_chunk_size",
+    "YAPMO:VideoHeaderSize": "YAPMO_video_header_size",
     "YAPMO:FileModifyDate": "YAPMO_FILE_Modify_Date",
     "YAPMO:Sidecars": "YAPMO_Sidecars"
   },
