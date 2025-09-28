@@ -81,30 +81,30 @@ class ResultProcessor:
         """
         with self.lock:
             self.processed_count += 1
-            logging_service.log("DEBUG", f"_process_result: Processing result #{self.processed_count}")#DEBUG_ON _process_result: Processing result #X
+            # logging_service.log("DEBUG", f"_process_result: Processing result #{self.processed_count}")#DEBUG_OFF _process_result: Processing result #X
             
             # Add to batch buffer
             self.batch_buffer.append(result)
-            logging_service.log("DEBUG", f"_process_result: Added to buffer, buffer size now {len(self.batch_buffer)}/{self.batch_size}")#DEBUG_ON _process_result: Added to buffer, buffer size now X/Y
+            # logging_service.log("DEBUG", f"_process_result: Added to buffer, buffer size now {len(self.batch_buffer)}/{self.batch_size}")#DEBUG_OFF _process_result: Added to buffer, buffer size now X/Y
             
             # Check if this is END_OF_BATCH marker
             if result.get('is_last_result', False):
-                logging_service.log("DEBUG", "_process_result: END_OF_BATCH marker detected, processing final batch")#DEBUG_ON _process_result: END_OF_BATCH marker detected, processing final batch
+                # logging_service.log("DEBUG", "_process_result: END_OF_BATCH marker detected, processing final batch")#DEBUG_OFF _process_result: END_OF_BATCH marker detected, processing final batch
                 # Process final batch
                 self._process_batch()
                 return
             
             # Check if batch is full
             if len(self.batch_buffer) >= self.batch_size:
-                logging_service.log("DEBUG", f"_process_result: Batch full ({len(self.batch_buffer)}/{self.batch_size}), processing batch")#DEBUG_ON _process_result: Batch full (X/Y), processing batch
+                # logging_service.log("DEBUG", f"_process_result: Batch full ({len(self.batch_buffer)}/{self.batch_size}), processing batch")#DEBUG_OFF _process_result: Batch full (X/Y), processing batch
                 self._process_batch()
     
     def _process_batch(self):
         """Process the current batch buffer."""
-        logging_service.log("DEBUG", f"_process_batch called with {len(self.batch_buffer)} results in buffer")#DEBUG_ON _process_batch called with X results in buffer
+        # logging_service.log("DEBUG", f"_process_batch called with {len(self.batch_buffer)} results in buffer")#DEBUG_OFF _process_batch called with X results in buffer
         
         if not self.batch_buffer:
-            logging_service.log("DEBUG", "_process_batch: No results in buffer, returning")#DEBUG_ON _process_batch: No results in buffer, returning
+            # logging_service.log("DEBUG", "_process_batch: No results in buffer, returning")#DEBUG_OFF _process_batch: No results in buffer, returning
             return
             
         # Count successes and failures
@@ -116,7 +116,7 @@ class ResultProcessor:
                 # Log failures
                 logging_service.log("WARNING", f"Failed to process file {result.get('file_path', 'unknown')}: {result.get('log_message', 'Unknown error')}")
         
-        logging_service.log("DEBUG", f"_process_batch: Sending {len(self.batch_buffer)} results to database")#DEBUG_ON _process_batch: Sending X results to database
+        # logging_service.log("DEBUG", f"_process_batch: Sending {len(self.batch_buffer)} results to database")#DEBUG_OFF _process_batch: Sending X results to database
         
         # Send batch to database
         from core.db_manager_v3 import db_add_result
@@ -124,7 +124,7 @@ class ResultProcessor:
         
         # Clear buffer
         self.batch_buffer.clear()
-        logging_service.log("DEBUG", "_process_batch: Batch processed and buffer cleared")#DEBUG_ON _process_batch: Batch processed and buffer cleared
+        # logging_service.log("DEBUG", "_process_batch: Batch processed and buffer cleared")#DEBUG_OFF _process_batch: Batch processed and buffer cleared
     
     
     def get_stats(self) -> Dict[str, int]:

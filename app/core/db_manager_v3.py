@@ -35,6 +35,10 @@ class DatabaseManagerV3:
         # Thread safety
         self.db_lock = Lock()
         
+        # Load field mappings once at initialization for efficiency
+        self.field_mappings = self._get_field_mappings()
+        self.db_fields = list(self.field_mappings.values()) + ['id']
+        
         # Initialize database
         self._initialize_database()
         
@@ -109,8 +113,8 @@ class DatabaseManagerV3:
     def _create_media_table(self, conn: sqlite3.Connection) -> None:
         """Create media table with dynamic fields from config."""
         try:
-            # Get field mappings from config
-            field_mappings = self._get_field_mappings()
+            # Use cached field mappings for efficiency
+            field_mappings = self.field_mappings
             
             # Base fields
             fields = [
@@ -217,8 +221,8 @@ class DatabaseManagerV3:
                 logging_service.log("INFO", "Database does not exist - schema check not applicable")
                 return True
             
-            # Get expected fields from config
-            expected_fields = set(self._get_field_mappings().values())
+            # Use cached field mappings for efficiency
+            expected_fields = set(self.field_mappings.values())
             expected_fields.add('id')  # Add primary key
             
             # Get actual database columns
@@ -259,9 +263,9 @@ class DatabaseManagerV3:
             with self._get_connection() as conn:
                 cursor = conn.cursor()
                 
-                # Get field mappings to know which fields to insert
-                field_mappings = self._get_field_mappings()
-                db_fields = list(field_mappings.values()) + ['id']  # Add primary key
+                # Use cached field mappings and db_fields for efficiency
+                field_mappings = self.field_mappings
+                db_fields = self.db_fields
                 
                 # Prepare INSERT statement
                 placeholders = ', '.join(['?' for _ in db_fields])
@@ -274,7 +278,7 @@ class DatabaseManagerV3:
                     
                     # Extract metadata from result
                     metadata = result.get('metadata', {})
-                    logging_service.log("DEBUG", f"Metadata for {result.get('file_path', 'unknown')}: {metadata}")#DEBUG_ON Metadata for file_path: metadata
+                    # logging_service.log("DEBUG", f"Metadata for {result.get('file_path', 'unknown')}: {metadata}")#DEBUG_OFF Metadata for file_path: metadata
                     
                     # Prepare values for insertion - simplified approach
                     values = []
@@ -286,14 +290,14 @@ class DatabaseManagerV3:
                             value = metadata.get(field, '')
                             values.append(value)
                     
-                    logging_service.log("DEBUG", f"Values for insertion: {values[:5]}... (total: {len(values)})")#DEBUG_ON Values for insertion: first 5 values and total count
+                    # logging_service.log("DEBUG", f"Values for insertion: {values[:5]}... (total: {len(values)})")#DEBUG_OFF Values for insertion: first 5 values and total count
                     
                     # Insert record
                     cursor.execute(insert_sql, values)
-                    logging_service.log("DEBUG", f"Inserted record for {result.get('file_path', 'unknown')}")#DEBUG_ON Inserted record for file_path
+                    # logging_service.log("DEBUG", f"Inserted record for {result.get('file_path', 'unknown')}")#DEBUG_OFF Inserted record for file_path
                 
                 conn.commit()
-                logging_service.log("INFO", f"Successfully wrote {len(results)} results to database")
+                # logging_service.log("DEBUG", f"Successfully wrote {len(results)} results to database")#DEBUG_OFF Successfully wrote X results to database
                 
         except Exception as e:
             error_msg = f"Error writing results to database: {e}"
@@ -361,37 +365,38 @@ def db_add_result(result: List[Dict[str, Any]]) -> None:
     Args:
         result: List of dictionaries containing file processing results
     """
-    logging_service.log("DEBUG", f"db_add_result called with {len(result) if result else 0} results")#DEBUG_ON db_add_result called with X results
+    # logging_service.log("DEBUG", f"db_add_result called with {len(result) if result else 0} results")#DEBUG_OFF db_add_result called with X results
     
     if not result:
-        logging_service.log("DEBUG", "db_add_result: No results to process, returning")#DEBUG_ON db_add_result: No results to process, returning
+        # logging_service.log("DEBUG", "db_add_result: No results to process, returning")#DEBUG_OFF db_add_result: No results to process, returning
         return
     
     # Check if this is the last result in a batch
-    is_last_batch = any(r.get('is_last_result', False) for r in result)
-    logging_service.log("DEBUG", f"db_add_result: is_last_batch = {is_last_batch}")#DEBUG_ON db_add_result: is_last_batch = X
+    # #DEBUG_OFF Start Bock Last batch add_db_result
+    # is_last_batch = any(r.get('is_last_result', False) for r in result)#DEBUG_OFF
+    #     # logging_service.log("DEBUG", f"db_add_result: is_last_batch = {is_last_batch}")#DEBUG_OFF db_add_result: is_last_batch = X
     
-    if is_last_batch:
-        logging_service.log("DEBUG", f"Processing final batch with {len(result)} results")#DEBUG_ON Processing final batch with X results
-    else:
-        logging_service.log("DEBUG", f"Processing batch with {len(result)} results")#DEBUG_ON Processing batch with X results
-    
+    # if is_last_batch:
+    #     logging_service.log("DEBUG", f"Processing final batch with {len(result)} results")#DEBUG_OFF Processing final batch with X results
+    # else:
+    #     logging_service.log("DEBUG", f"Processing batch with {len(result)} results")#DEBUG_OFF Processing batch with X results
+    # #DEBUG_OFF End Block Last batch add_db_result
     # Filter out END_OF_BATCH markers and process only real results
     real_results = [r for r in result if not r.get('is_last_result', False)]
     
     if not real_results:
-        logging_service.log("DEBUG", "db_add_result: No real results to process, only END_OF_BATCH markers")#DEBUG_ON db_add_result: No real results to process, only END_OF_BATCH markers
+        # logging_service.log("DEBUG", "db_add_result: No real results to process, only END_OF_BATCH markers")#DEBUG_OFF db_add_result: No real results to process, only END_OF_BATCH markers
         return
     
     # Process real results to database
     try:
         db_manager = get_database_manager()
         db_manager._write_results_to_database(real_results)
-        logging_service.log("DEBUG", f"db_add_result: Successfully wrote {len(real_results)} results to database")#DEBUG_ON db_add_result: Successfully wrote X results to database
+        # logging_service.log("DEBUG", f"db_add_result: Successfully wrote {len(real_results)} results to database")#DEBUG_OFF db_add_result: Successfully wrote X results to database
     except Exception as e:
         logging_service.log("ERROR", f"db_add_result: Failed to write results to database: {e}")
         # Log individual results for debugging
         for r in real_results:
             file_path = r.get('file_path', 'unknown')
             success = r.get('success', False)
-            logging_service.log("DEBUG", f"Result: {file_path} - {'SUCCESS' if success else 'FAILED'}")#DEBUG_ON Result: file_path - SUCCESS/FAILED
+            logging_service.log("DEBUG", f"Result: {file_path} - {'SUCCESS' if success else 'FAILED'}")#DEBUG_OFF Result: file_path - SUCCESS/FAILED

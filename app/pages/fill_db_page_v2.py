@@ -195,7 +195,7 @@ class ParallelWorkerManager:
                 self.logging_queue.put(log_msg)
             
             # Add result to result queue for ResultProcessor
-            logging_service.log("DEBUG", f"Adding result to result_queue: {result.get('file_path', 'unknown')}")#DEBUG_ON Adding result to result_queue: file_path
+            # logging_service.log("DEBUG", f"Adding result to result_queue: {result.get('file_path', 'unknown')}")#DEBUG_OF Adding result to result_queue: file_path
             self.result_queue.put(result)
             
             # Update progress
@@ -1820,12 +1820,12 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         self.worker_manager.start_workers()
         
         # Start result processor to consume results from the queue
-        logging_service.log("DEBUG", "Creating ResultProcessor with queues")#DEBUG_ON Creating ResultProcessor with queues
+        # logging_service.log("DEBUG", "Creating ResultProcessor with queues")#DEBUG_OFF Creating ResultProcessor with queues
         self.result_processor = ResultProcessor(
             result_queue=self.worker_manager.result_queue,
             logging_queue=self.worker_manager.logging_queue
         )
-        logging_service.log("DEBUG", "Starting ResultProcessor")#DEBUG_ON Starting ResultProcessor
+        # logging_service.log("DEBUG", "Starting ResultProcessor")#DEBUG_OFF Starting ResultProcessor
         self.result_processor.start()
         
         # Submit files to workers using batch processing for better ExifTool performance
@@ -1869,7 +1869,7 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         from core.db_manager_v3 import create_end_of_batch_result
         end_of_batch_result = create_end_of_batch_result()
         self.worker_manager.result_queue.put(end_of_batch_result)
-        logging_service.log("DEBUG", "END_OF_BATCH marker added to result queue")#DEBUG_ON END_OF_BATCH marker added to result queue
+        # logging_service.log("DEBUG", "END_OF_BATCH marker added to result queue")#DEBUG_OFF END_OF_BATCH marker added to result queue
         
         # Stop workers first (no more results will be added to queue)
         self.worker_manager.stop_workers()
