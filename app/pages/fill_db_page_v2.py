@@ -195,6 +195,7 @@ class ParallelWorkerManager:
                 self.logging_queue.put(log_msg)
             
             # Add result to result queue for ResultProcessor
+            logging_service.log("DEBUG", f"Adding result to result_queue: {result.get('file_path', 'unknown')}")#DEBUG_ON Adding result to result_queue: file_path
             self.result_queue.put(result)
             
             # Update progress
@@ -1819,10 +1820,12 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
         self.worker_manager.start_workers()
         
         # Start result processor to consume results from the queue
+        logging_service.log("DEBUG", "Creating ResultProcessor with queues")#DEBUG_ON Creating ResultProcessor with queues
         self.result_processor = ResultProcessor(
             result_queue=self.worker_manager.result_queue,
             logging_queue=self.worker_manager.logging_queue
         )
+        logging_service.log("DEBUG", "Starting ResultProcessor")#DEBUG_ON Starting ResultProcessor
         self.result_processor.start()
         
         # Submit files to workers using batch processing for better ExifTool performance
@@ -1947,7 +1950,48 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
             return False, "No read permission for directory"
         
         return True, ""
-
+    # def _show_database_schema_mismatch_dialog(self) -> None:
+    #     """Show database schema mismatch dialog with instructions."""
+    #     dialog = ui.dialog()
+    #     with dialog, ui.card().classes("w-[500px] p-6"):
+    #         ui.label("Database Schema Mismatch").classes("text-xl font-bold mb-4 text-red-600")
+    #         ui.label("There is a mismatch between the configuration config.json and the existing database.").classes("text-base mb-2")
+    #         ui.label("Please do one of the following:").classes("text-base mb-2 font-semibold")
+    #         ui.label("a) Close the application and delete the database file").classes("text-base mb-1 ml-4")
+    #         ui.label("b) Adjust the config.json to match the database").classes("text-base mb-4 ml-4")
+    #         ui.label("The current database fields can be found in the log.").classes("text-sm text-gray-600 mb-6")
+            
+    #         with ui.row().classes("w-full justify-end"):
+    #             ui.button("OK", on_click=dialog.close).props("color=primary")
+        
+    #     dialog.open()
+    # 
+#-------------------------------------------------------------------------------------------------
+    # def _show_database_schema_mismatch_dialog(self) -> None:
+    #     """Show Database Schema Mismatch dialog."""
+    #     def _close_dialog(dialog: ui.dialog) -> None:
+    #         """Close dialog and stay in IDLE."""
+    #         dialog.close()
+    #         logging_service.log("INFO_EXTRA", "User acknowledged Database schame mismatch")
+        
+    #     # Create dialog with same styling as exit/abort dialogs
+    #     dialog = ui.dialog()
+    #     with dialog, YAPMOTheme.create_dialog_card():
+    #         YAPMOTheme.create_dialog_title("Database Schema Mismatch")
+            
+    #         YAPMOTheme.create_dialog_content(
+    #             "Sorry, there is a mismatch between the configuration config.json and the existing database.\n\n"
+    #             "You can change your config to proceed. Or delete the database and start over."
+    #         )
+            
+    #         with YAPMOTheme.create_dialog_buttons():
+    #             YAPMOTheme.create_dialog_button_confirm(
+    #                 "OK",
+    #                 lambda: _close_dialog(dialog)
+    #             )
+        
+    #     dialog.open()
+#-------------------------------------------------------------------------------------------------
     def _initialize_page(self) -> None:
         """Initialize the page and transition to IDLE state."""
         try:
@@ -1955,12 +1999,14 @@ media files, {sidecars_count} sidecars, {directories_count} directories - Elapse
             logging_service.reload_config()
             
             # Initialize database manager
-            from core.db_manager_v3 import get_database_manager
+            from core.db_manager_v3 import get_database_manager, check_database_schema
             db_manager = get_database_manager()
             logging_service.log("INFO", "Database manager initialized successfully")
             
-            # Check for any critical errors during initialization
-            # For now, we assume initialization is always successful
+            # Check database schema compatibility with config
+            if not check_database_schema():
+                ui.notify("Database schema does not match configuration. Please check the log for details.", type="negative")
+                logging_service.log("WARNING", "Database schema mismatch detected during page initialization")
             
             # Clear flags on initialization
             yapmo_globals.action_finished_flag = False

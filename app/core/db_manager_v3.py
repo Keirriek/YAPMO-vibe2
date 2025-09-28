@@ -210,6 +210,42 @@ class DatabaseManagerV3:
             if conn:
                 conn.close()
     
+    def check_database_schema_match(self) -> bool:
+        """Check if database schema matches current config."""
+        try:
+            if not self.db_path.exists():
+                logging_service.log("INFO", "Database does not exist - schema check not applicable")
+                return True
+            
+            # Get expected fields from config
+            expected_fields = set(self._get_field_mappings().values())
+            expected_fields.add('id')  # Add primary key
+            
+            # Get actual database columns
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(f"PRAGMA table_info({self.db_table_media})")
+                actual_columns = {row[1] for row in cursor.fetchall()}
+            
+            # Check if schemas match
+            missing_in_db = expected_fields - actual_columns
+            extra_in_db = actual_columns - expected_fields
+            
+            if missing_in_db or extra_in_db:
+                logging_service.log("WARNING", f"Database schema mismatch detected:")
+                if missing_in_db:
+                    logging_service.log("WARNING", f"  Missing columns in DB: {sorted(missing_in_db)}")
+                if extra_in_db:
+                    logging_service.log("WARNING", f"  Extra columns in DB: {sorted(extra_in_db)}")
+                return False
+            else:
+                logging_service.log("INFO", f"Database schema matches config - OK: {self.db_path}")
+                return True
+                
+        except Exception as e:
+            logging_service.log("ERROR", f"Error checking database schema: {e}")
+            return False
+
     def clear_database(self) -> None:
         """Clear the database by removing the database file."""
         try:
@@ -234,6 +270,16 @@ def get_database_manager() -> DatabaseManagerV3:
     if _db_manager is None:
         _db_manager = DatabaseManagerV3()
     return _db_manager
+
+
+def check_database_schema() -> bool:
+    """Check if database schema matches config - simple interface function."""
+    try:
+        db_manager = get_database_manager()
+        return db_manager.check_database_schema_match()
+    except Exception as e:
+        logging_service.log("ERROR", f"Database schema check failed: {e}")
+        return False
 
 
 def create_end_of_batch_result() -> Dict[str, Any]:
@@ -261,11 +307,15 @@ def db_add_result(result: List[Dict[str, Any]]) -> None:
     Args:
         result: List of dictionaries containing file processing results
     """
+    logging_service.log("DEBUG", f"db_add_result called with {len(result) if result else 0} results")#DEBUG_ON db_add_result called with X results
+    
     if not result:
+        logging_service.log("DEBUG", "db_add_result: No results to process, returning")#DEBUG_ON db_add_result: No results to process, returning
         return
     
     # Check if this is the last result in a batch
     is_last_batch = any(r.get('is_last_result', False) for r in result)
+    logging_service.log("DEBUG", f"db_add_result: is_last_batch = {is_last_batch}")#DEBUG_ON db_add_result: is_last_batch = X
     
     if is_last_batch:
         logging_service.log("DEBUG", f"Processing final batch with {len(result)} results")#DEBUG_ON Processing final batch with X results
@@ -282,4 +332,4 @@ def db_add_result(result: List[Dict[str, Any]]) -> None:
         else:
             file_path = r.get('file_path', 'unknown')
             success = r.get('success', False)
-            # logging_service.log("DEBUG", f"Result: {file_path} - {'SUCCESS' if success else 'FAILED'}")#DEBUG_OFF Result Succes/Failure
+            logging_service.log("DEBUG", f"Result: {file_path} - {'SUCCESS' if success else 'FAILED'}")#DEBUG_ON Result: file_path - SUCCESS/FAILED

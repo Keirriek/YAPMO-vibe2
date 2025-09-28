@@ -12,7 +12,7 @@ from pages.fill_db_page_v2 import create_fill_db_page_v2
 # from pages.test_traverse_page import create_test_traverse_page  # Removed
 from config import get_param, show_default_config_dialog, was_config_created, has_json_error, has_validation_error, show_json_error_dialog, show_validation_error_dialog
 
-RELOAD = True
+RELOAD = False
 
 def main() -> None:
     """Main entry point for the YAPMO application."""

@@ -117,7 +117,7 @@
     "YAPMO:FileSize": "YAPMO_FILE_Size",
     "YAPMO:FileType": "YAPMO_FILE_Type",
     "YAPMO:Name_New": "YAPMO_FILE_Name_New",
-    "YAPMO:Path_New": "YAPMO_FILE_Path_Old",
+    "YAPMO:Path_New": "YAPMO_FILE_Path_New",
     "YAPMO:Hash": "YAPMO_hash",
     "YAPMO:FileModifyDate": "YAPMO_FILE_Modify_Date",
     "YAPMO:Sidecars": "YAPMO_Sidecars"
