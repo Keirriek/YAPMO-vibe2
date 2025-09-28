@@ -246,6 +246,60 @@ class DatabaseManagerV3:
             logging_service.log("ERROR", f"Error checking database schema: {e}")
             return False
 
+    def _write_results_to_database(self, results: List[Dict[str, Any]]) -> None:
+        """Write file processing results to database.
+        
+        Args:
+            results: List of file processing results to write to database
+        """
+        if not results:
+            return
+            
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                
+                # Get field mappings to know which fields to insert
+                field_mappings = self._get_field_mappings()
+                db_fields = list(field_mappings.values()) + ['id']  # Add primary key
+                
+                # Prepare INSERT statement
+                placeholders = ', '.join(['?' for _ in db_fields])
+                insert_sql = f"INSERT INTO {self.db_table_media} ({', '.join(db_fields)}) VALUES ({placeholders})"
+                
+                # Process each result
+                for result in results:
+                    if not result.get('success', False):
+                        continue  # Skip failed results
+                    
+                    # Extract metadata from result
+                    metadata = result.get('metadata', {})
+                    logging_service.log("DEBUG", f"Metadata for {result.get('file_path', 'unknown')}: {metadata}")#DEBUG_ON Metadata for file_path: metadata
+                    
+                    # Prepare values for insertion - simplified approach
+                    values = []
+                    for field in db_fields:
+                        if field == 'id':
+                            values.append(None)  # Auto-increment
+                        else:
+                            # Direct key match - metadata keys match database field names
+                            value = metadata.get(field, '')
+                            values.append(value)
+                    
+                    logging_service.log("DEBUG", f"Values for insertion: {values[:5]}... (total: {len(values)})")#DEBUG_ON Values for insertion: first 5 values and total count
+                    
+                    # Insert record
+                    cursor.execute(insert_sql, values)
+                    logging_service.log("DEBUG", f"Inserted record for {result.get('file_path', 'unknown')}")#DEBUG_ON Inserted record for file_path
+                
+                conn.commit()
+                logging_service.log("INFO", f"Successfully wrote {len(results)} results to database")
+                
+        except Exception as e:
+            error_msg = f"Error writing results to database: {e}"
+            logging_service.log("ERROR", error_msg)
+            raise
+
     def clear_database(self) -> None:
         """Clear the database by removing the database file."""
         try:
@@ -319,17 +373,25 @@ def db_add_result(result: List[Dict[str, Any]]) -> None:
     
     if is_last_batch:
         logging_service.log("DEBUG", f"Processing final batch with {len(result)} results")#DEBUG_ON Processing final batch with X results
-        # TODO: Implement batch finalization in future steps
     else:
         logging_service.log("DEBUG", f"Processing batch with {len(result)} results")#DEBUG_ON Processing batch with X results
-        # logging_service.log("DEBUG", f"Processing batch with >>> {result} <<<")#DEBUG_OFF Processing batch with X results
-        # TODO: Implement batch processing in future steps
     
-    # For now, just log the results (placeholder implementation)
-    for r in result:
-        if r.get('is_last_result', False):
-            logging_service.log("DEBUG", "END_OF_BATCH marker received")#DEBUG_ON END_OF_BATCH marker received
-        else:
+    # Filter out END_OF_BATCH markers and process only real results
+    real_results = [r for r in result if not r.get('is_last_result', False)]
+    
+    if not real_results:
+        logging_service.log("DEBUG", "db_add_result: No real results to process, only END_OF_BATCH markers")#DEBUG_ON db_add_result: No real results to process, only END_OF_BATCH markers
+        return
+    
+    # Process real results to database
+    try:
+        db_manager = get_database_manager()
+        db_manager._write_results_to_database(real_results)
+        logging_service.log("DEBUG", f"db_add_result: Successfully wrote {len(real_results)} results to database")#DEBUG_ON db_add_result: Successfully wrote X results to database
+    except Exception as e:
+        logging_service.log("ERROR", f"db_add_result: Failed to write results to database: {e}")
+        # Log individual results for debugging
+        for r in real_results:
             file_path = r.get('file_path', 'unknown')
             success = r.get('success', False)
             logging_service.log("DEBUG", f"Result: {file_path} - {'SUCCESS' if success else 'FAILED'}")#DEBUG_ON Result: file_path - SUCCESS/FAILED
