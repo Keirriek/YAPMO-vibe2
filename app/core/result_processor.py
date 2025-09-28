@@ -118,9 +118,9 @@ class ResultProcessor:
         
         # logging_service.log("DEBUG", f"_process_batch: Sending {len(self.batch_buffer)} results to database")#DEBUG_OFF _process_batch: Sending X results to database
         
-        # Send batch to database
+        # Send batch to database (no copy needed for efficiency)
         from core.db_manager_v3 import db_add_result
-        db_add_result(self.batch_buffer.copy())
+        db_add_result(self.batch_buffer)
         
         # Clear buffer
         self.batch_buffer.clear()

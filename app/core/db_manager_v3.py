@@ -275,26 +275,13 @@ class DatabaseManagerV3:
                 db_fields = self.db_fields
                 insert_sql = self.insert_sql
                 
-                # Prepare all values for batch INSERT
-                all_values = []
-                for result in results:
-                    if not result.get('success', False):
-                        continue  # Skip failed results
-                    
-                    # Extract metadata from result
-                    metadata = result.get('metadata', {})
-                    
-                    # Prepare values for insertion - simplified approach
-                    values = []
-                    for field in db_fields:
-                        if field == 'id':
-                            values.append(None)  # Auto-increment
-                        else:
-                            # Direct key match - metadata keys match database field names
-                            value = metadata.get(field, '')
-                            values.append(value)
-                    
-                    all_values.append(values)
+                # Prepare all values for batch INSERT using list comprehension for efficiency
+                all_values = [
+                    [None if field == 'id' else result.get('metadata', {}).get(field, '') 
+                     for field in db_fields]
+                    for result in results 
+                    if result.get('success', False)
+                ]
                 
                 # Execute batch INSERT for all records at once
                 if all_values:
