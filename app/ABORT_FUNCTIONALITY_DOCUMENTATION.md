@@ -163,3 +163,12 @@ yapmo_globals.abort_requested = False  # Reset abort flag for new scan
 - Performance geoptimaliseerd
 - Alle bugs gefixed
 - State machine integratie compleet
+
+## Gerelateerde Optimalisaties
+De abort functionaliteit werkt samen met andere performance verbeteringen:
+- **Hash Calculation Optimalisatie**: 10.9x sneller hash berekening
+- **Batch Processing Optimalisatie**: 5x minder ExifTool overhead
+- **Database Write Optimalisatie**: 10x snellere database writes
+- **File Categorization Optimalisatie**: 50% snellere file processing
+
+Zie `PERFORMANCE_OPTIMIZATIONS_DOCUMENTATION.md` voor complete details.

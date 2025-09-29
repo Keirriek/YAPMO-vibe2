@@ -1025,20 +1025,57 @@ class FillDbPageV2:
             ui.notify(error_msg, type="error")
 
     def _clear_database(self) -> None:
-        """Clear the database using database manager."""
-        try:
-            from core.db_manager_v3 import get_database_manager
-            
-            # Get database manager and clear database
-            db_manager = get_database_manager()
-            db_manager.clear_database()
-            
-            ui.notify("Database cleared successfully", type="positive")
+        """Show confirmation dialog for clearing database."""
+        self._show_clear_database_dialog()
+    
+    def _show_clear_database_dialog(self) -> None:
+        """Show confirmation dialog for clearing database."""
+        def _confirm_clear_database(dialog) -> None:
+            """Confirm clear database and execute the action."""
+            dialog.close()
+            try:
+                from core.db_manager_v3 import get_database_manager
                 
-        except Exception as e:
-            error_msg = f"Error clearing database: {str(e)}"
-            logging_service.log("ERROR", error_msg)
-            ui.notify(error_msg, type="error")
+                # Get database manager and clear database
+                db_manager = get_database_manager()
+                db_manager.clear_database()
+                
+                ui.notify("Database cleared successfully", type="positive")
+                logging_service.log("INFO", "User cleared database")
+                
+                # Reset UI to IDLE state after clearing database
+                # Clear scan data first, then let IDLE state handle UI reset
+                if hasattr(self, 'scanned_files'):
+                    self.scanned_files = []
+                if hasattr(self, 'last_scanned_directory'):
+                    self.last_scanned_directory = ""
+                
+                # Transition to IDLE state - this will handle all UI reset
+                self._set_state(ApplicationState.IDLE)
+                    
+            except Exception as e:
+                error_msg = f"Error clearing database: {str(e)}"
+                logging_service.log("ERROR", error_msg)
+                ui.notify(error_msg, type="error")
+
+        # Create dialog with same styling as exit/abort dialogs
+        dialog = ui.dialog()
+        with dialog, YAPMOTheme.create_dialog_card():
+            YAPMOTheme.create_dialog_title("Confirm Clear Database")
+            
+            YAPMOTheme.create_dialog_content(
+                "Are you sure you want to clear all records from the database?\n\n"
+                "This action cannot be undone."
+            )
+            
+            with YAPMOTheme.create_dialog_buttons():
+                YAPMOTheme.create_dialog_button_cancel(dialog.close)
+                YAPMOTheme.create_dialog_button_destructive(
+                    "Clear Database",
+                    lambda: _confirm_clear_database(dialog),
+                )
+        
+        dialog.open()
 
     async def _select_directory(self) -> None:
         """Select directory for scanning."""

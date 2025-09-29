@@ -313,9 +313,22 @@ def process_single_file_with_metadata(file_path: str, worker_id: int, exiftool_m
             file_hash = calculate_file_hash(file_path, media_type, exiftool_metadata, hash_chunk_size, video_header_size)
             mapped_metadata['YAPMO_hash'] = file_hash
             
-            # Store hash parameters for debugging/verification
-            mapped_metadata['YAPMO_hash_chunk_size'] = str(hash_chunk_size)
-            mapped_metadata['YAPMO_video_header_size'] = str(video_header_size)
+            # Store hash parameters for debugging/verification (only relevant ones)
+            if media_type == "image":
+                # For images, chunk_size is only used for large files (>10MB)
+                file_size = os.path.getsize(file_path)
+                if file_size >= 10 * 1024 * 1024:  # >= 10MB
+                    mapped_metadata['YAPMO_hash_chunk_size'] = str(hash_chunk_size)
+                else:
+                    mapped_metadata['YAPMO_hash_chunk_size'] = "0"  # Not used for small images
+                mapped_metadata['YAPMO_video_header_size'] = "0"  # Not used for images
+            elif media_type == "video":
+                mapped_metadata['YAPMO_hash_chunk_size'] = "0"  # Not used for videos
+                mapped_metadata['YAPMO_video_header_size'] = str(video_header_size)
+            else:
+                # Fallback for unknown types
+                mapped_metadata['YAPMO_hash_chunk_size'] = str(hash_chunk_size)
+                mapped_metadata['YAPMO_video_header_size'] = "0"
             
             # Add hash calculation success to log messages
             log_messages.append({
@@ -591,19 +604,28 @@ def calculate_image_hash(file_path: str, hash_chunk_size: int = 65536) -> str:
     
     Args:
         file_path: Path to the image file
-        hash_chunk_size: Size of chunks to read at a time
+        hash_chunk_size: Size of chunks to read at a time (only used for large files)
         
     Returns:
         SHA-256 hash string
     """
-    hash_result = hashlib.sha256()
-    
     try:
-        with open(file_path, "rb") as f:
-            for chunk in iter(lambda: f.read(hash_chunk_size), b""):
-                hash_result.update(chunk)
+        # Get file size first
+        file_size = os.path.getsize(file_path)
         
-        return hash_result.hexdigest()
+        # For small files (< 10MB), read complete file at once for better performance
+        if file_size < 10 * 1024 * 1024:  # < 10MB
+            with open(file_path, "rb") as f:
+                data = f.read()
+                return hashlib.sha256(data).hexdigest()
+        else:
+            # For large files, use chunked reading to avoid memory issues
+            hash_result = hashlib.sha256()
+            with open(file_path, "rb") as f:
+                for chunk in iter(lambda: f.read(hash_chunk_size), b""):
+                    hash_result.update(chunk)
+            return hash_result.hexdigest()
+            
     except Exception as e:
         raise
 

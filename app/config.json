@@ -13,14 +13,8 @@
     "debug_file_path": "./log/yapmo_debug.log",
     "log_files_count_update": 1000,
     "levels": {
-      "ERROR": [
-        "t",
-        "ui"
-      ],
-      "WARNING": [
-        "t",
-        "ui"
-      ],
+      "ERROR": [],
+      "WARNING": [],
       "INFO": [
         "ui"
       ],
@@ -57,14 +51,13 @@
     "ui_update": 500,
     "processing_array": null,
     "worker_timeout": 30000,
-    "read_batch_size": 16,
-    "hash_chunk_size": 65536,
-    "video_header_size": 4096
+    "read_batch_size": 25,
+    "hash_chunk_size": 524288000,
+    "video_header_size": 16384
   },
   "processing_queues": {
-    "result_queue_depth": 32,
     "get_result_timeout": 500,
-    "logging_queue_depth": 200,
+    "logging_queue_depth": 400,
     "get_log_timeout": 100
   },
   "database": {
@@ -85,7 +78,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures-test",
+    "search_path": "/Pictures-test/3-test",
     "browse_path": "/"
   },
   "extensions": {

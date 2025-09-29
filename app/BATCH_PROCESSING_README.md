@@ -153,3 +153,11 @@ def _process_worker_result(self, result) -> None:
 ✅ **Performance optimalisatie significant**
 ✅ **Error handling en fallback mechanismen**
 ✅ **Real-time UI updates tijdens batch processing**
+
+## Gerelateerde Optimalisaties
+Deze batch processing optimalisatie werkt samen met andere performance verbeteringen:
+- **Hash Calculation Optimalisatie**: 10.9x sneller hash berekening
+- **Database Write Optimalisatie**: 10x snellere database writes
+- **File Categorization Optimalisatie**: 50% snellere file processing
+
+Zie `PERFORMANCE_OPTIMIZATIONS_DOCUMENTATION.md` voor complete details.

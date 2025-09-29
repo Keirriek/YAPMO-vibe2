@@ -84,7 +84,6 @@ class ConfigManager:
                 "video_header_size": 4096
             },
             "processing_queues": {
-                "result_queue_depth": 32,
                 "get_result_timeout": 500,
                 "logging_queue_depth": 200,
                 "get_log_timeout": 100
@@ -159,7 +158,6 @@ class ConfigManager:
                 "video_header_size": 4096
             },
             "processing_queues": {
-                "result_queue_depth": 32,
                 "get_result_timeout": 500,
                 "logging_queue_depth": 200,
                 "get_log_timeout": 100
@@ -313,7 +311,6 @@ class ConfigManager:
                 "video_header_size": {"min": 1, "max": 2147483647, "default": 4096},
             },
             "processing_queues": {
-                "result_queue_depth": {"min": 5, "max": 64, "default": 32},
                 "get_result_timeout": {"min": 1, "max": 6000, "default": 500},
                 "logging_queue_depth": {"min": 1, "max": 200000, "default": 200},
                 "get_log_timeout": {"min": 1, "max": 60000, "default": 100},
@@ -377,7 +374,6 @@ class ConfigManager:
                 "video_header_size": {"min": 1, "max": 2147483647, "default": 4096},
             },
             "processing_queues": {
-                "result_queue_depth": {"min": 5, "max": 64, "default": 32},
                 "get_result_timeout": {"min": 1, "max": 6000, "default": 500},
                 "logging_queue_depth": {"min": 1, "max": 200000, "default": 200},
                 "get_log_timeout": {"min": 1, "max": 60000, "default": 100},

@@ -68,19 +68,6 @@ class DatabaseManagerV3:
             logging_service.log("ERROR", error_msg)
             raise
 
-    def clear_database(self) -> None:
-        """Clear the database by deleting the database file."""
-        try:
-            if self.db_path.exists():
-                self.db_path.unlink()
-                logging_service.log("INFO", f"Database cleared: {self.db_path}")
-            else:
-                logging_service.log("INFO", "Database does not exist, nothing to clear")
-        except Exception as e:
-            error_msg = f"Error clearing database: {e}"
-            logging_service.log("ERROR", error_msg)
-            raise
-    
     def _connect_and_create_tables(self) -> None:
         """Connect to database and create tables with optimal PRAGMA settings."""
         try:
@@ -331,20 +318,20 @@ class DatabaseManagerV3:
                 # Execute batch INSERT for all records at once
                 if all_values:
                     cursor.executemany(insert_sql, all_values)
-                    logging_service.log("DEBUG", f"Batch inserted {len(all_values)} records")#DEBUG_ON Batch inserted X records
+                    # logging_service.log("DEBUG", f"Batch inserted {len(all_values)} records")#DEBUG_OFF Batch inserted X records
                     
                     # Transaction batching - commit after X batches
                     self.pending_batches += 1
                     if self.pending_batches >= self.transaction_batch_size:
                         conn.commit()
                         self.pending_batches = 0
-                        logging_service.log("DEBUG", f"Transaction committed after {self.transaction_batch_size} batches")#DEBUG_ON Transaction committed after X batches
+                        # logging_service.log("DEBUG", f"Transaction committed after {self.transaction_batch_size} batches")#DEBUG_OFF Transaction committed after X batches
                     else:
-                        logging_service.log("DEBUG", f"Batch queued, pending batches: {self.pending_batches}/{self.transaction_batch_size}")#DEBUG_ON Batch queued, pending batches: X/Y
+                        # logging_service.log("DEBUG", f"Batch queued, pending batches: {self.pending_batches}/{self.transaction_batch_size}")#DEBUG_OFF Batch queued, pending batches: X/Y
                         # Always commit for now to ensure data is written
                         conn.commit()
-                        logging_service.log("DEBUG", "Force committed transaction to ensure data persistence")#DEBUG_ON Force committed transaction to ensure data persistence
-                logging_service.log("DEBUG", f"Successfully wrote {len(results)} results to database")#DEBUG_ON Successfully wrote X results to database
+                        # logging_service.log("DEBUG", "Force committed transaction to ensure data persistence")#DEBUG_OFF Force committed transaction to ensure data persistence
+                # logging_service.log("DEBUG", f"Successfully wrote {len(results)} results to database")#DEBUG_OFF Successfully wrote X results to database
                 
         except Exception as e:
             error_msg = f"Error writing results to database: {e}"
@@ -357,24 +344,36 @@ class DatabaseManagerV3:
             if self.pending_batches > 0:
                 with self._get_connection() as conn:
                     conn.commit()
-                logging_service.log("DEBUG", f"Finalized transaction with {self.pending_batches} pending batches")#DEBUG_ON Finalized transaction with X pending batches
+                # logging_service.log("DEBUG", f"Finalized transaction with {self.pending_batches} pending batches")#DEBUG_OFF Finalized transaction with X pending batches
                 self.pending_batches = 0
         except Exception as e:
             logging_service.log("ERROR", f"Error finalizing transaction: {e}")
 
     def clear_database(self) -> None:
-        """Clear the database by removing the database file."""
+        """Clear all records from the database tables."""
         try:
             # Finalize any pending transactions before clearing
             self._finalize_transaction()
             
-            if self.db_path.exists():
-                self.db_path.unlink()
-                logging_service.log("INFO", f"Database cleared: {self.db_path}")
-            else:
+            if not self.db_path.exists():
                 logging_service.log("INFO", "Database does not exist, nothing to clear")
+                return
+            
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                
+                # Clear all records from the media table
+                cursor.execute(f"DELETE FROM {self.db_table_media}")
+                deleted_count = cursor.rowcount
+                
+                # Reset auto-increment counter
+                cursor.execute(f"DELETE FROM sqlite_sequence WHERE name='{self.db_table_media}'")
+                
+                conn.commit()
+                logging_service.log("INFO", f"Database cleared: {deleted_count} records removed from {self.db_table_media} table")
+                
         except Exception as e:
-            error_msg = f"Error clearing database: {e}"
+            error_msg = f"Error clearing database records: {e}"
             logging_service.log("ERROR", error_msg)
             raise
 
@@ -469,4 +468,4 @@ def db_add_result(result: List[Dict[str, Any]]) -> None:
         for r in real_results:
             file_path = r.get('file_path', 'unknown')
             success = r.get('success', False)
-            logging_service.log("DEBUG", f"Result: {file_path} - {'SUCCESS' if success else 'FAILED'}")#DEBUG_OFF Result: file_path - SUCCESS/FAILED
+            # logging_service.log("DEBUG", f"Result: {file_path} - {'SUCCESS' if success else 'FAILED'}")#DEBUG_OFF Result: file_path - SUCCESS/FAILED
