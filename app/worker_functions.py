@@ -132,12 +132,13 @@ def map_metadata_fields(exiftool_metadata: Dict[str, str], media_type: str, conf
     log_messages = []
     
     # Get field mappings from config
+    yapmo_fields = config.get('metadata_fields_yapmo', {})
     file_fields = config.get('metadata_fields_file', {})
     image_fields = config.get('metadata_fields_image', {})
     video_fields = config.get('metadata_fields_video', {})
     
     # Combine all field mappings
-    all_field_mappings = {**file_fields, **image_fields, **video_fields}
+    all_field_mappings = {**yapmo_fields, **file_fields, **image_fields, **video_fields}
     
     # First: Map ExifTool fields to database column names
     for exif_field, db_field in all_field_mappings.items():
@@ -180,23 +181,38 @@ def map_metadata_fields(exiftool_metadata: Dict[str, str], media_type: str, conf
     for exif_field, db_field in all_field_mappings.items():
         if exif_field.startswith('YAPMO:'):
             try:
-                if exif_field == 'YAPMO:FileName':
-                    mapped_metadata[db_field] = os.path.basename(file_path)
-                elif exif_field == 'YAPMO:Directory':
-                    mapped_metadata[db_field] = os.path.dirname(file_path)
+                if exif_field == 'YAPMO:FQPN':
+                    # Fully Qualified Path Name - directory + "/" + filename with extension
+                    directory = os.path.dirname(file_path)
+                    filename = os.path.basename(file_path)
+                    mapped_metadata[db_field] = f"{directory}/{filename}"
+                elif exif_field == 'YAPMO:Modify':
+                    # Use file modification time
+                    mtime = os.path.getmtime(file_path)
+                    dt = datetime.datetime.fromtimestamp(mtime)
+                    formatted_date = dt.strftime("%Y:%m:%d %H:%M:%S+01:00")
+                    mapped_metadata[db_field] = formatted_date
                 elif exif_field == 'YAPMO:FileSize':
                     mapped_metadata[db_field] = str(os.path.getsize(file_path))
                 elif exif_field == 'YAPMO:FileType':
                     file_ext = os.path.splitext(file_path)[1].lower()
                     mapped_metadata[db_field] = file_ext
+                elif exif_field == 'YAPMO:Name_New':
+                    mapped_metadata[db_field] = os.path.basename(file_path)
+                elif exif_field == 'YAPMO:Path_New':
+                    mapped_metadata[db_field] = os.path.dirname(file_path)
+                elif exif_field == 'YAPMO:Hash':
+                    mapped_metadata[db_field] = "to be calculated"
+                elif exif_field == 'YAPMO:HashChunkSize':
+                    mapped_metadata[db_field] = "0"  # Will be set later based on file type
+                elif exif_field == 'YAPMO:VideoHeaderSize':
+                    mapped_metadata[db_field] = "0"  # Will be set later based on file type
                 elif exif_field == 'YAPMO:FileModifyDate':
                     # Format as "YYYY:MM:DD HH:MM:SS+HH:MM"
                     mtime = os.path.getmtime(file_path)
                     dt = datetime.datetime.fromtimestamp(mtime)
                     formatted_date = dt.strftime("%Y:%m:%d %H:%M:%S+01:00")  # TODO: Get actual timezone
                     mapped_metadata[db_field] = formatted_date
-                elif exif_field == 'YAPMO:Hash':
-                    mapped_metadata[db_field] = "to be calculated"
                 elif exif_field == 'YAPMO:Sidecars':
                     # Convert sidecars list to string representation
                     mapped_metadata[db_field] = str(sidecars) if sidecars else "[]"

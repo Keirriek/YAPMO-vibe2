@@ -78,7 +78,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures-test/3-test",
+    "search_path": "/Pictures-test",
     "browse_path": "/"
   },
   "extensions": {
@@ -109,6 +109,7 @@
     ]
   },
   "metadata_fields_yapmo": {
+    "YAPMO:FQPN": "YAPMO_FQPN",
     "YAPMO:Modify": "YAPMO_Modify",
     "YAPMO:FileSize": "YAPMO_FILE_Size",
     "YAPMO:FileType": "YAPMO_FILE_Type",

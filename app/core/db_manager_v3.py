@@ -44,9 +44,9 @@ class DatabaseManagerV3:
         self.transaction_batch_size = get_param("database", "database_transaction_batch_size")
         self.pending_batches = 0
         
-        # Cache INSERT SQL statement for efficiency
+        # Cache INSERT OR REPLACE SQL statement for efficiency
         placeholders = ', '.join(['?' for _ in self.db_fields])
-        self.insert_sql = f"INSERT INTO {self.db_table_media} ({', '.join(self.db_fields)}) VALUES ({placeholders})"
+        self.insert_sql = f"INSERT OR REPLACE INTO {self.db_table_media} ({', '.join(self.db_fields)}) VALUES ({placeholders})"
         
         # Initialize database
         self._initialize_database()
@@ -127,7 +127,8 @@ class DatabaseManagerV3:
             # Create table
             create_sql = f"""
                 CREATE TABLE IF NOT EXISTS {self.db_table_media} (
-                    {', '.join(fields)}
+                    {', '.join(fields)},
+                    UNIQUE(YAPMO_FQPN)
                 )
             """
             
@@ -245,53 +246,6 @@ class DatabaseManagerV3:
         except Exception as e:
             logging_service.log("ERROR", f"Error checking database schema: {e}")
             return False
-
-    def _write_results_to_database(self, results: List[Dict[str, Any]]) -> None:
-        """Write file processing results to database.
-        
-        Args:
-            results: List of file processing results to write to database
-        """
-        if not results:
-            return
-            
-        try:
-            with self._get_connection() as conn:
-                cursor = conn.cursor()
-                
-                # Use cached field mappings, db_fields and SQL statement for efficiency
-                field_mappings = self.field_mappings
-                db_fields = self.db_fields
-                insert_sql = self.insert_sql
-                
-                # Prepare all values for batch INSERT using list comprehension for efficiency
-                all_values = [
-                    [None if field == 'id' else result.get('metadata', {}).get(field, '') 
-                     for field in db_fields]
-                    for result in results 
-                    if result.get('success', False)
-                ]
-                
-                # Execute batch INSERT for all records at once
-                if all_values:
-                    cursor.executemany(insert_sql, all_values)
-                    # logging_service.log("DEBUG", f"Batch inserted {len(all_values)} records")#DEBUG_OFF Batch inserted X records
-                    
-                    # Transaction batching - commit after X batches
-                    self.pending_batches += 1
-                    if self.pending_batches >= self.transaction_batch_size:
-                        conn.commit()
-                        self.pending_batches = 0
-                        # logging_service.log("DEBUG", f"Transaction committed after {self.transaction_batch_size} batches")#DEBUG_OFF Transaction committed after X batches
-                    else:
-                        # logging_service.log("DEBUG", f"Batch queued, pending batches: {self.pending_batches}/{self.transaction_batch_size}")#DEBUG_OFF Batch queued, pending batches: X/Y
-                        pass
-                # logging_service.log("DEBUG", f"Successfully wrote {len(results)} results to database")#DEBUG_OFF Successfully wrote X results to database
-                
-        except Exception as e:
-            error_msg = f"Error writing results to database: {e}"
-            logging_service.log("ERROR", error_msg)
-            raise
 
     def _write_results_to_database(self, results: List[Dict[str, Any]]) -> None:
         """Write file processing results to database."""
