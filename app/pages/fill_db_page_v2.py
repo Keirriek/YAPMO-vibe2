@@ -522,7 +522,7 @@ class FillDbPageV2:
         
         # Update debug state label and flags
         self.debug_helper.update_debug_state_label()
-        self.debug_helper.update_debug_flags()
+        self.debug_helper.update_debug_state_label()
 
     def _configure_ui_for_state(self, state: ApplicationState) -> None:
         """Configure UI elements for the given state.
@@ -1467,7 +1467,7 @@ class FillDbPageV2:
             self._display_log_queue()
             
             # Update debug flags
-            self.debug_helper.update_debug_flags()
+            self.debug_helper.update_debug_state_label()
             
             # Check if action is finished and we're in IDLE_ACTION_DONE state
             if (yapmo_globals.action_finished_flag and 
@@ -1485,7 +1485,7 @@ class FillDbPageV2:
                     # Both queues are empty, set ui_update_finished flag
                     yapmo_globals.ui_update_finished = True
                     # Update debug flags after flag change
-                    self.debug_helper.update_debug_flags()
+                    self.debug_helper.update_debug_state_label()
             
             # Abort now goes directly to IDLE_ACTION_DONE, no special handling needed here
                 
@@ -1525,7 +1525,7 @@ class FillDbPageV2:
             self._display_log_queue()
             
             # Update debug flags
-            self.debug_helper.update_debug_flags()
+            self.debug_helper.update_debug_state_label()
             
             # Check if action is finished and we're in IDLE_ACTION_DONE state
             if (yapmo_globals.action_finished_flag and 
@@ -1543,7 +1543,7 @@ class FillDbPageV2:
                     # Both queues are empty, set ui_update_finished flag
                     yapmo_globals.ui_update_finished = True
                     # Update debug flags after flag change
-                    self.debug_helper.update_debug_flags()
+                    self.debug_helper.update_debug_state_label()
             
         except Exception as e:
             # Silent error handling - UI update should not crash the app
@@ -1564,7 +1564,7 @@ class FillDbPageV2:
                     yapmo_globals.ui_update_finished = False
                     
                     # Update debug flags after flag clearing
-                    self.debug_helper.update_debug_flags()
+                    self.debug_helper.update_debug_state_label()
                     
                     # Determine next state based on what was completed
                     if hasattr(self, 'scanned_files') and self.scanned_files:
