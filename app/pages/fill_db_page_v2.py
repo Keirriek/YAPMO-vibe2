@@ -1415,6 +1415,11 @@ class FillDbPageV2:
                     self.log_messages = []
 
                 for msg_data in new_messages:
+                    # Process TEST1 performance logs
+                    if msg_data.get('level') == 'TEST1':
+                        self._process_test1_log(msg_data)
+                        continue
+                    
                     # Handle timestamp format safely
                     timestamp_parts = msg_data["timestamp"].split(" ")
                     if len(timestamp_parts) >= 2:
@@ -1438,6 +1443,29 @@ class FillDbPageV2:
                         
         except Exception as e:
             logging_service.log("WARNING", f"Log display error: {e}")
+
+    def _process_test1_log(self, msg_data: Dict[str, Any]) -> None:
+        """Process TEST1 performance log and update files/sec label."""
+        try:
+            message = msg_data.get('message', '')
+            logging_service.log("DEBUG", f"TEST1 received: {message}")  # DEBUG_ON TEST1 received
+            if 'file_complete' in message:
+                # Parse: 'file_complete {file_name}:{processing_time:.3f}:{worker_id}'
+                parts = message.split(' ')
+                if len(parts) >= 2:
+                    data_part = parts[1]  # {file_name}:{processing_time:.3f}:{worker_id}
+                    data_parts = data_part.split(':')
+                    if len(data_parts) >= 3:
+                        processing_time = float(data_parts[1])
+                        worker_id = int(data_parts[2])
+                        
+                        # Simple files/sec calculation (1 file per processing_time seconds)
+                        if processing_time > 0:
+                            files_per_sec = 1.0 / processing_time
+                            logging_service.log("DEBUG", f"Updating files/sec to: {files_per_sec:.1f}")  # DEBUG_ON Files/sec update
+                            self.debug_helper.update_files_per_sec_label(files_per_sec)
+        except Exception as e:
+            logging_service.log("WARNING", f"TEST1 processing error: {e}")
 
     def _format_time_estimate(self, seconds: float) -> str:
         """Format time estimate in hh:mm:ss.ss format."""

@@ -368,11 +368,11 @@ def process_single_file_with_metadata(file_path: str, worker_id: int, exiftool_m
         
         # Success log messages
         log_messages = [
-            #DEBUG_OFF Block Start - Worker logging ID, file name and processing time
-            #{
-            #    'level': 'DEBUG',
-            #    'message': f'Worker {worker_id} processed {file_name} in {processing_time:.3f}s'
-            #},#DEBUG_OFF Block End - Worker logging ID, file name and processing time
+            #DEBUG_ON Block Start - PerformanceWorker logging ID, file name and processing time
+            {
+               'level': 'TEST1',
+               'message': f'file_complete {file_name}:{processing_time:.3f}:{worker_id}'
+            },#DEBUG_ON Block End - PerformanceWorker logging ID, file name and processing time
             #DEBUG_OFF Block Start - Worker logging Results: name={file_name}, size={os_disk_size}, type={media_type}, sidecars={sidecars}
             # {
             #     'level': 'DEBUG',

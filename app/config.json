@@ -29,6 +29,7 @@
         "df"
       ],
       "TEST1": [
+        "ui",
         "df"
       ],
       "TEST2": [
@@ -78,7 +79,7 @@
   },
   "paths": {
     "source_path": "/workspaces",
-    "search_path": "/Pictures-test/3-test/Dir_folder",
+    "search_path": "/Pictures-test",
     "browse_path": "/"
   },
   "extensions": {
